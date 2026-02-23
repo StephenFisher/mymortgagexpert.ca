@@ -401,6 +401,11 @@ button, input, select {
   margin-bottom: 32px;
 }
 
+.hero__cta-wide {
+  width: 100%;
+  max-width: 380px;
+}
+
 .hero__mini-stats {
   display: flex;
   gap: 24px;
