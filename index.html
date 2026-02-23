@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyMortgageExpert — Find Canada's Best Mortgage Rate</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@800&family=Playfair+Display:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ======= LIVE RATE TICKER ======= -->
+  <div class="rate-ticker">
+    <div class="rate-ticker__track">
+      <div class="rate-ticker__content">
+        <span class="rate-ticker__label">Live Rates:</span>
+        <span class="rate-ticker__item">5-Yr Fixed <strong>4.04%</strong></span>
+        <span class="rate-ticker__item">5-Yr Variable <strong>4.45%</strong></span>
+        <span class="rate-ticker__item">3-Yr Fixed <strong>4.24%</strong></span>
+        <span class="rate-ticker__item">2-Yr Fixed <strong>4.39%</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= NAV BAR ======= -->
+  <header class="navbar" id="navbar">
+    <div class="container navbar__inner">
+      <a href="#" class="navbar__logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="7" fill="#1B3C2D"/>
+          <path d="M7 23V13l9-5.5 9 5.5v10H7z" fill="#2A7D5B"/>
+          <rect x="12.5" y="16.5" width="7" height="6.5" rx="1" fill="#F7F3EE"/>
+        </svg>
+        <span>MyMortgageExpert</span>
+      </a>
+      <nav class="navbar__links" id="navLinks">
+        <a href="#calculators">Calculators</a>
+        <a href="#rates">Mortgages</a>
+        <a href="#lenders">Lenders</a>
+        <a href="#about">About</a>
+      </nav>
+      <div class="navbar__right">
+        <a href="tel:18445002535" class="navbar__phone">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M14.67 11.44l-2.18-.93a1 1 0 00-1.05.18l-1.2 1.07a10.5 10.5 0 01-4.9-4.9l1.07-1.2a1 1 0 00.18-1.05l-.93-2.18A1 1 0 004.6 1.5H2.5A1 1 0 001.5 2.6 13 13 0 0013.4 14.5a1 1 0 001.1-1h-2.1a1 1 0 00-1.06-.93z" stroke="#1B3C2D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          1-844-500-2535
+        </a>
+        <a href="#cta" class="btn btn--primary navbar__cta">Get Pre-Approved</a>
+      </div>
+      <button class="navbar__hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ======= HERO ======= -->
+  <section class="hero">
+    <div class="hero__bg-blob"></div>
+    <div class="container hero__inner">
+      <div class="hero__content">
+        <span class="hero__badge">Canada's lowest rates updated daily</span>
+        <h1 class="hero__title">Find Canada's<br>best mortgage<br>rate.</h1>
+        <p class="hero__subtitle">Compare rates from 35+ lenders in minutes. Expert guidance, personalized service, and zero lender fees. Your mortgage, simplified.</p>
+        <div class="hero__buttons">
+          <a href="#cta" class="btn btn--primary btn--large">Get Pre-Approved</a>
+          <a href="#rates" class="btn btn--outline btn--large">View All Rates</a>
+        </div>
+        <div class="hero__mini-stats">
+          <div class="hero__mini-stat">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#2A7D5B" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#2A7D5B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>13,000+ mortgages funded</span>
+          </div>
+          <div class="hero__mini-stat">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1l2.12 4.3 4.74.69-3.43 3.34.81 4.72L8 11.77l-4.24 2.23.81-4.72L1.14 5.94l4.74-.69L8 1z" stroke="#2A7D5B" stroke-width="1.3" stroke-linejoin="round"/></svg>
+            <span>4.83 average rating</span>
+          </div>
+          <div class="hero__mini-stat">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="#2A7D5B" stroke-width="1.5"/><path d="M1 7h14" stroke="#2A7D5B" stroke-width="1.5"/></svg>
+            <span>$0 lender fees</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero__form-card">
+        <h3 class="hero__form-title">Calculate Your Payment</h3>
+        <div class="hero__tabs">
+          <button class="hero__tab active" data-tab="purchase">Purchase</button>
+          <button class="hero__tab" data-tab="renewal">Renewal</button>
+          <button class="hero__tab" data-tab="refinance">Refinance</button>
+        </div>
+
+        <form class="hero__form" id="heroForm">
+          <div class="form-group form-group--full">
+            <label for="homePrice">Home Price</label>
+            <input type="text" id="homePrice" value="600000" placeholder="600000">
+          </div>
+          <div class="form-group form-group--full">
+            <label for="downPayment">Down Payment</label>
+            <input type="text" id="downPayment" value="120000" placeholder="120000">
+          </div>
+          <button type="submit" class="btn btn--primary btn--large hero__submit">Calculate Payment</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= TODAY'S LOWEST RATES ======= -->
+  <section class="rates" id="rates">
+    <div class="container">
+      <span class="section-eyebrow">BEST RATES</span>
+      <h2 class="section-title section-title--serif">Today's Lowest Rates</h2>
+      <p class="section-subtitle">Updated daily from Canada's top lenders. Lock in your rate today.</p>
+
+      <div class="rates__grid">
+        <div class="rate-card">
+          <span class="rate-card__badge">5-Year Fixed</span>
+          <span class="rate-card__value">4.04%</span>
+          <span class="rate-card__meta">as low as &middot; Insured rate</span>
+          <a href="#" class="rate-card__link">View Details &rarr;</a>
+        </div>
+        <div class="rate-card">
+          <span class="rate-card__badge">5-Year Variable</span>
+          <span class="rate-card__value">4.45%</span>
+          <span class="rate-card__meta">as low as &middot; Insured rate</span>
+          <a href="#" class="rate-card__link">View Details &rarr;</a>
+        </div>
+        <div class="rate-card">
+          <span class="rate-card__badge">3-Year Fixed</span>
+          <span class="rate-card__value">4.24%</span>
+          <span class="rate-card__meta">as low as &middot; Insured rate</span>
+          <a href="#" class="rate-card__link">View Details &rarr;</a>
+        </div>
+        <div class="rate-card">
+          <span class="rate-card__badge">5-Year Fixed</span>
+          <span class="rate-card__value">4.39%</span>
+          <span class="rate-card__meta">as low as &middot; Uninsured rate</span>
+          <a href="#" class="rate-card__link">View Details &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= HOW IT WORKS ======= -->
+  <section class="how-it-works" id="about">
+    <div class="container">
+      <span class="section-eyebrow">SIMPLE PROCESS</span>
+      <h2 class="section-title section-title--serif">How It Works</h2>
+      <p class="section-subtitle">Get the best mortgage rate in three simple steps.</p>
+
+      <div class="steps__grid">
+        <div class="step-card">
+          <span class="step-card__number">1</span>
+          <h3 class="step-card__title">Share Your Details</h3>
+          <p class="step-card__text">Answer a few questions about your mortgage or refinancing needs. Takes just 5 minutes online or over the phone with an expert.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-card__number">2</span>
+          <h3 class="step-card__title">Compare Top Offers</h3>
+          <p class="step-card__text">Our experts search 30+ lenders to find the best rate and terms for your unique situation. No obligation to proceed.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-card__number">3</span>
+          <h3 class="step-card__title">Close With Confidence</h3>
+          <p class="step-card__text">We handle all the paperwork and walk you through to closing day. Zero lender fees guaranteed.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= MORTGAGE CALCULATORS ======= -->
+  <section class="calculators" id="calculators">
+    <div class="container">
+      <span class="section-eyebrow">TOOLS & RESOURCES</span>
+      <h2 class="section-title section-title--serif">Mortgage Calculators</h2>
+      <p class="section-subtitle">Plan your home purchase with our suite of free calculators.</p>
+
+      <div class="calculators__layout">
+        <div class="calculators__featured">
+          <div class="calculators__featured-icon">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <rect width="32" height="32" rx="7" fill="rgba(255,255,255,0.15)"/>
+              <rect x="8" y="8" width="16" height="16" rx="2" stroke="#fff" stroke-width="1.5"/>
+              <path d="M12 14h8M12 18h5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="calculators__featured-title">Mortgage Payment Calculator</h3>
+          <p class="calculators__featured-text">Calculate your monthly mortgage payment based on home price, down payment, interest rate, and amortization period. See how different rates impact your budget.</p>
+          <a href="#" class="calculators__featured-link">Try Calculator &rarr;</a>
+        </div>
+        <div class="calculators__grid">
+          <a href="#" class="calc-card">
+            <h4 class="calc-card__title">Affordability Calculator</h4>
+            <p class="calc-card__text">Discover how much home you can afford based on your income and expenses.</p>
+            <span class="calc-card__link">Calculate &rarr;</span>
+          </a>
+          <a href="#" class="calc-card">
+            <h4 class="calc-card__title">Land Transfer Tax</h4>
+            <p class="calc-card__text">Estimate land transfer tax for your province and purchase price.</p>
+            <span class="calc-card__link">Calculate &rarr;</span>
+          </a>
+          <a href="#" class="calc-card">
+            <h4 class="calc-card__title">CMHC Insurance</h4>
+            <p class="calc-card__text">Find out your default insurance premium for down payments under 20%.</p>
+            <span class="calc-card__link">Calculate &rarr;</span>
+          </a>
+          <a href="#" class="calc-card">
+            <h4 class="calc-card__title">Closing Costs</h4>
+            <p class="calc-card__text">Estimate all closing costs including legal fees, inspections, and more.</p>
+            <span class="calc-card__link">Calculate &rarr;</span>
+          </a>
+          <a href="#" class="calc-card calc-card--span">
+            <h4 class="calc-card__title">Penalty Calculator</h4>
+            <p class="calc-card__text">Calculate the penalty for breaking your mortgage early.</p>
+            <span class="calc-card__link">Calculate &rarr;</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= STATS ======= -->
+  <section class="stats">
+    <div class="stats__glow"></div>
+    <div class="container">
+      <span class="section-eyebrow stats__eyebrow">TRUSTED BY CANADIANS</span>
+      <h2 class="section-title section-title--serif stats__title">The Numbers Speak For Themselves</h2>
+      <p class="section-subtitle stats__subtitle">Join thousands of Canadians who've saved with us.</p>
+      <div class="stats__grid">
+        <div class="stat">
+          <span class="stat__value">12,000+</span>
+          <span class="stat__label">Mortgages Funded</span>
+        </div>
+        <div class="stat">
+          <span class="stat__value">$2.1B+</span>
+          <span class="stat__label">Total Volume</span>
+        </div>
+        <div class="stat">
+          <span class="stat__value">4.9/5</span>
+          <span class="stat__label">Average Rating</span>
+        </div>
+        <div class="stat">
+          <span class="stat__value">30+</span>
+          <span class="stat__label">Lender Partners</span>
+        </div>
+      </div>
+
+      <div class="testimonials__grid">
+        <div class="testimonial-card">
+          <div class="testimonial-card__stars">★★★★★</div>
+          <p class="testimonial-card__quote">"Saved us over $30,000 compared to our bank's offer. The entire process was seamless and our mortgage expert was available every step of the way."</p>
+          <div class="testimonial-card__author">
+            <span class="testimonial-card__avatar" style="background:#2A7D5B">SM</span>
+            <div>
+              <span class="testimonial-card__name">Sarah Miller</span>
+              <span class="testimonial-card__location">Toronto, ON</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-card__stars">★★★★★</div>
+          <p class="testimonial-card__quote">"As a first-time buyer, I was overwhelmed. My Mortgage Expert walked me through everything and got me an incredible rate. Highly recommend!"</p>
+          <div class="testimonial-card__author">
+            <span class="testimonial-card__avatar" style="background:#1B3C2D">JC</span>
+            <div>
+              <span class="testimonial-card__name">James Chen</span>
+              <span class="testimonial-card__location">Vancouver, BC</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-card__stars">★★★★★</div>
+          <p class="testimonial-card__quote">"Refinanced our mortgage and the savings are substantial. Fast, professional service with no hidden fees. This is how mortgages should be."</p>
+          <div class="testimonial-card__author">
+            <span class="testimonial-card__avatar" style="background:#2A7D5B">LP</span>
+            <div>
+              <span class="testimonial-card__name">Lisa Patel</span>
+              <span class="testimonial-card__location">Calgary, AB</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= MORTGAGE GUIDES ======= -->
+  <section class="guides" id="guides">
+    <div class="container">
+      <span class="section-eyebrow">EDUCATION</span>
+      <h2 class="section-title section-title--serif">Mortgage Guides</h2>
+      <p class="section-subtitle">Everything you need to know about mortgages in Canada.</p>
+
+      <div class="guides__grid">
+        <a href="#" class="guide-card">
+          <div class="guide-card__icon">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+              <path d="M6 28V14l12-7 12 7v14" stroke="#2A7D5B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="13" y="20" width="10" height="8" rx="1" stroke="#2A7D5B" stroke-width="1.8"/>
+            </svg>
+          </div>
+          <div class="guide-card__body">
+            <span class="guide-card__tag">FIRST-TIME BUYERS</span>
+            <h3 class="guide-card__title">Complete First-Time Home Buyer Guide</h3>
+            <p class="guide-card__excerpt">Learn about down payments, pre-approvals, CMHC insurance, and government incentives for first-time buyers.</p>
+            <span class="guide-card__link">Read Guide &rarr;</span>
+          </div>
+        </a>
+        <a href="#" class="guide-card">
+          <div class="guide-card__icon">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+              <rect x="8" y="17" width="16" height="13" rx="2" stroke="#2A7D5B" stroke-width="1.8"/>
+              <path d="M12 17v-5a6 6 0 0112 0" stroke="#2A7D5B" stroke-width="1.8" stroke-linecap="round"/>
+              <circle cx="16" cy="24" r="1.5" fill="#2A7D5B"/>
+            </svg>
+          </div>
+          <div class="guide-card__body">
+            <span class="guide-card__tag">RATE TYPES</span>
+            <h3 class="guide-card__title">Fixed vs. Variable Rates</h3>
+            <p class="guide-card__excerpt">Compare the pros and cons of fixed and variable rate mortgages to make the best choice for your situation.</p>
+            <span class="guide-card__link">Read Guide &rarr;</span>
+          </div>
+        </a>
+        <a href="#" class="guide-card">
+          <div class="guide-card__icon">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+              <rect x="8" y="6" width="20" height="24" rx="2" stroke="#2A7D5B" stroke-width="1.8"/>
+              <path d="M13 13h10M13 18h10M13 23h6" stroke="#2A7D5B" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="guide-card__body">
+            <span class="guide-card__tag">RENEWAL</span>
+            <h3 class="guide-card__title">Mortgage Renewal Guide</h3>
+            <p class="guide-card__excerpt">Don't accept your lender's renewal offer automatically. Learn how to negotiate and save thousands.</p>
+            <span class="guide-card__link">Read Guide &rarr;</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= LENDERS ======= -->
+  <section class="lenders" id="lenders">
+    <div class="container">
+      <span class="section-eyebrow">LENDER NETWORK</span>
+      <h2 class="section-title section-title--serif">Access to 30+ Lenders</h2>
+      <p class="section-subtitle">We work with Canada's leading banks, credit unions, and alternative lenders.</p>
+
+      <div class="lenders__row">
+        <span class="lender-name">TD Bank</span>
+        <span class="lender-name">RBC</span>
+        <span class="lender-name">BMO</span>
+        <span class="lender-name">Scotiabank</span>
+        <span class="lender-name">CIBC</span>
+        <span class="lender-name">National Bank</span>
+        <span class="lender-name">Tangerine</span>
+        <span class="lender-name">First National</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= BLOG ======= -->
+  <section class="blog" id="blog">
+    <div class="container">
+      <span class="section-eyebrow">LATEST NEWS</span>
+      <h2 class="section-title section-title--serif">From The Blog</h2>
+      <p class="section-subtitle">Stay up to date with the latest mortgage news and insights.</p>
+
+      <div class="blog__grid">
+        <a href="#" class="guide-card">
+          <div class="guide-card__icon">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+              <circle cx="18" cy="18" r="11" stroke="#2A7D5B" stroke-width="1.8"/>
+              <path d="M18 12v6l4 2" stroke="#2A7D5B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="guide-card__body">
+            <span class="guide-card__tag">FEBRUARY 18, 2026</span>
+            <h3 class="guide-card__title">Bank of Canada Holds Rates Steady — What It Means for Your Mortgage</h3>
+            <p class="guide-card__excerpt">The latest rate decision and how it could impact fixed and variable mortgage rates across Canada.</p>
+            <span class="guide-card__link">Read Article &rarr;</span>
+          </div>
+        </a>
+        <a href="#" class="guide-card">
+          <div class="guide-card__icon">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+              <path d="M18 8l2.5 5 5.5.8-4 3.9.9 5.5L18 20.5l-4.9 2.7.9-5.5-4-3.9 5.5-.8L18 8z" stroke="#2A7D5B" stroke-width="1.8" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="guide-card__body">
+            <span class="guide-card__tag">FEBRUARY 10, 2026</span>
+            <h3 class="guide-card__title">5 Mistakes to Avoid When Renewing Your Mortgage</h3>
+            <p class="guide-card__excerpt">Renewal time is your chance to save — but only if you avoid these common pitfalls.</p>
+            <span class="guide-card__link">Read Article &rarr;</span>
+          </div>
+        </a>
+        <a href="#" class="guide-card">
+          <div class="guide-card__icon">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+              <path d="M8 28V12l10-6 10 6v16" stroke="#2A7D5B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M14 28v-8h8v8" stroke="#2A7D5B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="guide-card__body">
+            <span class="guide-card__tag">JANUARY 28, 2026</span>
+            <h3 class="guide-card__title">How Much Home Can You Actually Afford in 2026?</h3>
+            <p class="guide-card__excerpt">A realistic look at affordability with today's rates, stress test rules, and living costs.</p>
+            <span class="guide-card__link">Read Article &rarr;</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= CTA SECTION ======= -->
+  <section class="cta-section" id="cta">
+    <div class="container cta-section__inner">
+      <h2 class="cta-section__title section-title--serif">Ready to Get Started?</h2>
+      <p class="cta-section__text">Join thousands of Canadians who've saved with MyMortgageExpert. Get your free rate quote in minutes.</p>
+      <div class="cta-section__buttons">
+        <a href="#" class="btn btn--primary btn--large">Get Pre-Approved</a>
+        <a href="#" class="btn btn--outline-white btn--large">Call Us Now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= FOOTER ======= -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="#" class="navbar__logo">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+              <rect width="32" height="32" rx="7" fill="#2A7D5B"/>
+              <path d="M7 23V13l9-5.5 9 5.5v10H7z" fill="#1B3C2D"/>
+              <rect x="12.5" y="16.5" width="7" height="6.5" rx="1" fill="#F7F3EE"/>
+            </svg>
+            <span>MyMortgageExpert</span>
+          </a>
+          <p class="footer__tagline">Helping Canadians find the best mortgage rates since 2019.</p>
+        </div>
+        <div class="footer__links">
+          <div class="footer__col">
+            <h4>About</h4>
+            <a href="#">Our Story</a>
+            <a href="#">How It Works</a>
+            <a href="#">Careers</a>
+            <a href="#">Contact</a>
+          </div>
+          <div class="footer__col">
+            <h4>Resources</h4>
+            <a href="#">Mortgage Guides</a>
+            <a href="#">Blog</a>
+            <a href="#">FAQ</a>
+            <a href="#">Glossary</a>
+          </div>
+          <div class="footer__col">
+            <h4>Calculators</h4>
+            <a href="#">Payment Calculator</a>
+            <a href="#">Affordability</a>
+            <a href="#">Land Transfer Tax</a>
+            <a href="#">CMHC Insurance</a>
+          </div>
+          <div class="footer__col">
+            <h4>Legal</h4>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Accessibility</a>
+            <a href="#">Disclaimer</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; 2026 MyMortgageExpert. All rights reserved.</p>
+        <div class="footer__legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
