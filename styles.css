@@ -1099,20 +1099,23 @@ button, input, select {
    ARTICLE (Blog Pages)
    =========================== */
 .article {
-  padding: 120px 0 80px;
+  padding: 100px 0 80px;
   background: var(--cream);
 }
 
 .article__container {
   max-width: 720px;
   margin: 0 auto;
+  padding: 0 40px;
 }
 
 .article__nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 32px;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
 }
 
 .article__back,
@@ -1129,94 +1132,118 @@ button, input, select {
 }
 
 .article__header {
-  margin-bottom: 40px;
+  margin-bottom: 48px;
+  text-align: center;
 }
 
 .article__tag {
   display: inline-block;
   font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   color: var(--green-mid);
   background: var(--green-pale);
-  padding: 4px 12px;
+  padding: 6px 16px;
   border-radius: 20px;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
 }
 
 .article__title {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-style: italic;
-  font-size: 2.4rem;
-  font-weight: 700;
-  color: var(--green-dark);
-  line-height: 1.25;
-  margin-bottom: 16px;
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-style: italic !important;
+  font-size: 2.6rem !important;
+  font-weight: 700 !important;
+  color: var(--green-dark) !important;
+  line-height: 1.2;
+  margin-bottom: 20px;
 }
 
 .article__meta {
   display: flex;
+  justify-content: center;
   gap: 8px;
   font-size: 0.88rem;
   color: var(--text-light);
 }
 
 .article__body {
-  font-size: 1.05rem;
-  line-height: 1.8;
+  font-size: 1.08rem;
+  line-height: 1.85;
   color: var(--text-dark);
 }
 
 .article__body p {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .article__body h2 {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-style: italic;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--green-dark);
-  margin-top: 40px;
-  margin-bottom: 16px;
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-style: italic !important;
+  font-size: 1.6rem !important;
+  font-weight: 700 !important;
+  color: var(--green-dark) !important;
+  margin-top: 48px;
+  margin-bottom: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
 }
 
 .article__body ul {
-  margin-bottom: 20px;
-  padding-left: 24px;
+  margin-bottom: 24px;
+  padding-left: 0;
+  list-style: none;
 }
 
 .article__body li {
-  margin-bottom: 10px;
+  margin-bottom: 14px;
+  padding-left: 24px;
+  position: relative;
+  line-height: 1.7;
+}
+
+.article__body li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 8px;
+  height: 8px;
+  background: var(--green-mid);
+  border-radius: 50%;
 }
 
 .article__body strong {
-  font-weight: 600;
-  color: var(--text-dark);
+  font-weight: 700;
+  color: var(--green-dark);
 }
 
 .article__cta-box {
   background: var(--white);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 40px;
+  padding: 48px 40px;
   text-align: center;
-  margin-top: 48px;
+  margin-top: 56px;
+  box-shadow: var(--shadow-md);
 }
 
 .article__cta-box h3 {
   font-family: 'Playfair Display', Georgia, serif;
   font-style: italic;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--green-dark);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .article__cta-box p {
   color: var(--text-mid);
   font-size: 0.95rem;
   margin-bottom: 24px;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* ===========================
@@ -1603,15 +1630,24 @@ button, input, select {
 
   /* Articles */
   .article {
-    padding: 100px 0 60px;
+    padding: 80px 0 60px;
+  }
+
+  .article__container {
+    padding: 0 20px;
   }
 
   .article__title {
-    font-size: 1.8rem;
+    font-size: 1.8rem !important;
   }
 
   .article__body {
     font-size: 0.98rem;
+  }
+
+  .article__body h2 {
+    font-size: 1.3rem !important;
+    margin-top: 36px;
   }
 
   .article__cta-box {
@@ -1743,10 +1779,10 @@ button, input, select {
   }
 
   .article__title {
-    font-size: 1.5rem;
+    font-size: 1.5rem !important;
   }
 
   .article__body h2 {
-    font-size: 1.25rem;
+    font-size: 1.15rem !important;
   }
 }

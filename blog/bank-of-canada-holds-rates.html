@@ -27,6 +27,8 @@
         <a href="/#rates">Mortgages</a>
         <a href="/#lenders">Lenders</a>
         <a href="/#about">About</a>
+        <a href="tel:18445002535" class="navbar__mobile-phone">1-844-500-2535</a>
+        <a href="#" class="btn btn--primary navbar__mobile-cta open-modal">Get Pre-Approved</a>
       </nav>
       <div class="navbar__right">
         <a href="tel:18445002535" class="navbar__phone">
@@ -35,7 +37,7 @@
           </svg>
           1-844-500-2535
         </a>
-        <a href="/#cta" class="btn btn--primary navbar__cta">Get Pre-Approved</a>
+        <a href="#" class="btn btn--primary navbar__cta open-modal">Get Pre-Approved</a>
       </div>
       <button class="navbar__hamburger" id="hamburger" aria-label="Toggle menu">
         <span></span>
@@ -192,6 +194,12 @@
       hamburger.classList.toggle('active');
       navLinks.classList.toggle('active');
     });
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('active');
+      });
+    });
 
     // Modal
     const modal = document.getElementById('preApprovalModal');
@@ -255,6 +263,12 @@
         modal.classList.remove('active');
         document.body.style.overflow = '';
       });
+    });
+
+    // Navbar scroll shadow
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.style.boxShadow = window.scrollY > 10 ? '0 2px 16px rgba(0,0,0,0.06)' : 'none';
     });
   </script>
 </body>
