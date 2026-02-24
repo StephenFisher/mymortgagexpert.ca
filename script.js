@@ -132,24 +132,20 @@ function rebindHelpModal() {
     fill.style.width = '100%';
   });
 
-  // Page 2 → Broker result
+  // Page 2 → Loading → Broker result
   form2.addEventListener('submit', (e) => {
     e.preventDefault();
     const firstName = document.getElementById('helpFirstName').value;
     helpModalInner.innerHTML =
-      '<button class="modal__close" id="helpModalCloseResult" aria-label="Close">&times;</button>' +
-      '<div class="broker-result">' +
-        '<h2 class="broker-result__heading">You\'ve Been Matched!</h2>' +
-        '<p class="broker-result__subtext">' + firstName + ', here is your matched broker:</p>' +
-        '<img class="broker-result__logo" src="' + broker.logo + '" alt="' + broker.name + '">' +
-        '<h3 class="broker-result__name">' + broker.name + '</h3>' +
-        '<div class="broker-result__info">' +
-          '<span>' + broker.phone + '</span>' +
-          '<span>' + broker.licence + '</span>' +
-        '</div>' +
-        '<a href="tel:' + broker.phoneTel + '" class="btn btn--primary btn--large broker-result__cta">Call Now</a>' +
+      '<button class="modal__close" id="helpModalCloseLoading" aria-label="Close">&times;</button>' +
+      '<div class="help-loading">' +
+        '<div class="help-loading__spinner"></div>' +
+        '<h2 class="help-loading__text">Pairing you with the best Broker</h2>' +
       '</div>';
-    document.getElementById('helpModalCloseResult').addEventListener('click', closeHelpModal);
+    document.getElementById('helpModalCloseLoading').addEventListener('click', closeHelpModal);
+    setTimeout(() => {
+      showHelpBrokerResult(firstName);
+    }, 3000);
   });
 
   // Re-attach Google Places autocomplete
@@ -167,10 +163,8 @@ helpForm1.addEventListener('submit', (e) => {
   helpProgressFill.style.width = '100%';
 });
 
-// Page 2 → Broker result
-helpForm2.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const firstName = document.getElementById('helpFirstName').value;
+// --- Shared: show broker result ---
+function showHelpBrokerResult(firstName) {
   helpModalInner.innerHTML =
     '<button class="modal__close" id="helpModalCloseResult" aria-label="Close">&times;</button>' +
     '<div class="broker-result">' +
@@ -185,6 +179,22 @@ helpForm2.addEventListener('submit', (e) => {
       '<a href="tel:' + broker.phoneTel + '" class="btn btn--primary btn--large broker-result__cta">Call Now</a>' +
     '</div>';
   document.getElementById('helpModalCloseResult').addEventListener('click', closeHelpModal);
+}
+
+// Page 2 → Loading → Broker result
+helpForm2.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const firstName = document.getElementById('helpFirstName').value;
+  helpModalInner.innerHTML =
+    '<button class="modal__close" id="helpModalCloseLoading" aria-label="Close">&times;</button>' +
+    '<div class="help-loading">' +
+      '<div class="help-loading__spinner"></div>' +
+      '<h2 class="help-loading__text">Pairing you with the best Broker</h2>' +
+    '</div>';
+  document.getElementById('helpModalCloseLoading').addEventListener('click', closeHelpModal);
+  setTimeout(() => {
+    showHelpBrokerResult(firstName);
+  }, 3000);
 });
 
 // --- Overlay & keyboard close ---
