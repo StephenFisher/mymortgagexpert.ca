@@ -28,7 +28,7 @@
         <a href="#lenders">Lenders</a>
         <a href="#about">About</a>
         <a href="tel:18445002535" class="navbar__mobile-phone">1-844-500-2535</a>
-        <a href="#cta" class="btn btn--primary navbar__mobile-cta">Get Pre-Approved</a>
+        <a href="#" class="btn btn--primary navbar__mobile-cta open-modal">Get Pre-Approved</a>
       </nav>
       <div class="navbar__right">
         <a href="tel:18445002535" class="navbar__phone">
@@ -37,7 +37,7 @@
           </svg>
           1-844-500-2535
         </a>
-        <a href="#cta" class="btn btn--primary navbar__cta">Get Pre-Approved</a>
+        <a href="#" class="btn btn--primary navbar__cta open-modal">Get Pre-Approved</a>
       </div>
       <button class="navbar__hamburger" id="hamburger" aria-label="Toggle menu">
         <span></span>
@@ -56,7 +56,7 @@
         <h1 class="hero__title">Find Canada's<br>Best Mortgage<br>Products.</h1>
         <p class="hero__subtitle">Compare rates from 30+ lenders in minutes. Expert guidance, personalized service. You deserve options, we'll help you find them.</p>
         <div class="hero__buttons">
-          <a href="#cta" class="btn btn--primary btn--large hero__cta-wide">Get Pre-Approved</a>
+          <a href="#" class="btn btn--primary btn--large hero__cta-wide open-help-modal">How Can We Help?</a>
         </div>
         <div class="hero__mini-stats">
           <div class="hero__mini-stat">
@@ -358,7 +358,7 @@
       <p class="section-subtitle">Stay up to date with the latest mortgage news and insights.</p>
 
       <div class="blog__grid">
-        <a href="#" class="guide-card">
+        <a href="blog/bank-of-canada-holds-rates.html" class="guide-card">
           <div class="guide-card__icon">
             <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
               <circle cx="18" cy="18" r="11" stroke="#2A7D5B" stroke-width="1.8"/>
@@ -372,7 +372,7 @@
             <span class="guide-card__link">Read Article &rarr;</span>
           </div>
         </a>
-        <a href="#" class="guide-card">
+        <a href="blog/mistakes-renewing-mortgage.html" class="guide-card">
           <div class="guide-card__icon">
             <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
               <path d="M18 8l2.5 5 5.5.8-4 3.9.9 5.5L18 20.5l-4.9 2.7.9-5.5-4-3.9 5.5-.8L18 8z" stroke="#2A7D5B" stroke-width="1.8" stroke-linejoin="round"/>
@@ -385,7 +385,7 @@
             <span class="guide-card__link">Read Article &rarr;</span>
           </div>
         </a>
-        <a href="#" class="guide-card">
+        <a href="blog/how-much-home-can-you-afford.html" class="guide-card">
           <div class="guide-card__icon">
             <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
               <path d="M8 28V12l10-6 10 6v16" stroke="#2A7D5B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -471,6 +471,105 @@
     </div>
   </footer>
 
+  <!-- ======= HELP MODAL ======= -->
+  <div class="modal-overlay" id="helpModal">
+    <div class="modal" id="helpModalInner">
+      <button class="modal__close" id="helpModalClose" aria-label="Close">&times;</button>
+
+      <!-- Progress Bar -->
+      <div class="help-progress">
+        <div class="help-progress__fill" id="helpProgressFill" style="width:50%"></div>
+      </div>
+
+      <!-- Page 1 -->
+      <div class="help-page active" id="helpPage1">
+        <h2 class="modal__title">How Can We Help?</h2>
+        <p class="modal__subtitle">Tell us what you're looking for and we'll point you in the right direction.</p>
+        <form class="modal__form" id="helpForm1">
+          <div class="form-group">
+            <label for="helpGoal">What's your goal?</label>
+            <select id="helpGoal" required>
+              <option value="" disabled selected>Select an option</option>
+              <option value="consolidate">Consolidate Debt</option>
+              <option value="lower-rate">Lower My Interest Rate</option>
+              <option value="heloc">Home Equity Line of Credit</option>
+              <option value="other">Something Else</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="helpAddress">Property Address</label>
+            <input type="text" id="helpAddress" placeholder="123 Main St, Toronto, ON" required>
+          </div>
+          <div class="form-group">
+            <label for="helpBorrow">How much do you need to borrow?</label>
+            <input type="text" id="helpBorrow" placeholder="$250,000" inputmode="numeric" required>
+          </div>
+          <button type="submit" class="btn btn--primary btn--large modal__submit">Next</button>
+        </form>
+      </div>
+
+      <!-- Page 2 -->
+      <div class="help-page" id="helpPage2">
+        <h2 class="modal__title">Almost There!</h2>
+        <p class="modal__subtitle">Enter your contact details so we can connect you with a specialist.</p>
+        <form class="modal__form" id="helpForm2">
+          <div class="modal__row">
+            <div class="form-group">
+              <label for="helpFirstName">First Name</label>
+              <input type="text" id="helpFirstName" placeholder="First Name" required>
+            </div>
+            <div class="form-group">
+              <label for="helpLastName">Last Name</label>
+              <input type="text" id="helpLastName" placeholder="Last Name" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="helpEmail">Email</label>
+            <input type="email" id="helpEmail" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="helpPhone">Phone Number</label>
+            <input type="tel" id="helpPhone" placeholder="(555) 555-5555" required>
+          </div>
+          <button type="submit" class="btn btn--primary btn--large modal__submit">Get My Solution</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= PRE-APPROVAL MODAL ======= -->
+  <div class="modal-overlay" id="preApprovalModal">
+    <div class="modal">
+      <button class="modal__close" id="modalClose" aria-label="Close">&times;</button>
+      <h2 class="modal__title">Get Pre-Approved</h2>
+      <p class="modal__subtitle">Fill in your details and we'll connect you with a licensed mortgage broker.</p>
+      <form class="modal__form" id="preApprovalForm">
+        <div class="modal__row">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" placeholder="First Name" required>
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" placeholder="Last Name" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" placeholder="(555) 555-5555" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="you@example.com" required>
+        </div>
+        <button type="submit" class="btn btn--primary btn--large modal__submit">Find Your Broker</button>
+      </form>
+      <p class="modal__disclosure">By providing your contact information, you authorize the broker to contact you about your inquiry. MyMortgageExpert does not provide any mortgage services and is not responsible for any services offered by the broker.</p>
+    </div>
+  </div>
+
+  <!-- Google Places API — uncomment and add your key when ready -->
+  <!-- <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initHelpAutocomplete" async defer></script> -->
   <script src="script.js"></script>
 </body>
 </html>
