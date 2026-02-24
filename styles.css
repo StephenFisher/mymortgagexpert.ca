@@ -1280,6 +1280,7 @@ button, input, select {
   color: var(--text-mid);
   margin-bottom: 28px;
   line-height: 1.5;
+  text-align: center;
 }
 
 .modal__form {
@@ -1414,6 +1415,10 @@ button, input, select {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .guides__grid,
+  .blog__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
@@ -1522,6 +1527,13 @@ button, input, select {
 
   .hero__form {
     grid-template-columns: 1fr;
+  }
+
+  /* Larger touch targets for form inputs on mobile */
+  .form-group input,
+  .form-group select {
+    padding: 13px 14px;
+    min-height: 44px;
   }
 
   /* Section titles */
