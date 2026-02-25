@@ -90,6 +90,22 @@
     .homepage-rate-row input { padding: 8px 12px; border: 1.5px solid #d9ddd8; border-radius: 8px; font-size: 0.95rem; font-family: inherit; outline: none; }
     .homepage-rate-row input:focus { border-color: #2A7D5B; }
 
+    /* User dropdown menu */
+    .dash-user-menu { position: relative; }
+    .dash-user-menu__toggle { background: none; border: none; color: #fff; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 8px; font-family: inherit; transition: background 0.2s; }
+    .dash-user-menu__toggle:hover { background: rgba(255,255,255,0.1); }
+    .dash-user-menu__dropdown { display: none; position: absolute; right: 0; top: calc(100% + 6px); background: #fff; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.12); min-width: 180px; overflow: hidden; z-index: 100; }
+    .dash-user-menu__dropdown.active { display: block; }
+    .dash-user-menu__dropdown a { display: block; padding: 12px 16px; color: #1B3C2D; font-size: 0.9rem; text-decoration: none; transition: background 0.15s; }
+    .dash-user-menu__dropdown a:hover { background: #f5f5f0; }
+
+    /* Account panel */
+    .dash-card__subtitle { color: #6b7c74; font-size: 0.85rem; margin-bottom: 20px; }
+    .dash-card__back { color: #2A7D5B; font-size: 0.9rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 20px; }
+    .dash-card__back:hover { text-decoration: underline; }
+    .password-success { background: #f0fdf4; color: #166534; padding: 10px 14px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 16px; display: none; }
+    .password-error { background: #fef2f2; color: #b91c1c; padding: 10px 14px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 16px; display: none; }
+
     @media (max-width: 600px) {
       .dash-form__row { grid-template-columns: 1fr; }
       .dash-header__inner { flex-direction: column; gap: 12px; text-align: center; }
@@ -150,8 +166,16 @@
           <span>MME Admin</span>
         </div>
         <div class="dash-header__right">
-          <span class="dash-header__user" id="dashUser"></span>
-          <button class="dash-header__logout" id="logoutBtn">Sign Out</button>
+          <div class="dash-user-menu">
+            <button class="dash-user-menu__toggle" id="userMenuToggle">
+              <span id="dashUser"></span>
+              <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="dash-user-menu__dropdown" id="userMenuDropdown">
+              <a href="#" id="changePasswordLink">Change Password</a>
+              <a href="#" id="logoutBtn">Sign Out</a>
+            </div>
+          </div>
         </div>
       </div>
     </header>
@@ -253,6 +277,32 @@
           </div>
           <div class="dash-actions">
             <button class="dash-btn dash-btn--primary" id="saveLendersBtn">Save Lenders</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== ACCOUNT ===== -->
+      <div class="dash-panel" id="panel-account">
+        <div class="dash-card">
+          <a href="#" class="dash-card__back" id="accountBack">&larr; Back to dashboard</a>
+          <div class="dash-card__title">Account Settings</div>
+          <p class="dash-card__subtitle">Manage your admin account.</p>
+
+          <h4 style="font-size:0.95rem; margin-bottom:16px;">Change Password</h4>
+          <div class="password-success" id="passwordSuccess">Password updated successfully!</div>
+          <div class="password-error" id="passwordError"></div>
+          <div class="dash-form" id="changePasswordForm">
+            <div>
+              <label>New Password</label>
+              <input type="password" id="newPassword" placeholder="Enter new password" minlength="6">
+            </div>
+            <div>
+              <label>Confirm New Password</label>
+              <input type="password" id="confirmPassword" placeholder="Confirm new password" minlength="6">
+            </div>
+            <div class="dash-actions" style="margin-top:8px;">
+              <button class="dash-btn dash-btn--primary" id="changePasswordBtn">Update Password</button>
+            </div>
           </div>
         </div>
       </div>
@@ -400,6 +450,70 @@
         tab.classList.add('active');
         document.getElementById('panel-' + tab.dataset.panel).classList.add('active');
       });
+    });
+
+    // =============================================
+    // User Menu Dropdown
+    // =============================================
+    const userMenuToggle = document.getElementById('userMenuToggle');
+    const userMenuDropdown = document.getElementById('userMenuDropdown');
+
+    userMenuToggle.addEventListener('click', () => {
+      userMenuDropdown.classList.toggle('active');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!userMenuToggle.contains(e.target) && !userMenuDropdown.contains(e.target)) {
+        userMenuDropdown.classList.remove('active');
+      }
+    });
+
+    // Navigate to account panel
+    document.getElementById('changePasswordLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      userMenuDropdown.classList.remove('active');
+      document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.dash-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('panel-account').classList.add('active');
+    });
+
+    // Back to dashboard from account
+    document.getElementById('accountBack').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.querySelectorAll('.dash-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('panel-rates').classList.add('active');
+      document.querySelector('.dash-tab[data-panel="rates"]').classList.add('active');
+    });
+
+    // Change password
+    document.getElementById('changePasswordBtn').addEventListener('click', async () => {
+      const newPw = document.getElementById('newPassword').value;
+      const confirmPw = document.getElementById('confirmPassword').value;
+      const successEl = document.getElementById('passwordSuccess');
+      const errorEl = document.getElementById('passwordError');
+      successEl.style.display = 'none';
+      errorEl.style.display = 'none';
+
+      if (!newPw || newPw.length < 6) {
+        errorEl.textContent = 'Password must be at least 6 characters.';
+        errorEl.style.display = 'block';
+        return;
+      }
+      if (newPw !== confirmPw) {
+        errorEl.textContent = 'Passwords do not match.';
+        errorEl.style.display = 'block';
+        return;
+      }
+
+      const { error } = await sb.auth.updateUser({ password: newPw });
+      if (error) {
+        errorEl.textContent = error.message;
+        errorEl.style.display = 'block';
+        return;
+      }
+      successEl.style.display = 'block';
+      document.getElementById('newPassword').value = '';
+      document.getElementById('confirmPassword').value = '';
     });
 
     // =============================================
