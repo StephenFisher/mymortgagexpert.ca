@@ -386,7 +386,7 @@
     // HELOC Calculator
     // ===========================
     const HELOC_LTV = 0.80;
-    const HELOC_RATE = 0.0495;
+    var HELOC_RATE = 0.0495;
     const UNSECURED_RATE = 0.19;
 
     const homeValueInput = document.getElementById('helocHomeValue');
@@ -477,6 +477,8 @@
   <script src="../supabase-config.js"></script>
   <script>
     (async function() {
+      const helocRate = await fetchSingleRate('heloc');
+      if (helocRate) { HELOC_RATE = helocRate / 100; calculate(); }
       const b = await fetchBroker();
       if (b) { broker.name = b.name; broker.phone = b.phone; broker.phoneTel = b.phoneTel; broker.licence = b.licence; broker.logo = '../' + b.logo; }
     })();

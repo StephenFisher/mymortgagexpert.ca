@@ -152,11 +152,7 @@
               <div class="form-group">
                 <label for="seRefiTerm">New Term Length</label>
                 <select id="seRefiTerm">
-                  <option value="1">1 Year</option>
-                  <option value="2">2 Years</option>
-                  <option value="3">3 Years</option>
-                  <option value="4">4 Years</option>
-                  <option value="5" selected>5 Years</option>
+                  <!-- Populated dynamically from Supabase -->
                 </select>
               </div>
               <div class="form-group">
@@ -206,11 +202,7 @@
               <div class="form-group">
                 <label for="seDebtTerm">New Term Length</label>
                 <select id="seDebtTerm">
-                  <option value="1">1 Year</option>
-                  <option value="2">2 Years</option>
-                  <option value="3">3 Years</option>
-                  <option value="4">4 Years</option>
-                  <option value="5" selected>5 Years</option>
+                  <!-- Populated dynamically from Supabase -->
                 </select>
               </div>
               <div class="form-group">
@@ -573,15 +565,21 @@
     // Self-Employed Calculator
     // ===========================
     const MAX_LTV = 0.80;
-    const HELOC_RATE = 0.0495;
+    var HELOC_RATE = 0.0495;
 
     var SITE_RATES = {
       1: { fixed: 5.99, variable: 4.95 },
       2: { fixed: 4.64, variable: 4.70 },
       3: { fixed: 4.24, variable: 4.55 },
-      4: { fixed: 4.14, variable: 4.50 },
       5: { fixed: 4.04, variable: 4.45 }
     };
+    // Populate term dropdowns from defaults
+    (function() {
+      var terms = Object.keys(SITE_RATES).map(Number).sort(function(a,b){return a-b;});
+      var opts = terms.map(function(t){return '<option value="'+t+'"'+(t===5?' selected':'')+'>'+t+(t===1?' Year':' Years')+'</option>';}).join('');
+      document.getElementById('seRefiTerm').innerHTML = opts;
+      document.getElementById('seDebtTerm').innerHTML = opts;
+    })();
 
     let currentMode = 'refinance';
     let refiRateType = 'fixed';
@@ -838,8 +836,18 @@
   <script src="../supabase-config.js"></script>
   <script>
     (async function() {
-      const rates = await fetchRates();
-      if (rates) { SITE_RATES = rates; updateRefiRate(); updateDebtRate(); }
+      const rates = await fetchRates('self-employed');
+      if (rates) {
+        SITE_RATES = rates;
+        const terms = Object.keys(rates).map(Number).sort((a, b) => a - b);
+        const opts = terms.map(t => '<option value="' + t + '"' + (t === 5 ? ' selected' : '') + '>' + t + (t === 1 ? ' Year' : ' Years') + '</option>').join('');
+        document.getElementById('seRefiTerm').innerHTML = opts;
+        document.getElementById('seDebtTerm').innerHTML = opts;
+        updateRefiRate();
+        updateDebtRate();
+      }
+      const helocRate = await fetchSingleRate('self-employed-heloc');
+      if (helocRate) { HELOC_RATE = helocRate / 100; calculate(); }
       const b = await fetchBroker();
       if (b) { broker.name = b.name; broker.phone = b.phone; broker.phoneTel = b.phoneTel; broker.licence = b.licence; broker.logo = '../' + b.logo; }
     })();

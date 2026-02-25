@@ -131,11 +131,7 @@
             <div class="form-group">
               <label for="refiTerm">New Term Length</label>
               <select id="refiTerm">
-                <option value="1">1 Year</option>
-                <option value="2">2 Years</option>
-                <option value="3">3 Years</option>
-                <option value="4">4 Years</option>
-                <option value="5" selected>5 Years</option>
+                <!-- Populated dynamically from Supabase -->
               </select>
               <span class="heloc__helper">The length of your new mortgage term</span>
             </div>
@@ -481,9 +477,14 @@
       1: { fixed: 5.99, variable: 4.95 },
       2: { fixed: 4.64, variable: 4.70 },
       3: { fixed: 4.24, variable: 4.55 },
-      4: { fixed: 4.14, variable: 4.50 },
       5: { fixed: 4.04, variable: 4.45 }
     };
+    // Populate term dropdown from defaults
+    (function() {
+      var sel = document.getElementById('refiTerm');
+      var terms = Object.keys(SITE_RATES).map(Number).sort(function(a,b){return a-b;});
+      sel.innerHTML = terms.map(function(t){return '<option value="'+t+'"'+(t===5?' selected':'')+'>'+t+(t===1?' Year':' Years')+'</option>';}).join('');
+    })();
     let rateType = 'fixed';
     let wantsEquity = false;
 
@@ -606,8 +607,14 @@
   <script src="../supabase-config.js"></script>
   <script>
     (async function() {
-      const rates = await fetchRates();
-      if (rates) { SITE_RATES = rates; updateRate(); }
+      const rates = await fetchRates('refinance');
+      if (rates) {
+        SITE_RATES = rates;
+        const sel = document.getElementById('refiTerm');
+        const terms = Object.keys(rates).map(Number).sort((a, b) => a - b);
+        sel.innerHTML = terms.map(t => '<option value="' + t + '"' + (t === 5 ? ' selected' : '') + '>' + t + (t === 1 ? ' Year' : ' Years') + '</option>').join('');
+        updateRate();
+      }
       const b = await fetchBroker();
       if (b) { broker.name = b.name; broker.phone = b.phone; broker.phoneTel = b.phoneTel; broker.licence = b.licence; broker.logo = '../' + b.logo; }
     })();

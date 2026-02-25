@@ -39,8 +39,8 @@
 
     .dash-body { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
 
-    .dash-tabs { display: flex; gap: 8px; margin-bottom: 32px; flex-wrap: wrap; }
-    .dash-tab { padding: 10px 20px; border-radius: 10px; border: 1.5px solid #d9ddd8; background: #fff; font-size: 0.9rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s; color: #1B3C2D; }
+    .dash-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 32px; }
+    .dash-tab { padding: 12px 16px; border-radius: 10px; border: 1.5px solid #d9ddd8; background: #fff; font-size: 0.9rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s; color: #1B3C2D; text-align: center; }
     .dash-tab.active { background: #1B3C2D; color: #fff; border-color: #1B3C2D; }
 
     .dash-panel { display: none; }
@@ -106,11 +106,32 @@
     .password-success { background: #f0fdf4; color: #166534; padding: 10px 14px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 16px; display: none; }
     .password-error { background: #fef2f2; color: #b91c1c; padding: 10px 14px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 16px; display: none; }
 
+    /* Broker cards */
+    .broker-card { border: 1.5px solid #e8ebe6; border-radius: 12px; padding: 20px; margin-bottom: 16px; position: relative; transition: border-color 0.2s; }
+    .broker-card--active { border-color: #2A7D5B; background: #f0fdf4; }
+    .broker-card__badge { display: inline-block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 3px 8px; border-radius: 4px; margin-bottom: 12px; }
+    .broker-card__badge--active { background: #2A7D5B; color: #fff; }
+    .broker-card__badge--inactive { background: #e8ebe6; color: #6b7c74; }
+    .broker-card__name { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+    .broker-card__detail { font-size: 0.85rem; color: #6b7c74; margin-bottom: 4px; }
+    .broker-card__actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+
+    /* Hamburger button - hidden on desktop */
+    .dash-hamburger { display: none; background: none; border: 1.5px solid #d9ddd8; border-radius: 10px; padding: 10px 14px; cursor: pointer; font-family: inherit; font-size: 0.9rem; font-weight: 600; color: #1B3C2D; width: 100%; text-align: left; align-items: center; justify-content: space-between; }
+    .dash-hamburger svg { transition: transform 0.2s; }
+    .dash-hamburger.open svg { transform: rotate(180deg); }
+
     @media (max-width: 600px) {
       .dash-form__row { grid-template-columns: 1fr; }
       .dash-header__inner { flex-direction: column; gap: 12px; text-align: center; }
       .homepage-rate-row { grid-template-columns: 1fr; }
       .login__card { padding: 32px 24px; }
+
+      /* Hamburger menu for tabs */
+      .dash-hamburger { display: flex; }
+      .dash-tabs { display: none; flex-direction: column; gap: 4px; margin-top: 8px; margin-bottom: 32px; }
+      .dash-tabs.open { display: flex; }
+      .dash-tab { text-align: left; border-radius: 8px; }
     }
   </style>
 </head>
@@ -158,12 +179,12 @@
     <header class="dash-header">
       <div class="dash-header__inner">
         <div class="dash-header__logo">
-          <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
-            <rect width="32" height="32" rx="7" fill="#2A7D5B"/>
-            <path d="M7 23V13l9-5.5 9 5.5v10H7z" fill="#1B3C2D"/>
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="7" fill="#1B3C2D"/>
+            <path d="M7 23V13l9-5.5 9 5.5v10H7z" fill="#2A7D5B"/>
             <rect x="12.5" y="16.5" width="7" height="6.5" rx="1" fill="#F7F3EE"/>
           </svg>
-          <span>MME Admin</span>
+          <span>MyMortgageExpert</span>
         </div>
         <div class="dash-header__right">
           <div class="dash-user-menu">
@@ -181,6 +202,10 @@
     </header>
 
     <div class="dash-body">
+      <button class="dash-hamburger" id="tabHamburger">
+        <span id="tabHamburgerLabel">Calculator Rates</span>
+        <svg width="12" height="7" viewBox="0 0 12 7" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
       <div class="dash-tabs">
         <button class="dash-tab active" data-panel="rates">Calculator Rates</button>
         <button class="dash-tab" data-panel="homepage">Homepage Rates</button>
@@ -190,26 +215,115 @@
 
       <!-- ===== CALCULATOR RATES ===== -->
       <div class="dash-panel active" id="panel-rates">
+
+        <!-- Refinance -->
         <div class="dash-card">
-          <div class="dash-card__title">Calculator Rates <span class="dash-status" id="ratesStatus">Saved!</span></div>
-          <p style="color:#6b7c74; font-size:0.85rem; margin-bottom:20px;">These rates are used across all calculator pages (Refinance, Renewal, Self-Employed).</p>
+          <div class="dash-card__title">Refinance Calculator <span class="dash-status" id="refinanceStatus"></span></div>
+          <p style="color:#6b7c74; font-size:0.85rem; margin-bottom:20px;">Rates shown in the Refinance Calculator (fixed/variable toggle by term).</p>
           <table class="dash-table">
-            <thead>
-              <tr>
-                <th>Term</th>
-                <th>Fixed Rate (%)</th>
-                <th>Variable Rate (%)</th>
-              </tr>
-            </thead>
-            <tbody id="ratesTableBody">
-              <!-- Populated by JS -->
-            </tbody>
+            <thead><tr><th>Term</th><th>Fixed Rate (%)</th><th>Variable Rate (%)</th><th></th></tr></thead>
+            <tbody id="refinanceTableBody"></tbody>
           </table>
+          <div class="add-row" style="margin-top:12px;">
+            <select id="refinanceNewTerm" style="max-width:100px; padding:8px 12px; border:1.5px solid #d9ddd8; border-radius:8px; font-family:inherit;">
+              <option value="">Term</option>
+              <option value="1">1-Year</option><option value="2">2-Year</option><option value="3">3-Year</option>
+              <option value="5">5-Year</option><option value="6">6-Year</option>
+              <option value="7">7-Year</option><option value="8">8-Year</option><option value="9">9-Year</option><option value="10">10-Year</option>
+            </select>
+            <input type="number" step="0.01" placeholder="Fixed %" id="refinanceNewFixed" style="max-width:100px;">
+            <input type="number" step="0.01" placeholder="Variable %" id="refinanceNewVariable" style="max-width:100px;">
+            <button class="dash-btn dash-btn--outline" onclick="addTermRate('refinance')">Add Term</button>
+          </div>
           <div class="dash-actions">
-            <button class="dash-btn dash-btn--primary" id="saveRatesBtn">Save Rates</button>
-            <span class="dash-status" id="ratesStatusAction"></span>
+            <button class="dash-btn dash-btn--primary" onclick="saveCalcRates('refinance')">Save</button>
           </div>
         </div>
+
+        <!-- Renewal -->
+        <div class="dash-card">
+          <div class="dash-card__title">Renewal Calculator <span class="dash-status" id="renewalStatus"></span></div>
+          <p style="color:#6b7c74; font-size:0.85rem; margin-bottom:20px;">Rates shown in the Renewal Calculator (fixed/variable toggle by term).</p>
+          <table class="dash-table">
+            <thead><tr><th>Term</th><th>Fixed Rate (%)</th><th>Variable Rate (%)</th><th></th></tr></thead>
+            <tbody id="renewalTableBody"></tbody>
+          </table>
+          <div class="add-row" style="margin-top:12px;">
+            <select id="renewalNewTerm" style="max-width:100px; padding:8px 12px; border:1.5px solid #d9ddd8; border-radius:8px; font-family:inherit;">
+              <option value="">Term</option>
+              <option value="1">1-Year</option><option value="2">2-Year</option><option value="3">3-Year</option>
+              <option value="5">5-Year</option><option value="6">6-Year</option>
+              <option value="7">7-Year</option><option value="8">8-Year</option><option value="9">9-Year</option><option value="10">10-Year</option>
+            </select>
+            <input type="number" step="0.01" placeholder="Fixed %" id="renewalNewFixed" style="max-width:100px;">
+            <input type="number" step="0.01" placeholder="Variable %" id="renewalNewVariable" style="max-width:100px;">
+            <button class="dash-btn dash-btn--outline" onclick="addTermRate('renewal')">Add Term</button>
+          </div>
+          <div class="dash-actions">
+            <button class="dash-btn dash-btn--primary" onclick="saveCalcRates('renewal')">Save</button>
+          </div>
+        </div>
+
+        <!-- HELOC -->
+        <div class="dash-card">
+          <div class="dash-card__title">HELOC Calculator <span class="dash-status" id="helocStatus"></span></div>
+          <p style="color:#6b7c74; font-size:0.85rem; margin-bottom:20px;">Interest-only rate used for HELOC payment calculations.</p>
+          <div class="dash-form">
+            <div style="max-width:200px;">
+              <label>HELOC Rate (%)</label>
+              <input type="number" step="0.01" id="helocRateInput">
+            </div>
+          </div>
+          <div class="dash-actions">
+            <button class="dash-btn dash-btn--primary" onclick="saveSingleRate('heloc')">Save</button>
+          </div>
+        </div>
+
+        <!-- Self-Employed -->
+        <div class="dash-card">
+          <div class="dash-card__title">Self-Employed Calculator <span class="dash-status" id="self-employedStatus"></span></div>
+          <p style="color:#6b7c74; font-size:0.85rem; margin-bottom:20px;">Rates for the Refinance &amp; Debt Consolidation modes (fixed/variable by term), plus the HELOC mode rate.</p>
+          <table class="dash-table">
+            <thead><tr><th>Term</th><th>Fixed Rate (%)</th><th>Variable Rate (%)</th><th></th></tr></thead>
+            <tbody id="self-employedTableBody"></tbody>
+          </table>
+          <div class="add-row" style="margin-top:12px;">
+            <select id="self-employedNewTerm" style="max-width:100px; padding:8px 12px; border:1.5px solid #d9ddd8; border-radius:8px; font-family:inherit;">
+              <option value="">Term</option>
+              <option value="1">1-Year</option><option value="2">2-Year</option><option value="3">3-Year</option>
+              <option value="5">5-Year</option><option value="6">6-Year</option>
+              <option value="7">7-Year</option><option value="8">8-Year</option><option value="9">9-Year</option><option value="10">10-Year</option>
+            </select>
+            <input type="number" step="0.01" placeholder="Fixed %" id="self-employedNewFixed" style="max-width:100px;">
+            <input type="number" step="0.01" placeholder="Variable %" id="self-employedNewVariable" style="max-width:100px;">
+            <button class="dash-btn dash-btn--outline" onclick="addTermRate('self-employed')">Add Term</button>
+          </div>
+          <div class="dash-form" style="margin-top:16px;">
+            <div style="max-width:200px;">
+              <label>HELOC Mode Rate (%)</label>
+              <input type="number" step="0.01" id="selfEmployedHelocRateInput">
+            </div>
+          </div>
+          <div class="dash-actions">
+            <button class="dash-btn dash-btn--primary" onclick="saveSelfEmployedRates()">Save</button>
+          </div>
+        </div>
+
+        <!-- Home Equity Loan -->
+        <div class="dash-card">
+          <div class="dash-card__title">Home Equity Loan Calculator <span class="dash-status" id="home-equity-loanStatus"></span></div>
+          <p style="color:#6b7c74; font-size:0.85rem; margin-bottom:20px;">Default interest rate shown in the Home Equity Loan Calculator.</p>
+          <div class="dash-form">
+            <div style="max-width:200px;">
+              <label>Default Rate (%)</label>
+              <input type="number" step="0.01" id="homeEquityRateInput">
+            </div>
+          </div>
+          <div class="dash-actions">
+            <button class="dash-btn dash-btn--primary" onclick="saveSingleRate('home-equity-loan')">Save</button>
+          </div>
+        </div>
+
       </div>
 
       <!-- ===== HOMEPAGE RATES ===== -->
@@ -229,36 +343,44 @@
       <!-- ===== BROKER INFO ===== -->
       <div class="dash-panel" id="panel-broker">
         <div class="dash-card">
-          <div class="dash-card__title">Broker Information <span class="dash-status" id="brokerStatus"></span></div>
-          <p style="color:#6b7c74; font-size:0.85rem; margin-bottom:20px;">This broker is shown after a user submits the Get Pre-Approved or Help forms.</p>
-          <div class="dash-form" id="brokerForm">
+          <div class="dash-card__title">Brokers <span class="dash-status" id="brokerStatus"></span></div>
+          <p style="color:#6b7c74; font-size:0.85rem; margin-bottom:20px;">The active broker is shown after a user submits the Get Pre-Approved or Help forms. Only one broker can be active at a time.</p>
+          <div id="brokerList">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Add New Broker -->
+        <div class="dash-card">
+          <div class="dash-card__title">Add New Broker</div>
+          <div class="dash-form">
             <div class="dash-form__row">
               <div>
                 <label>Broker Name</label>
-                <input type="text" id="brokerName">
+                <input type="text" id="newBrokerName" placeholder="e.g. Lighthouse Lending">
               </div>
               <div>
                 <label>Licence</label>
-                <input type="text" id="brokerLicence">
+                <input type="text" id="newBrokerLicence" placeholder="e.g. FSRA# 13301">
               </div>
             </div>
             <div class="dash-form__row">
               <div>
-                <label>Phone Display (e.g. 905-234-3323)</label>
-                <input type="text" id="brokerPhone">
+                <label>Phone Display</label>
+                <input type="text" id="newBrokerPhone" placeholder="e.g. 905-234-3323">
               </div>
               <div>
-                <label>Phone Tel (e.g. 19052343323)</label>
-                <input type="text" id="brokerPhoneTel">
+                <label>Phone Tel (digits only)</label>
+                <input type="text" id="newBrokerPhoneTel" placeholder="e.g. 19052343323">
               </div>
             </div>
             <div>
-              <label>Logo Filename (e.g. lighthouse-lending-logo.png)</label>
-              <input type="text" id="brokerLogo">
+              <label>Logo Filename</label>
+              <input type="text" id="newBrokerLogo" placeholder="e.g. broker-logo.png">
             </div>
           </div>
           <div class="dash-actions">
-            <button class="dash-btn dash-btn--primary" id="saveBrokerBtn">Save Broker</button>
+            <button class="dash-btn dash-btn--primary" id="addBrokerBtn">Add Broker</button>
           </div>
         </div>
       </div>
@@ -443,12 +565,25 @@
     // =============================================
     // Tabs
     // =============================================
+    const tabHamburger = document.getElementById('tabHamburger');
+    const tabHamburgerLabel = document.getElementById('tabHamburgerLabel');
+    const dashTabs = document.querySelector('.dash-tabs');
+
+    tabHamburger.addEventListener('click', () => {
+      tabHamburger.classList.toggle('open');
+      dashTabs.classList.toggle('open');
+    });
+
     document.querySelectorAll('.dash-tab').forEach(tab => {
       tab.addEventListener('click', () => {
         document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.dash-panel').forEach(p => p.classList.remove('active'));
         tab.classList.add('active');
         document.getElementById('panel-' + tab.dataset.panel).classList.add('active');
+        // Update hamburger label and close menu on mobile
+        tabHamburgerLabel.textContent = tab.textContent;
+        tabHamburger.classList.remove('open');
+        dashTabs.classList.remove('open');
       });
     });
 
@@ -463,6 +598,10 @@
     });
 
     document.addEventListener('click', (e) => {
+      if (!tabHamburger.contains(e.target) && !dashTabs.contains(e.target)) {
+        tabHamburger.classList.remove('open');
+        dashTabs.classList.remove('open');
+      }
       if (!userMenuToggle.contains(e.target) && !userMenuDropdown.contains(e.target)) {
         userMenuDropdown.classList.remove('active');
       }
@@ -517,51 +656,128 @@
     });
 
     // =============================================
-    // RATES
+    // CALCULATOR RATES (per-calculator)
     // =============================================
-    let ratesData = [];
+    let allRatesData = [];
 
     async function loadRates() {
       const { data, error } = await sb.from('rates').select('*').order('term_years');
       if (error) { console.error(error); return; }
-      ratesData = data;
-      renderRates();
+      allRatesData = data;
+      renderCalcRates('refinance');
+      renderCalcRates('renewal');
+      renderCalcRates('self-employed');
+      renderSingleRate('heloc', 'helocRateInput');
+      renderSingleRate('self-employed-heloc', 'selfEmployedHelocRateInput');
+      renderSingleRate('home-equity-loan', 'homeEquityRateInput');
     }
 
-    function renderRates() {
-      const tbody = document.getElementById('ratesTableBody');
-      tbody.innerHTML = ratesData.map(r => `
-        <tr>
+    function renderCalcRates(calc) {
+      const tbody = document.getElementById(calc + 'TableBody');
+      const rows = allRatesData.filter(r => r.calculator === calc && r.term_years);
+      tbody.innerHTML = rows.map(r => `
+        <tr data-id="${r.id}">
           <td><strong>${r.term_years}-Year</strong></td>
-          <td><input type="number" step="0.01" value="${r.fixed_rate}" data-term="${r.term_years}" data-type="fixed"></td>
-          <td><input type="number" step="0.01" value="${r.variable_rate}" data-term="${r.term_years}" data-type="variable"></td>
+          <td><input type="number" step="0.01" value="${r.fixed_rate}"></td>
+          <td><input type="number" step="0.01" value="${r.variable_rate}"></td>
+          <td><button class="dash-btn dash-btn--danger dash-btn--sm" onclick="removeTermRate('${r.id}', '${calc}')">Remove</button></td>
         </tr>
       `).join('');
     }
 
-    document.getElementById('saveRatesBtn').addEventListener('click', async () => {
-      const rows = document.querySelectorAll('#ratesTableBody tr');
-      const updates = [];
-      rows.forEach(row => {
-        const fixedInput = row.querySelector('input[data-type="fixed"]');
-        const variableInput = row.querySelector('input[data-type="variable"]');
-        updates.push({
-          term_years: parseInt(fixedInput.dataset.term),
-          fixed_rate: parseFloat(fixedInput.value),
-          variable_rate: parseFloat(variableInput.value)
-        });
-      });
-
-      for (const u of updates) {
-        const { error } = await sb.from('rates').update({
-          fixed_rate: u.fixed_rate,
-          variable_rate: u.variable_rate,
-          updated_at: new Date().toISOString()
-        }).eq('term_years', u.term_years);
-        if (error) { alert('Error saving rates: ' + error.message); return; }
+    function renderSingleRate(calc, inputId) {
+      const row = allRatesData.find(r => r.calculator === calc);
+      if (row) {
+        document.getElementById(inputId).value = row.rate;
+        document.getElementById(inputId).dataset.id = row.id;
       }
-      flashStatus(document.getElementById('ratesStatus'));
-    });
+    }
+
+    // Add a new term row
+    window.addTermRate = async function(calc) {
+      const termSel = document.getElementById(calc + 'NewTerm');
+      const fixedIn = document.getElementById(calc + 'NewFixed');
+      const varIn = document.getElementById(calc + 'NewVariable');
+      const term = parseInt(termSel.value);
+      const fixed = parseFloat(fixedIn.value);
+      const variable = parseFloat(varIn.value);
+
+      if (!term || isNaN(fixed) || isNaN(variable)) {
+        alert('Please fill in term, fixed rate, and variable rate.');
+        return;
+      }
+
+      // Check for duplicate term
+      const exists = allRatesData.find(r => r.calculator === calc && r.term_years === term);
+      if (exists) {
+        alert(term + '-Year term already exists for this calculator. Edit the existing row instead.');
+        return;
+      }
+
+      const { error } = await sb.from('rates').insert({
+        calculator: calc,
+        term_years: term,
+        fixed_rate: fixed,
+        variable_rate: variable
+      });
+      if (error) { alert('Error adding term: ' + error.message); return; }
+
+      termSel.value = '';
+      fixedIn.value = '';
+      varIn.value = '';
+      await loadRates();
+      flashStatus(document.getElementById(calc + 'Status'), 'Added!');
+    };
+
+    // Remove a term row
+    window.removeTermRate = async function(id, calc) {
+      if (!confirm('Remove this term?')) return;
+      const { error } = await sb.from('rates').delete().eq('id', id);
+      if (error) { alert('Error removing: ' + error.message); return; }
+      await loadRates();
+      flashStatus(document.getElementById(calc + 'Status'), 'Removed!');
+    };
+
+    // Save term-based rates (refinance, renewal, self-employed)
+    window.saveCalcRates = async function(calc) {
+      const tbody = document.getElementById(calc + 'TableBody');
+      const rows = tbody.querySelectorAll('tr');
+      for (const row of rows) {
+        const id = row.dataset.id;
+        const inputs = row.querySelectorAll('input');
+        const { error } = await sb.from('rates').update({
+          fixed_rate: parseFloat(inputs[0].value),
+          variable_rate: parseFloat(inputs[1].value),
+          updated_at: new Date().toISOString()
+        }).eq('id', id);
+        if (error) { alert('Error saving: ' + error.message); return; }
+      }
+      flashStatus(document.getElementById(calc + 'Status'));
+    };
+
+    // Save single rate (heloc, home-equity-loan)
+    window.saveSingleRate = async function(calc) {
+      const inputId = calc === 'heloc' ? 'helocRateInput' : 'homeEquityRateInput';
+      const input = document.getElementById(inputId);
+      const { error } = await sb.from('rates').update({
+        rate: parseFloat(input.value),
+        updated_at: new Date().toISOString()
+      }).eq('id', input.dataset.id);
+      if (error) { alert('Error saving: ' + error.message); return; }
+      flashStatus(document.getElementById(calc + 'Status'));
+    };
+
+    // Save self-employed (term rates + heloc rate)
+    window.saveSelfEmployedRates = async function() {
+      await saveCalcRates('self-employed');
+      const input = document.getElementById('selfEmployedHelocRateInput');
+      const { error } = await sb.from('rates').update({
+        rate: parseFloat(input.value),
+        updated_at: new Date().toISOString()
+      }).eq('id', input.dataset.id);
+      if (error) { alert('Error saving: ' + error.message); return; }
+      flashStatus(document.getElementById('self-employedStatus'));
+    };
 
     // =============================================
     // HOMEPAGE RATES
@@ -602,33 +818,137 @@
     });
 
     // =============================================
-    // BROKER
+    // BROKERS
     // =============================================
-    let brokerData = null;
+    let brokersData = [];
 
     async function loadBroker() {
-      const { data, error } = await sb.from('broker').select('*').eq('is_active', true).limit(1).single();
+      const { data, error } = await sb.from('broker').select('*').order('is_active', { ascending: false }).order('updated_at', { ascending: false });
       if (error) { console.error(error); return; }
-      brokerData = data;
-      document.getElementById('brokerName').value = data.name;
-      document.getElementById('brokerLicence').value = data.licence;
-      document.getElementById('brokerPhone').value = data.phone_display;
-      document.getElementById('brokerPhoneTel').value = data.phone_tel;
-      document.getElementById('brokerLogo').value = data.logo_url || '';
+      brokersData = data;
+      renderBrokers();
     }
 
-    document.getElementById('saveBrokerBtn').addEventListener('click', async () => {
-      if (!brokerData) return;
-      const { error } = await sb.from('broker').update({
-        name: document.getElementById('brokerName').value,
-        licence: document.getElementById('brokerLicence').value,
-        phone_display: document.getElementById('brokerPhone').value,
-        phone_tel: document.getElementById('brokerPhoneTel').value,
-        logo_url: document.getElementById('brokerLogo').value,
-        updated_at: new Date().toISOString()
-      }).eq('id', brokerData.id);
+    function renderBrokers() {
+      const list = document.getElementById('brokerList');
+      if (!brokersData.length) {
+        list.innerHTML = '<p style="color:#6b7c74; font-size:0.9rem;">No brokers added yet.</p>';
+        return;
+      }
+      list.innerHTML = brokersData.map(b => `
+        <div class="broker-card ${b.is_active ? 'broker-card--active' : ''}">
+          <span class="broker-card__badge ${b.is_active ? 'broker-card__badge--active' : 'broker-card__badge--inactive'}">${b.is_active ? 'Active' : 'Inactive'}</span>
+          <div class="broker-card__name">${b.name}</div>
+          <div class="broker-card__detail">Phone: ${b.phone_display}</div>
+          <div class="broker-card__detail">Licence: ${b.licence}</div>
+          <div class="broker-card__detail">Logo: ${b.logo_url || '—'}</div>
+          <div class="broker-card__actions">
+            <button class="dash-btn dash-btn--outline dash-btn--sm" onclick="editBroker('${b.id}')">Edit</button>
+            ${b.is_active
+              ? '<button class="dash-btn dash-btn--outline dash-btn--sm" onclick="toggleBrokerActive(\''+b.id+'\', false)">Deactivate</button>'
+              : '<button class="dash-btn dash-btn--primary dash-btn--sm" onclick="toggleBrokerActive(\''+b.id+'\', true)">Set Active</button>'}
+            <button class="dash-btn dash-btn--danger dash-btn--sm" onclick="deleteBroker('${b.id}')">Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Set a broker as active (deactivates all others)
+    window.toggleBrokerActive = async function(id, activate) {
+      if (activate) {
+        // Deactivate all first
+        const { error: deactErr } = await sb.from('broker').update({ is_active: false, updated_at: new Date().toISOString() }).neq('id', '00000000-0000-0000-0000-000000000000');
+        if (deactErr) { alert('Error: ' + deactErr.message); return; }
+      }
+      const { error } = await sb.from('broker').update({ is_active: activate, updated_at: new Date().toISOString() }).eq('id', id);
       if (error) { alert('Error: ' + error.message); return; }
+      await loadBroker();
+      flashStatus(document.getElementById('brokerStatus'), activate ? 'Activated!' : 'Deactivated!');
+    };
+
+    // Delete a broker
+    window.deleteBroker = async function(id) {
+      if (!confirm('Delete this broker?')) return;
+      const { error } = await sb.from('broker').delete().eq('id', id);
+      if (error) { alert('Error: ' + error.message); return; }
+      await loadBroker();
+      flashStatus(document.getElementById('brokerStatus'), 'Deleted!');
+    };
+
+    // Edit a broker — swap card to inline form
+    window.editBroker = function(id) {
+      const b = brokersData.find(x => x.id === id);
+      if (!b) return;
+      const list = document.getElementById('brokerList');
+      const card = list.querySelector('.broker-card--editing');
+      if (card) { loadBroker(); return; } // close any open edit
+
+      // Find the card and replace with edit form
+      const cards = list.querySelectorAll('.broker-card');
+      const idx = brokersData.findIndex(x => x.id === id);
+      if (idx < 0 || !cards[idx]) return;
+
+      cards[idx].classList.add('broker-card--editing');
+      cards[idx].innerHTML = `
+        <div class="dash-form">
+          <div class="dash-form__row">
+            <div><label>Broker Name</label><input type="text" id="editBrokerName" value="${b.name}"></div>
+            <div><label>Licence</label><input type="text" id="editBrokerLicence" value="${b.licence}"></div>
+          </div>
+          <div class="dash-form__row">
+            <div><label>Phone Display</label><input type="text" id="editBrokerPhone" value="${b.phone_display}"></div>
+            <div><label>Phone Tel</label><input type="text" id="editBrokerPhoneTel" value="${b.phone_tel}"></div>
+          </div>
+          <div><label>Logo Filename</label><input type="text" id="editBrokerLogo" value="${b.logo_url || ''}"></div>
+          <div class="dash-actions" style="margin-top:12px;">
+            <button class="dash-btn dash-btn--primary dash-btn--sm" onclick="saveBrokerEdit('${b.id}')">Save</button>
+            <button class="dash-btn dash-btn--outline dash-btn--sm" onclick="loadBroker()">Cancel</button>
+          </div>
+        </div>
+      `;
+    };
+
+    window.saveBrokerEdit = async function(id) {
+      const { error } = await sb.from('broker').update({
+        name: document.getElementById('editBrokerName').value,
+        licence: document.getElementById('editBrokerLicence').value,
+        phone_display: document.getElementById('editBrokerPhone').value,
+        phone_tel: document.getElementById('editBrokerPhoneTel').value,
+        logo_url: document.getElementById('editBrokerLogo').value,
+        updated_at: new Date().toISOString()
+      }).eq('id', id);
+      if (error) { alert('Error: ' + error.message); return; }
+      await loadBroker();
       flashStatus(document.getElementById('brokerStatus'));
+    };
+
+    // Add new broker
+    document.getElementById('addBrokerBtn').addEventListener('click', async () => {
+      const name = document.getElementById('newBrokerName').value.trim();
+      const licence = document.getElementById('newBrokerLicence').value.trim();
+      const phone = document.getElementById('newBrokerPhone').value.trim();
+      const phoneTel = document.getElementById('newBrokerPhoneTel').value.trim();
+      const logo = document.getElementById('newBrokerLogo').value.trim();
+
+      if (!name || !phone) {
+        alert('Please fill in at least the broker name and phone number.');
+        return;
+      }
+
+      const { error } = await sb.from('broker').insert({
+        name, licence, phone_display: phone, phone_tel: phoneTel, logo_url: logo, is_active: false
+      });
+      if (error) { alert('Error: ' + error.message); return; }
+
+      // Clear form
+      document.getElementById('newBrokerName').value = '';
+      document.getElementById('newBrokerLicence').value = '';
+      document.getElementById('newBrokerPhone').value = '';
+      document.getElementById('newBrokerPhoneTel').value = '';
+      document.getElementById('newBrokerLogo').value = '';
+
+      await loadBroker();
+      flashStatus(document.getElementById('brokerStatus'), 'Added!');
     });
 
     // =============================================

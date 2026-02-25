@@ -6,18 +6,31 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 const _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Fetch calculator rates → returns { 1: { fixed, variable }, 2: ... } or null
-async function fetchRates() {
+// Fetch term-based rates for a specific calculator → { 1: { fixed, variable }, ... } or null
+async function fetchRates(calculator) {
   try {
-    const { data, error } = await _supabase.from('rates').select('*').order('term_years');
+    const { data, error } = await _supabase.from('rates').select('*').eq('calculator', calculator).not('term_years', 'is', null).order('term_years');
     if (error) throw error;
+    if (!data.length) return null;
     const rates = {};
     data.forEach(r => {
       rates[r.term_years] = { fixed: parseFloat(r.fixed_rate), variable: parseFloat(r.variable_rate) };
     });
     return rates;
   } catch (e) {
-    console.warn('Failed to fetch rates from Supabase, using defaults:', e.message);
+    console.warn('Failed to fetch ' + calculator + ' rates:', e.message);
+    return null;
+  }
+}
+
+// Fetch a single rate value for a calculator → number or null
+async function fetchSingleRate(calculator) {
+  try {
+    const { data, error } = await _supabase.from('rates').select('rate').eq('calculator', calculator).limit(1).single();
+    if (error) throw error;
+    return parseFloat(data.rate);
+  } catch (e) {
+    console.warn('Failed to fetch ' + calculator + ' rate:', e.message);
     return null;
   }
 }
@@ -40,7 +53,7 @@ async function fetchBroker() {
   }
 }
 
-// Fetch homepage rate cards → returns array of { badge_text, rate_value, meta_text } or null
+// Fetch homepage rate cards → returns array or null
 async function fetchHomepageRates() {
   try {
     const { data, error } = await _supabase.from('homepage_rates').select('*').order('display_order');
@@ -52,7 +65,7 @@ async function fetchHomepageRates() {
   }
 }
 
-// Fetch lenders → returns array of { name } or null
+// Fetch lenders → returns array or null
 async function fetchLenders() {
   try {
     const { data, error } = await _supabase.from('lenders').select('*').eq('is_active', true).order('display_order');
