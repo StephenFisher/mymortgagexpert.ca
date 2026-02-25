@@ -18,24 +18,138 @@ navLinks.querySelectorAll('a').forEach(link => {
 });
 
 // ===========================
-// Hero Form Tab Switching
-// ===========================
-const tabs = document.querySelectorAll('.hero__tab');
-
-tabs.forEach(tab => {
-  tab.addEventListener('click', () => {
-    tabs.forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-  });
-});
-
-// ===========================
-// Form Submission (prevent default)
+// Hero Affordability Calculator
 // ===========================
 const heroForm = document.getElementById('heroForm');
+const heroIncomeInput = document.getElementById('heroIncome');
+const heroDebtsInput = document.getElementById('heroDebts');
+const heroSubmit = document.getElementById('heroSubmit');
+const heroResult = document.getElementById('heroResult');
+const heroResultMessage = document.getElementById('heroResultMessage');
+const heroMaxPrice = document.getElementById('heroMaxPrice');
+const heroMonthly = document.getElementById('heroMonthly');
+const heroDown = document.getElementById('heroDown');
+
+function heroFormatCurrency(value) {
+  return '$' + Math.round(value).toLocaleString('en-CA');
+}
+
+function heroParseCurrency(str) {
+  return Number(str.replace(/[^0-9]/g, '')) || 0;
+}
+
+function heroBindCurrency(input) {
+  input.addEventListener('input', function() {
+    const raw = this.value.replace(/[^0-9]/g, '');
+    if (raw === '') { this.value = ''; return; }
+    this.value = '$' + Number(raw).toLocaleString('en-CA');
+  });
+}
+heroBindCurrency(heroIncomeInput);
+heroBindCurrency(heroDebtsInput);
+
+function heroCalcPayment(principal, annualRate, years) {
+  if (principal <= 0) return 0;
+  const r = annualRate / 12;
+  const n = years * 12;
+  if (r === 0) return principal / n;
+  return principal * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+}
+
+function heroCalcMaxMortgage(payment, annualRate, years) {
+  if (payment <= 0) return 0;
+  const r = annualRate / 12;
+  const n = years * 12;
+  if (r === 0) return payment * n;
+  return payment * (Math.pow(1 + r, n) - 1) / (r * Math.pow(1 + r, n));
+}
+
+function heroCalcMinDown(price) {
+  if (price <= 0) return 0;
+  if (price >= 1000000) return price * 0.20;
+  if (price <= 500000) return price * 0.05;
+  return 500000 * 0.05 + (price - 500000) * 0.10;
+}
 
 heroForm.addEventListener('submit', (e) => {
   e.preventDefault();
+  const annualIncome = heroParseCurrency(heroIncomeInput.value);
+  const monthlyDebts = heroParseCurrency(heroDebtsInput.value);
+
+  if (annualIncome <= 0) return;
+
+  const monthlyIncome = annualIncome / 12;
+  const maxGDS = monthlyIncome * 0.39;
+  const maxTDS = monthlyIncome * 0.44 - monthlyDebts;
+  const maxHousing = Math.min(maxGDS, maxTDS);
+
+  if (maxHousing <= 0) {
+    heroResult.classList.remove('active');
+    heroResultMessage.classList.add('active');
+    heroResultMessage.textContent = 'Your monthly debts are too high relative to your income. Try paying down some debt to increase your buying power.';
+    heroSubmit.textContent = 'Recalculate';
+    return;
+  }
+
+  const bestRate = 4.04;
+  const stressRate = Math.max(bestRate + 2, 5.25) / 100;
+  const actualRate = bestRate / 100;
+  const amortYears = 25;
+  const heating = 150;
+
+  // Given a mortgage, solve for purchase price: price = mortgage + minDown(price)
+  function mortgageToPrice(m) {
+    let p = m / 0.95; // try ≤500K: down=5%, mortgage=0.95*price
+    if (p <= 500000) return p;
+    p = (m - 25000) / 0.90; // 500K–999K: mortgage=0.90*price+25K
+    if (p < 1000000) return p;
+    return m / 0.80; // ≥1M: down=20%, mortgage=0.80*price
+  }
+
+  // Iterative solve: property tax depends on price
+  let price = 500000;
+  for (let i = 0; i < 10; i++) {
+    const propTax = price * 0.01 / 12;
+    const avail = maxHousing - propTax - heating;
+    if (avail <= 0) { price = 0; break; }
+    const mortgage = heroCalcMaxMortgage(avail, stressRate, amortYears);
+    price = mortgageToPrice(mortgage);
+  }
+
+  // Final pass with converged price
+  const propTax = price * 0.01 / 12;
+  const avail = maxHousing - propTax - heating;
+  const finalMortgage = avail > 0 ? heroCalcMaxMortgage(avail, stressRate, amortYears) : 0;
+  const finalPrice = Math.round(mortgageToPrice(finalMortgage));
+  const finalMinDown = Math.round(heroCalcMinDown(finalPrice));
+  const actualMonthly = heroCalcPayment(finalMortgage, actualRate, amortYears);
+
+  if (finalPrice <= 0) {
+    heroResult.classList.remove('active');
+    heroResultMessage.classList.add('active');
+    heroResultMessage.textContent = 'Based on your income and debts, affordability is limited. Consider paying down debt or increasing your income.';
+    heroSubmit.textContent = 'Recalculate';
+    return;
+  }
+
+  heroResultMessage.classList.remove('active');
+  heroResult.classList.add('active');
+  heroMaxPrice.textContent = heroFormatCurrency(finalPrice);
+  heroMonthly.textContent = heroFormatCurrency(actualMonthly);
+  heroDown.textContent = heroFormatCurrency(finalMinDown);
+  heroSubmit.textContent = 'Recalculate';
+
+  // Rebind the new CTA button to open the modal
+  const ctaBtn = heroResult.querySelector('.open-modal');
+  if (ctaBtn) {
+    ctaBtn.onclick = function(ev) {
+      ev.preventDefault();
+      ev.stopPropagation();
+      document.getElementById('preApprovalModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+      return false;
+    };
+  }
 });
 
 // ===========================
@@ -260,24 +374,34 @@ const broker = {
 preApprovalForm.addEventListener('submit', (e) => {
   e.preventDefault();
   const firstName = document.getElementById('firstName').value;
-  const modalEl = document.querySelector('.modal');
-  modalEl.innerHTML = '<button class="modal__close" id="modalCloseResult" aria-label="Close">&times;</button>' +
-    '<div class="broker-result">' +
-      '<h2 class="broker-result__heading">You\'ve Been Matched!</h2>' +
-      '<p class="broker-result__subtext">' + firstName + ', here is your matched broker:</p>' +
-      '<img class="broker-result__logo" src="' + broker.logo + '" alt="' + broker.name + '">' +
-      '<h3 class="broker-result__name">' + broker.name + '</h3>' +
-      '<div class="broker-result__info">' +
-        '<span>' + broker.phone + '</span>' +
-        '<span>' + broker.licence + '</span>' +
-      '</div>' +
-      '<a href="tel:' + broker.phoneTel + '" class="btn btn--primary btn--large broker-result__cta">Call Now</a>' +
+  const modalEl = modal.querySelector('.modal') || modal.lastElementChild;
+  modalEl.innerHTML = '<button class="modal__close" id="modalCloseLoading" aria-label="Close">&times;</button>' +
+    '<div class="help-loading">' +
+      '<div class="help-loading__spinner"></div>' +
+      '<h2 class="help-loading__text">Pairing you with the best Broker</h2>' +
     '</div>';
-  // Re-bind close button
-  document.getElementById('modalCloseResult').addEventListener('click', () => {
+  document.getElementById('modalCloseLoading').addEventListener('click', () => {
     modal.classList.remove('active');
     document.body.style.overflow = '';
   });
+  setTimeout(() => {
+    modalEl.innerHTML = '<button class="modal__close" id="modalCloseResult" aria-label="Close">&times;</button>' +
+      '<div class="broker-result">' +
+        '<h2 class="broker-result__heading">You\'ve Been Matched!</h2>' +
+        '<p class="broker-result__subtext">' + firstName + ', here is your matched broker:</p>' +
+        '<img class="broker-result__logo" src="' + broker.logo + '" alt="' + broker.name + '">' +
+        '<h3 class="broker-result__name">' + broker.name + '</h3>' +
+        '<div class="broker-result__info">' +
+          '<span>' + broker.phone + '</span>' +
+          '<span>' + broker.licence + '</span>' +
+        '</div>' +
+        '<a href="tel:' + broker.phoneTel + '" class="btn btn--primary btn--large broker-result__cta">Call Now</a>' +
+      '</div>';
+    document.getElementById('modalCloseResult').addEventListener('click', () => {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+  }, 3000);
 });
 
 // ===========================

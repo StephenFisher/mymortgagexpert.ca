@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Equity Loan Calculator — MyMortgageExpert</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@800&family=Playfair+Display:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ======= NAV BAR ======= -->
+  <header class="navbar" id="navbar">
+    <div class="container navbar__inner">
+      <a href="/" class="navbar__logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="7" fill="#1B3C2D"/>
+          <path d="M7 23V13l9-5.5 9 5.5v10H7z" fill="#2A7D5B"/>
+          <rect x="12.5" y="16.5" width="7" height="6.5" rx="1" fill="#F7F3EE"/>
+        </svg>
+        <span>MyMortgageExpert</span>
+      </a>
+      <nav class="navbar__links" id="navLinks">
+        <div class="navbar__dropdown">
+          <button class="navbar__dropdown-toggle">Calculators <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="navbar__dropdown-menu">
+            <a href="/calculators/heloc.html">HELOC Calculator</a>
+            <a href="/calculators/refinance.html">Refinance Calculator</a>
+            <a href="/calculators/renewal.html">Renewal Calculator</a>
+            <a href="/calculators/home-equity-loan.html">Home Equity Loan Calculator</a>
+            <a href="/calculators/self-employed.html">Self-Employed Calculator</a>
+            <a href="/calculators/land-transfer-tax.html">Land Transfer Tax Calculator</a>
+            <a href="/calculators/closing-costs.html">Closing Costs Calculator</a>
+          </div>
+        </div>
+        <a href="/#rates">Mortgages</a>
+        <a href="/#lenders">Lenders</a>
+        <a href="/#about">About</a>
+        <a href="tel:18445002535" class="navbar__mobile-phone">1-844-500-2535</a>
+        <a href="#" class="btn btn--primary navbar__mobile-cta open-modal">Get Pre-Approved</a>
+      </nav>
+      <div class="navbar__right">
+        <a href="tel:18445002535" class="navbar__phone">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M14.67 11.44l-2.18-.93a1 1 0 00-1.05.18l-1.2 1.07a10.5 10.5 0 01-4.9-4.9l1.07-1.2a1 1 0 00.18-1.05l-.93-2.18A1 1 0 004.6 1.5H2.5A1 1 0 001.5 2.6 13 13 0 0013.4 14.5a1 1 0 001.1-1h-2.1a1 1 0 00-1.06-.93z" stroke="#1B3C2D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          1-844-500-2535
+        </a>
+        <a href="#" class="btn btn--primary navbar__cta open-modal">Get Pre-Approved</a>
+      </div>
+      <button class="navbar__hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ======= HOME EQUITY LOAN CALCULATOR ======= -->
+  <section class="heloc">
+    <div class="container">
+      <div class="heloc__nav">
+        <a href="/" class="heloc__back">&larr; Back to Home</a>
+      </div>
+
+      <div class="heloc__header">
+        <span class="heloc__tag">CALCULATOR</span>
+        <h1 class="heloc__title">Home Equity Loan Calculator</h1>
+        <p class="heloc__subtitle">Estimate your home equity loan amount, monthly payment, and total interest cost based on your property value and existing mortgage.</p>
+      </div>
+
+      <div class="heloc__layout">
+        <!-- LEFT: Input Form -->
+        <div class="heloc__form-card">
+          <h3 class="heloc__form-title">Your Loan Details</h3>
+          <div class="heloc__form">
+            <div class="form-group">
+              <label for="helHomeValue">Estimated Home Value</label>
+              <input type="text" id="helHomeValue" value="" placeholder="$950,000" inputmode="numeric">
+              <span class="heloc__helper">Enter the current estimated value of your home</span>
+            </div>
+            <div class="form-group">
+              <label for="helMortgageBalance">Current Mortgage Balance</label>
+              <input type="text" id="helMortgageBalance" value="" placeholder="$450,000" inputmode="numeric">
+              <span class="heloc__helper">Enter your outstanding mortgage amount</span>
+            </div>
+            <div class="form-group">
+              <label for="helLoanAmount">How Much Would You Like to Borrow?</label>
+              <input type="text" id="helLoanAmount" value="" placeholder="$100,000" inputmode="numeric">
+              <span class="heloc__helper">Enter the lump-sum amount you need</span>
+            </div>
+            <div class="form-group">
+              <label>What Would You Like the Funds For?</label>
+              <div class="heloc__toggle heloc__toggle--three" id="helPurposeToggle">
+                <button type="button" class="heloc__toggle-btn active" data-value="consolidation">Debt Consolidation</button>
+                <button type="button" class="heloc__toggle-btn" data-value="renovations">Renovations</button>
+                <button type="button" class="heloc__toggle-btn" data-value="rainy-day">Cash for a Rainy Day</button>
+              </div>
+            </div>
+            <div class="form-group" id="helDebtField">
+              <label for="helDebtAmount">Amount of Debt to Consolidate</label>
+              <input type="text" id="helDebtAmount" value="" placeholder="$0" inputmode="numeric">
+              <span class="heloc__helper">Total credit cards, unsecured debt, and outstanding balances to pay off</span>
+            </div>
+            <div class="form-group">
+              <label for="helRate">Interest Rate (%)</label>
+              <input type="text" id="helRate" value="" placeholder="6.49" inputmode="decimal">
+              <span class="heloc__helper">Enter the annual interest rate for your loan</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Results Card -->
+        <div class="heloc__results-card" id="helResults">
+          <div class="heloc__results-inner">
+          <h3 class="heloc__results-title">Your Loan Estimate</h3>
+
+          <div class="heloc__result-row">
+            <span class="heloc__result-label">Maximum Loan (80% LTV)</span>
+            <span class="heloc__result-value" id="resultMaxLoan">$0</span>
+          </div>
+          <div class="heloc__result-divider"></div>
+
+          <div class="heloc__result-row">
+            <span class="heloc__result-label">Your New Loan Amount</span>
+            <span class="heloc__result-value heloc__result-value--highlight" id="resultLoanAmount">$0</span>
+          </div>
+          <div class="heloc__result-divider"></div>
+
+          <div class="heloc__result-row">
+            <span class="heloc__result-label">New Monthly Payment</span>
+            <span class="heloc__result-value heloc__result-value--highlight" id="resultMonthly">$0</span>
+          </div>
+
+          <!-- Consolidation results -->
+          <div id="helConsolidationResults">
+            <div class="heloc__result-divider"></div>
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">Current Monthly Payment*</span>
+              <span class="heloc__result-value heloc__result-value--warning" id="resultCurrentDebt">$0</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">Monthly Savings</span>
+              <span class="heloc__result-value heloc__result-value--savings" id="resultMonthlySavings">$0</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">Estimated Annual Savings</span>
+              <span class="heloc__result-value heloc__result-value--savings" id="resultAnnualSavings">$0</span>
+            </div>
+          </div>
+
+          <!-- Warning (hidden by default) -->
+          <div class="heloc__warning" id="helWarning" style="display:none;">
+            Your requested loan amount exceeds your available equity. Please adjust your inputs.
+          </div>
+
+          <a href="#" class="btn btn--white btn--large heloc__results-cta open-modal">Speak to a Specialist</a>
+          <p class="heloc__results-disclosure">* Current monthly payment is an estimate based on the information provided.<br>These numbers represent a non-binding estimate. Rates and terms subject to approval.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= EDUCATIONAL CONTENT ======= -->
+  <section class="heloc-info">
+    <div class="container heloc-info__container">
+      <div class="heloc-info__body">
+        <h2>What Is a Home Equity Loan?</h2>
+        <p>A home equity loan is a lump-sum loan secured by your home's equity, typically issued for a 1-year term with interest-only payments. At the end of the term, the principal balance is due in full or the loan is renewed. This makes it ideal for homeowners who need short-term access to a specific amount of capital.</p>
+
+        <h2>Home Equity Loan vs. HELOC</h2>
+        <p>While both products let you borrow against your home's equity, they work quite differently:</p>
+        <ul>
+          <li><strong>Lump sum vs. revolving:</strong> A home equity loan provides one lump sum upfront. A HELOC lets you borrow, repay, and borrow again up to your limit.</li>
+          <li><strong>Fixed term:</strong> Home equity loans are typically issued for a 1-year term and renewed annually, while HELOCs remain open as long as the credit facility is in place.</li>
+          <li><strong>Interest-only payments:</strong> Both home equity loans and HELOCs typically require interest-only monthly payments, keeping your cash flow manageable.</li>
+        </ul>
+
+        <h2>Common Uses for a Home Equity Loan</h2>
+        <p>Homeowners commonly use home equity loans for:</p>
+        <ul>
+          <li><strong>Home renovations:</strong> Finance major improvements that can also increase your property value.</li>
+          <li><strong>Debt consolidation:</strong> Pay off high-interest credit cards and loans at a much lower fixed rate.</li>
+          <li><strong>Major purchases:</strong> Fund education, a vehicle, or other significant expenses at rates far lower than unsecured loans.</li>
+          <li><strong>Emergency fund:</strong> Access a large sum for unexpected financial needs while keeping costs predictable.</li>
+        </ul>
+
+        <h2>How Much Can You Borrow?</h2>
+        <p>In Canada, most lenders allow you to borrow up to 80% of your home's appraised value, minus your existing mortgage balance. For example, if your home is worth $600,000, your maximum combined borrowing (mortgage + home equity loan) is $480,000. If you owe $350,000 on your mortgage, you could potentially borrow up to $130,000 through a home equity loan.</p>
+
+        <div class="article__cta-box">
+          <h3>Ready to tap into your home equity?</h3>
+          <p>Speak with a licensed mortgage specialist to explore your home equity loan options. No obligation, no credit check required.</p>
+          <a href="#" class="btn btn--primary btn--large open-modal">Speak to a Specialist</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= FOOTER ======= -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="/" class="navbar__logo">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+              <rect width="32" height="32" rx="7" fill="#2A7D5B"/>
+              <path d="M7 23V13l9-5.5 9 5.5v10H7z" fill="#1B3C2D"/>
+              <rect x="12.5" y="16.5" width="7" height="6.5" rx="1" fill="#F7F3EE"/>
+            </svg>
+            <span>MyMortgageExpert</span>
+          </a>
+          <p class="footer__tagline">Helping Canadians find the best mortgage rates since 2019.</p>
+        </div>
+        <div class="footer__links">
+          <div class="footer__col">
+            <h4>About</h4>
+            <a href="#">Our Story</a>
+            <a href="#">How It Works</a>
+            <a href="#">Careers</a>
+            <a href="#">Contact</a>
+          </div>
+          <div class="footer__col">
+            <h4>Resources</h4>
+            <a href="#">Mortgage Guides</a>
+            <a href="#">Blog</a>
+            <a href="#">FAQ</a>
+            <a href="#">Glossary</a>
+          </div>
+          <div class="footer__col">
+            <h4>Calculators</h4>
+            <a href="#">Payment Calculator</a>
+            <a href="#">Affordability</a>
+            <a href="#">Land Transfer Tax</a>
+            <a href="#">CMHC Insurance</a>
+          </div>
+          <div class="footer__col">
+            <h4>Legal</h4>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Accessibility</a>
+            <a href="#">Disclaimer</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; 2026 MyMortgageExpert. All rights reserved.</p>
+        <div class="footer__legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======= PRE-APPROVAL MODAL ======= -->
+  <div class="modal-overlay" id="preApprovalModal">
+    <div class="modal">
+      <button class="modal__close" id="modalClose" aria-label="Close">&times;</button>
+      <h2 class="modal__title">Get Pre-Approved</h2>
+      <p class="modal__subtitle">Fill in your details and we'll connect you with a licensed mortgage broker.</p>
+      <form class="modal__form" id="preApprovalForm">
+        <div class="modal__row">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" placeholder="First Name" required>
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" placeholder="Last Name" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" placeholder="(555) 555-5555" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="you@example.com" required>
+        </div>
+        <button type="submit" class="btn btn--primary btn--large modal__submit">Find Your Broker</button>
+      </form>
+      <p class="modal__disclosure">By providing your contact information, you authorize the broker to contact you about your inquiry. MyMortgageExpert does not provide any mortgage services and is not responsible for any services offered by the broker.</p>
+    </div>
+  </div>
+
+  <script>
+    // ===========================
+    // Mobile Menu
+    // ===========================
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      navLinks.classList.toggle('active');
+    });
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('active');
+      });
+    });
+
+    // ===========================
+    // Pre-Approval Modal
+    // ===========================
+    const modal = document.getElementById('preApprovalModal');
+    const modalClose = document.getElementById('modalClose');
+    const preApprovalForm = document.getElementById('preApprovalForm');
+
+    document.querySelectorAll('.open-modal').forEach(btn => {
+      btn.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        return false;
+      };
+    });
+
+    modalClose.addEventListener('click', () => {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+
+    const broker = {
+      name: 'Lighthouse Lending',
+      phone: '905-234-3323',
+      phoneTel: '19052343323',
+      licence: 'FSRA# 13301',
+      logo: '../lighthouse-lending-logo.png'
+    };
+
+    preApprovalForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const firstName = document.getElementById('firstName').value;
+      const modalEl = document.querySelector('.modal');
+      modalEl.innerHTML = '<button class="modal__close" id="modalCloseLoading" aria-label="Close">&times;</button>' +
+        '<div class="help-loading">' +
+          '<div class="help-loading__spinner"></div>' +
+          '<h2 class="help-loading__text">Pairing you with the best Broker</h2>' +
+        '</div>';
+      document.getElementById('modalCloseLoading').addEventListener('click', () => {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+      setTimeout(() => {
+        modalEl.innerHTML = '<button class="modal__close" id="modalCloseResult" aria-label="Close">&times;</button>' +
+          '<div class="broker-result">' +
+            '<h2 class="broker-result__heading">You\'ve Been Matched!</h2>' +
+            '<p class="broker-result__subtext">' + firstName + ', here is your matched broker:</p>' +
+            '<img class="broker-result__logo" src="' + broker.logo + '" alt="' + broker.name + '">' +
+            '<h3 class="broker-result__name">' + broker.name + '</h3>' +
+            '<div class="broker-result__info">' +
+              '<span>' + broker.phone + '</span>' +
+              '<span>' + broker.licence + '</span>' +
+            '</div>' +
+            '<a href="tel:' + broker.phoneTel + '" class="btn btn--primary btn--large broker-result__cta">Call Now</a>' +
+          '</div>';
+        document.getElementById('modalCloseResult').addEventListener('click', () => {
+          modal.classList.remove('active');
+          document.body.style.overflow = '';
+        });
+      }, 3000);
+    });
+
+    // Navbar scroll shadow
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.style.boxShadow = window.scrollY > 10 ? '0 2px 16px rgba(0,0,0,0.06)' : 'none';
+    });
+
+    // ===========================
+    // Home Equity Loan Calculator
+    // ===========================
+    const MAX_LTV = 0.80;
+
+    const homeValueInput = document.getElementById('helHomeValue');
+    const mortgageBalanceInput = document.getElementById('helMortgageBalance');
+    const loanAmountInput = document.getElementById('helLoanAmount');
+    const debtAmountInput = document.getElementById('helDebtAmount');
+    const rateInput = document.getElementById('helRate');
+    const purposeToggle = document.getElementById('helPurposeToggle');
+    const debtField = document.getElementById('helDebtField');
+    const consolidationResults = document.getElementById('helConsolidationResults');
+    const warningEl = document.getElementById('helWarning');
+
+    const resultMaxLoan = document.getElementById('resultMaxLoan');
+    const resultLoanAmount = document.getElementById('resultLoanAmount');
+    const resultMonthly = document.getElementById('resultMonthly');
+    const resultCurrentDebt = document.getElementById('resultCurrentDebt');
+    const resultMonthlySavings = document.getElementById('resultMonthlySavings');
+    const resultAnnualSavings = document.getElementById('resultAnnualSavings');
+
+    let purpose = 'consolidation';
+    const DEBT_MONTHLY_RATE = 0.03; // 3% monthly minimum payment on debt
+
+    function formatCurrency(value) {
+      return '$' + Math.round(value).toLocaleString('en-CA');
+    }
+
+    function parseCurrency(str) {
+      return Number(str.replace(/[^0-9]/g, '')) || 0;
+    }
+
+    function bindCurrencyFormat(input) {
+      input.addEventListener('input', function() {
+        const raw = this.value.replace(/[^0-9]/g, '');
+        if (raw === '') { this.value = ''; calculate(); return; }
+        this.value = '$' + Number(raw).toLocaleString('en-CA');
+        calculate();
+      });
+    }
+
+    [homeValueInput, mortgageBalanceInput, loanAmountInput, debtAmountInput].forEach(bindCurrencyFormat);
+
+    rateInput.addEventListener('input', calculate);
+
+    // Purpose toggle
+    purposeToggle.addEventListener('click', function(e) {
+      const btn = e.target.closest('.heloc__toggle-btn');
+      if (!btn) return;
+      purposeToggle.querySelectorAll('.heloc__toggle-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      purpose = btn.dataset.value;
+      const isConsolidation = purpose === 'consolidation';
+      debtField.style.display = isConsolidation ? '' : 'none';
+      consolidationResults.style.display = isConsolidation ? '' : 'none';
+      if (!isConsolidation) debtAmountInput.value = '';
+      calculate();
+    });
+
+    // Interest-only calculation
+    function calculate() {
+      const homeValue = parseCurrency(homeValueInput.value);
+      const mortgageBalance = parseCurrency(mortgageBalanceInput.value);
+      const loanAmount = parseCurrency(loanAmountInput.value);
+      const debtAmount = purpose === 'consolidation' ? parseCurrency(debtAmountInput.value) : 0;
+      const rate = parseFloat(rateInput.value) / 100 || 0;
+
+      const maxLoan = Math.max(0, Math.round((homeValue * MAX_LTV) - mortgageBalance));
+      const overLimit = loanAmount > maxLoan && loanAmount > 0;
+      const monthlyInterest = overLimit ? 0 : loanAmount * (rate / 12);
+
+      warningEl.style.display = (overLimit && homeValue > 0) ? '' : 'none';
+
+      resultMaxLoan.textContent = formatCurrency(maxLoan);
+      resultLoanAmount.textContent = overLimit ? '$0' : formatCurrency(loanAmount);
+      resultMonthly.textContent = overLimit ? '$0' : formatCurrency(monthlyInterest);
+
+      // Debt consolidation savings
+      if (purpose === 'consolidation') {
+        const currentMonthlyDebt = debtAmount * DEBT_MONTHLY_RATE;
+        const monthlySavings = Math.max(0, currentMonthlyDebt - monthlyInterest);
+        const annualSavings = monthlySavings * 12;
+
+        resultCurrentDebt.textContent = formatCurrency(currentMonthlyDebt);
+        resultMonthlySavings.textContent = formatCurrency(monthlySavings);
+        resultAnnualSavings.textContent = formatCurrency(annualSavings);
+      }
+    }
+
+    calculate();
+  </script>
+</body>
+</html>

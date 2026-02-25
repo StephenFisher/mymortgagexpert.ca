@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mortgage Renewal Calculator — MyMortgageExpert</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@800&family=Playfair+Display:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ======= NAV BAR ======= -->
+  <header class="navbar" id="navbar">
+    <div class="container navbar__inner">
+      <a href="/" class="navbar__logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="7" fill="#1B3C2D"/>
+          <path d="M7 23V13l9-5.5 9 5.5v10H7z" fill="#2A7D5B"/>
+          <rect x="12.5" y="16.5" width="7" height="6.5" rx="1" fill="#F7F3EE"/>
+        </svg>
+        <span>MyMortgageExpert</span>
+      </a>
+      <nav class="navbar__links" id="navLinks">
+        <div class="navbar__dropdown">
+          <button class="navbar__dropdown-toggle">Calculators <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="navbar__dropdown-menu">
+            <a href="/calculators/heloc.html">HELOC Calculator</a>
+            <a href="/calculators/refinance.html">Refinance Calculator</a>
+            <a href="/calculators/renewal.html">Renewal Calculator</a>
+            <a href="/calculators/home-equity-loan.html">Home Equity Loan Calculator</a>
+            <a href="/calculators/self-employed.html">Self-Employed Calculator</a>
+            <a href="/calculators/land-transfer-tax.html">Land Transfer Tax Calculator</a>
+            <a href="/calculators/closing-costs.html">Closing Costs Calculator</a>
+          </div>
+        </div>
+        <a href="/#rates">Mortgages</a>
+        <a href="/#lenders">Lenders</a>
+        <a href="/#about">About</a>
+        <a href="tel:18445002535" class="navbar__mobile-phone">1-844-500-2535</a>
+        <a href="#" class="btn btn--primary navbar__mobile-cta open-modal">Get Pre-Approved</a>
+      </nav>
+      <div class="navbar__right">
+        <a href="tel:18445002535" class="navbar__phone">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M14.67 11.44l-2.18-.93a1 1 0 00-1.05.18l-1.2 1.07a10.5 10.5 0 01-4.9-4.9l1.07-1.2a1 1 0 00.18-1.05l-.93-2.18A1 1 0 004.6 1.5H2.5A1 1 0 001.5 2.6 13 13 0 0013.4 14.5a1 1 0 001.1-1h-2.1a1 1 0 00-1.06-.93z" stroke="#1B3C2D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          1-844-500-2535
+        </a>
+        <a href="#" class="btn btn--primary navbar__cta open-modal">Get Pre-Approved</a>
+      </div>
+      <button class="navbar__hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ======= RENEWAL CALCULATOR ======= -->
+  <section class="heloc">
+    <div class="container">
+      <div class="heloc__nav">
+        <a href="/" class="heloc__back">&larr; Back to Home</a>
+      </div>
+
+      <div class="heloc__header">
+        <span class="heloc__tag">CALCULATOR</span>
+        <h1 class="heloc__title">Mortgage Renewal Calculator</h1>
+        <p class="heloc__subtitle">Same mortgage, better rate. See how much you could save by switching lenders at the end of your term.</p>
+      </div>
+
+      <div class="heloc__layout">
+        <!-- LEFT: Input Form -->
+        <div class="heloc__form-card">
+          <h3 class="heloc__form-title">Your Renewal Details</h3>
+          <div class="heloc__form">
+            <div class="form-group">
+              <label for="renewBalance">Current Mortgage Balance</label>
+              <input type="text" id="renewBalance" value="" placeholder="$450,000" inputmode="numeric">
+              <span class="heloc__helper">Your remaining mortgage principal</span>
+            </div>
+            <div class="form-group">
+              <label for="renewCurrentRate">Current Interest Rate (%)</label>
+              <input type="text" id="renewCurrentRate" value="" placeholder="5.49" inputmode="decimal">
+              <span class="heloc__helper">The rate you are currently paying</span>
+            </div>
+            <div class="form-group">
+              <label for="renewAmortization">Remaining Amortization</label>
+              <select id="renewAmortization">
+                <option value="5">5 Years</option>
+                <option value="10">10 Years</option>
+                <option value="15">15 Years</option>
+                <option value="20" selected>20 Years</option>
+                <option value="25">25 Years</option>
+                <option value="30">30 Years</option>
+              </select>
+              <span class="heloc__helper">Years left on your mortgage amortization</span>
+              <span class="heloc__helper heloc__helper--result" id="renewCurrentPaymentDisplay">Estimated current monthly payment: --</span>
+            </div>
+            <div class="form-group" style="margin-top:8px;">
+              <label for="renewTerm">New Term Length</label>
+              <select id="renewTerm">
+                <option value="1">1 Year</option>
+                <option value="2">2 Years</option>
+                <option value="3">3 Years</option>
+                <option value="4">4 Years</option>
+                <option value="5" selected>5 Years</option>
+              </select>
+              <span class="heloc__helper">The length of your new mortgage term</span>
+            </div>
+            <div class="form-group">
+              <label>Would You Like</label>
+              <div class="heloc__toggle" id="renewRateTypeToggle">
+                <button type="button" class="heloc__toggle-btn active" data-value="fixed">Fixed</button>
+                <button type="button" class="heloc__toggle-btn" data-value="variable">Variable</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="renewNewRate">New Renewal Rate (%)</label>
+              <input type="text" id="renewNewRate" value="4.04" inputmode="decimal" readonly style="background:#f0f0f0; cursor:default;">
+              <span class="heloc__helper">Rate based on selected term and type from our posted rates</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Results Card -->
+        <div class="heloc__results-card" id="renewResults">
+          <div class="heloc__results-inner">
+          <h3 class="heloc__results-title">Your Renewal Comparison</h3>
+
+          <div class="renewal-savings-hero" id="renewSavingsHero">
+            <span class="renewal-savings-hero__label">You Could Save</span>
+            <span class="renewal-savings-hero__amount" id="resultTermSavings">$0</span>
+            <span class="renewal-savings-hero__term" id="resultTermLabel">over your 5-year term</span>
+          </div>
+
+          <div class="heloc__result-row">
+            <span class="heloc__result-label">Current Monthly Payment*</span>
+            <span class="heloc__result-value heloc__result-value--warning" id="resultCurrentPayment">$0</span>
+          </div>
+          <div class="heloc__result-divider"></div>
+
+          <div class="heloc__result-row">
+            <span class="heloc__result-label">New Monthly Payment</span>
+            <span class="heloc__result-value heloc__result-value--highlight" id="resultNewPayment">$0</span>
+          </div>
+          <div class="heloc__result-divider"></div>
+
+          <div class="heloc__result-row">
+            <span class="heloc__result-label">Monthly Savings</span>
+            <span class="heloc__result-value heloc__result-value--savings" id="resultMonthlySavings">$0</span>
+          </div>
+          <div class="heloc__result-divider"></div>
+
+          <div class="heloc__result-row">
+            <span class="heloc__result-label">Annual Savings</span>
+            <span class="heloc__result-value heloc__result-value--savings" id="resultAnnualSavings">$0</span>
+          </div>
+
+          <a href="#" class="btn btn--white btn--large heloc__results-cta open-modal">Speak to a Specialist</a>
+          <p class="heloc__results-disclosure">* Current monthly payment is an estimate based on the information provided.<br>These numbers represent a non-binding estimate. Rates and terms subject to approval.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= EDUCATIONAL CONTENT ======= -->
+  <section class="heloc-info">
+    <div class="container heloc-info__container">
+      <div class="heloc-info__body">
+        <h2>What Is a Mortgage Renewal?</h2>
+        <p>A mortgage renewal happens when your current mortgage term expires and you need to renegotiate or sign a new agreement. In Canada, most mortgage terms are 5 years, meaning you'll renew multiple times over the life of your mortgage. It's one of the best opportunities to save money — if you don't just sign the first offer your lender sends you.</p>
+
+        <h2>Why You Should Shop Around at Renewal</h2>
+        <p>Your current lender will send you a renewal offer, but it's rarely their best rate. They're counting on the convenience factor — most homeowners simply sign and return without comparing options. By shopping around, you can:</p>
+        <ul>
+          <li><strong>Save thousands:</strong> Even a 0.25% rate difference on a $400,000 mortgage saves over $3,000 over a 5-year term.</li>
+          <li><strong>Switch lenders penalty-free:</strong> At renewal, you can move to a new lender with no prepayment penalty.</li>
+          <li><strong>Negotiate better terms:</strong> A competing offer gives you leverage to get a better deal from your current lender.</li>
+        </ul>
+
+        <h2>When to Start Preparing</h2>
+        <p>Don't wait until your lender sends the renewal letter. Start shopping at least 120 days before your renewal date. Many lenders offer rate holds that lock in today's rate for up to 120 days, protecting you if rates rise while giving you time to compare options.</p>
+
+        <h2>What to Consider Beyond the Rate</h2>
+        <p>While the interest rate is the biggest factor, also pay attention to:</p>
+        <ul>
+          <li><strong>Prepayment privileges:</strong> Can you make lump-sum payments or increase your regular payments?</li>
+          <li><strong>Portability:</strong> Can you transfer your mortgage if you move?</li>
+          <li><strong>Penalty structure:</strong> How does the lender calculate early termination penalties?</li>
+          <li><strong>Term length:</strong> A shorter or longer term might better suit your plans.</li>
+        </ul>
+
+        <div class="article__cta-box">
+          <h3>Renewal coming up?</h3>
+          <p>Let our experts compare rates from 30+ lenders and find you the best deal. It takes minutes and could save you thousands.</p>
+          <a href="#" class="btn btn--primary btn--large open-modal">Speak to a Specialist</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= FOOTER ======= -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="/" class="navbar__logo">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+              <rect width="32" height="32" rx="7" fill="#2A7D5B"/>
+              <path d="M7 23V13l9-5.5 9 5.5v10H7z" fill="#1B3C2D"/>
+              <rect x="12.5" y="16.5" width="7" height="6.5" rx="1" fill="#F7F3EE"/>
+            </svg>
+            <span>MyMortgageExpert</span>
+          </a>
+          <p class="footer__tagline">Helping Canadians find the best mortgage rates since 2019.</p>
+        </div>
+        <div class="footer__links">
+          <div class="footer__col">
+            <h4>About</h4>
+            <a href="#">Our Story</a>
+            <a href="#">How It Works</a>
+            <a href="#">Careers</a>
+            <a href="#">Contact</a>
+          </div>
+          <div class="footer__col">
+            <h4>Resources</h4>
+            <a href="#">Mortgage Guides</a>
+            <a href="#">Blog</a>
+            <a href="#">FAQ</a>
+            <a href="#">Glossary</a>
+          </div>
+          <div class="footer__col">
+            <h4>Calculators</h4>
+            <a href="#">Payment Calculator</a>
+            <a href="#">Affordability</a>
+            <a href="#">Land Transfer Tax</a>
+            <a href="#">CMHC Insurance</a>
+          </div>
+          <div class="footer__col">
+            <h4>Legal</h4>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Accessibility</a>
+            <a href="#">Disclaimer</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; 2026 MyMortgageExpert. All rights reserved.</p>
+        <div class="footer__legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======= PRE-APPROVAL MODAL ======= -->
+  <div class="modal-overlay" id="preApprovalModal">
+    <div class="modal">
+      <button class="modal__close" id="modalClose" aria-label="Close">&times;</button>
+      <h2 class="modal__title">Get Pre-Approved</h2>
+      <p class="modal__subtitle">Fill in your details and we'll connect you with a licensed mortgage broker.</p>
+      <form class="modal__form" id="preApprovalForm">
+        <div class="modal__row">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" placeholder="First Name" required>
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" placeholder="Last Name" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" placeholder="(555) 555-5555" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="you@example.com" required>
+        </div>
+        <button type="submit" class="btn btn--primary btn--large modal__submit">Find Your Broker</button>
+      </form>
+      <p class="modal__disclosure">By providing your contact information, you authorize the broker to contact you about your inquiry. MyMortgageExpert does not provide any mortgage services and is not responsible for any services offered by the broker.</p>
+    </div>
+  </div>
+
+  <script>
+    // ===========================
+    // Mobile Menu
+    // ===========================
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      navLinks.classList.toggle('active');
+    });
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('active');
+      });
+    });
+
+    // ===========================
+    // Pre-Approval Modal
+    // ===========================
+    const modal = document.getElementById('preApprovalModal');
+    const modalClose = document.getElementById('modalClose');
+    const preApprovalForm = document.getElementById('preApprovalForm');
+
+    document.querySelectorAll('.open-modal').forEach(btn => {
+      btn.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        return false;
+      };
+    });
+
+    modalClose.addEventListener('click', () => {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+
+    const broker = {
+      name: 'Lighthouse Lending',
+      phone: '905-234-3323',
+      phoneTel: '19052343323',
+      licence: 'FSRA# 13301',
+      logo: '../lighthouse-lending-logo.png'
+    };
+
+    preApprovalForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const firstName = document.getElementById('firstName').value;
+      const modalEl = document.querySelector('.modal');
+      modalEl.innerHTML = '<button class="modal__close" id="modalCloseLoading" aria-label="Close">&times;</button>' +
+        '<div class="help-loading">' +
+          '<div class="help-loading__spinner"></div>' +
+          '<h2 class="help-loading__text">Pairing you with the best Broker</h2>' +
+        '</div>';
+      document.getElementById('modalCloseLoading').addEventListener('click', () => {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+      setTimeout(() => {
+        modalEl.innerHTML = '<button class="modal__close" id="modalCloseResult" aria-label="Close">&times;</button>' +
+          '<div class="broker-result">' +
+            '<h2 class="broker-result__heading">You\'ve Been Matched!</h2>' +
+            '<p class="broker-result__subtext">' + firstName + ', here is your matched broker:</p>' +
+            '<img class="broker-result__logo" src="' + broker.logo + '" alt="' + broker.name + '">' +
+            '<h3 class="broker-result__name">' + broker.name + '</h3>' +
+            '<div class="broker-result__info">' +
+              '<span>' + broker.phone + '</span>' +
+              '<span>' + broker.licence + '</span>' +
+            '</div>' +
+            '<a href="tel:' + broker.phoneTel + '" class="btn btn--primary btn--large broker-result__cta">Call Now</a>' +
+          '</div>';
+        document.getElementById('modalCloseResult').addEventListener('click', () => {
+          modal.classList.remove('active');
+          document.body.style.overflow = '';
+        });
+      }, 3000);
+    });
+
+    // Navbar scroll shadow
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.style.boxShadow = window.scrollY > 10 ? '0 2px 16px rgba(0,0,0,0.06)' : 'none';
+    });
+
+    // ===========================
+    // Renewal Calculator
+    // ===========================
+    const balanceInput = document.getElementById('renewBalance');
+    const currentRateInput = document.getElementById('renewCurrentRate');
+    const newRateInput = document.getElementById('renewNewRate');
+    const amortizationSelect = document.getElementById('renewAmortization');
+    const termSelect = document.getElementById('renewTerm');
+    const rateTypeToggle = document.getElementById('renewRateTypeToggle');
+
+    const currentPaymentDisplay = document.getElementById('renewCurrentPaymentDisplay');
+    const resultCurrentPayment = document.getElementById('resultCurrentPayment');
+    const resultNewPayment = document.getElementById('resultNewPayment');
+    const resultMonthlySavings = document.getElementById('resultMonthlySavings');
+    const resultAnnualSavings = document.getElementById('resultAnnualSavings');
+    const resultTermSavings = document.getElementById('resultTermSavings');
+    const resultTermLabel = document.getElementById('resultTermLabel');
+
+    // Posted site rates: term (years) → { fixed, variable }
+    const SITE_RATES = {
+      1: { fixed: 5.99, variable: 4.95 },
+      2: { fixed: 4.64, variable: 4.70 },
+      3: { fixed: 4.24, variable: 4.55 },
+      4: { fixed: 4.14, variable: 4.50 },
+      5: { fixed: 4.04, variable: 4.45 }
+    };
+    let rateType = 'fixed';
+
+    function formatCurrency(value) {
+      return '$' + Math.round(value).toLocaleString('en-CA');
+    }
+
+    function parseCurrency(str) {
+      return Number(str.replace(/[^0-9]/g, '')) || 0;
+    }
+
+    function bindCurrencyFormat(input) {
+      input.addEventListener('input', function() {
+        const raw = this.value.replace(/[^0-9]/g, '');
+        if (raw === '') { this.value = ''; calculate(); return; }
+        this.value = '$' + Number(raw).toLocaleString('en-CA');
+        calculate();
+      });
+    }
+
+    bindCurrencyFormat(balanceInput);
+    currentRateInput.addEventListener('input', calculate);
+    newRateInput.addEventListener('input', calculate);
+    amortizationSelect.addEventListener('change', calculate);
+    termSelect.addEventListener('change', calculate);
+
+    function updateRate() {
+      const term = parseInt(termSelect.value);
+      const rates = SITE_RATES[term];
+      if (rates) {
+        newRateInput.value = rates[rateType];
+      }
+      calculate();
+    }
+
+    // Fixed / Variable toggle
+    rateTypeToggle.addEventListener('click', function(e) {
+      const btn = e.target.closest('.heloc__toggle-btn');
+      if (!btn) return;
+      rateTypeToggle.querySelectorAll('.heloc__toggle-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      rateType = btn.dataset.value;
+      updateRate();
+    });
+
+    // Term change also updates rate
+    termSelect.removeEventListener('change', calculate);
+    termSelect.addEventListener('change', updateRate);
+
+    // Standard amortization formula
+    function calcMonthlyPayment(principal, annualRate, years) {
+      if (principal <= 0) return 0;
+      const r = annualRate / 12;
+      const n = years * 12;
+      if (r === 0) return principal / n;
+      return principal * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+    }
+
+    function calculate() {
+      const balance = parseCurrency(balanceInput.value);
+      const currentRate = parseFloat(currentRateInput.value) / 100 || 0;
+      const newRate = parseFloat(newRateInput.value) / 100 || 0;
+      const amortization = parseInt(amortizationSelect.value);
+      const term = parseInt(termSelect.value);
+
+      const currentPayment = calcMonthlyPayment(balance, currentRate, amortization);
+      const newPayment = calcMonthlyPayment(balance, newRate, amortization);
+      const monthlySavings = Math.max(0, currentPayment - newPayment);
+      const annualSavings = monthlySavings * 12;
+      const termSavings = monthlySavings * term * 12;
+
+      currentPaymentDisplay.textContent = (balance > 0 && currentRate > 0)
+        ? 'Estimated current monthly payment: ' + formatCurrency(currentPayment)
+        : 'Estimated current monthly payment: --';
+      resultTermSavings.textContent = formatCurrency(termSavings);
+      resultTermLabel.textContent = 'over your ' + term + '-year term';
+      resultCurrentPayment.textContent = formatCurrency(currentPayment);
+      resultNewPayment.textContent = formatCurrency(newPayment);
+      resultMonthlySavings.textContent = formatCurrency(monthlySavings);
+      resultAnnualSavings.textContent = formatCurrency(annualSavings);
+    }
+
+    calculate();
+  </script>
+</body>
+</html>

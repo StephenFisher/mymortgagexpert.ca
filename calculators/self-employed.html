@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Self-Employed Mortgage Calculator — MyMortgageExpert</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@800&family=Playfair+Display:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ======= NAV BAR ======= -->
+  <header class="navbar" id="navbar">
+    <div class="container navbar__inner">
+      <a href="/" class="navbar__logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="7" fill="#1B3C2D"/>
+          <path d="M7 23V13l9-5.5 9 5.5v10H7z" fill="#2A7D5B"/>
+          <rect x="12.5" y="16.5" width="7" height="6.5" rx="1" fill="#F7F3EE"/>
+        </svg>
+        <span>MyMortgageExpert</span>
+      </a>
+      <nav class="navbar__links" id="navLinks">
+        <div class="navbar__dropdown">
+          <button class="navbar__dropdown-toggle">Calculators <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="navbar__dropdown-menu">
+            <a href="/calculators/heloc.html">HELOC Calculator</a>
+            <a href="/calculators/refinance.html">Refinance Calculator</a>
+            <a href="/calculators/renewal.html">Renewal Calculator</a>
+            <a href="/calculators/home-equity-loan.html">Home Equity Loan Calculator</a>
+            <a href="/calculators/self-employed.html">Self-Employed Calculator</a>
+            <a href="/calculators/land-transfer-tax.html">Land Transfer Tax Calculator</a>
+            <a href="/calculators/closing-costs.html">Closing Costs Calculator</a>
+          </div>
+        </div>
+        <a href="/#rates">Mortgages</a>
+        <a href="/#lenders">Lenders</a>
+        <a href="/#about">About</a>
+        <a href="tel:18445002535" class="navbar__mobile-phone">1-844-500-2535</a>
+        <a href="#" class="btn btn--primary navbar__mobile-cta open-modal">Get Pre-Approved</a>
+      </nav>
+      <div class="navbar__right">
+        <a href="tel:18445002535" class="navbar__phone">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M14.67 11.44l-2.18-.93a1 1 0 00-1.05.18l-1.2 1.07a10.5 10.5 0 01-4.9-4.9l1.07-1.2a1 1 0 00.18-1.05l-.93-2.18A1 1 0 004.6 1.5H2.5A1 1 0 001.5 2.6 13 13 0 0013.4 14.5a1 1 0 001.1-1h-2.1a1 1 0 00-1.06-.93z" stroke="#1B3C2D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          1-844-500-2535
+        </a>
+        <a href="#" class="btn btn--primary navbar__cta open-modal">Get Pre-Approved</a>
+      </div>
+      <button class="navbar__hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ======= SELF-EMPLOYED CALCULATOR ======= -->
+  <section class="heloc">
+    <div class="container">
+      <div class="heloc__nav">
+        <a href="/" class="heloc__back">&larr; Back to Home</a>
+      </div>
+
+      <div class="heloc__header">
+        <span class="heloc__tag">SELF-EMPLOYED CALCULATOR</span>
+        <h1 class="heloc__title">Self-Employed Mortgage Calculator</h1>
+        <p class="heloc__subtitle">See how your business income translates into mortgage options. Choose Refinance, HELOC, or Debt Consolidation and get instant results.</p>
+      </div>
+
+      <div class="heloc__layout">
+        <!-- LEFT: Input Form -->
+        <div class="heloc__form-card">
+          <!-- Mode Toggle -->
+          <div class="form-group">
+            <label>What Are You Looking For?</label>
+            <div class="heloc__toggle heloc__toggle--three" id="seMode">
+              <button type="button" class="heloc__toggle-btn active" data-value="refinance">Refinance</button>
+              <button type="button" class="heloc__toggle-btn" data-value="heloc">HELOC</button>
+              <button type="button" class="heloc__toggle-btn" data-value="consolidation">Debt Consolidation</button>
+            </div>
+          </div>
+
+          <h3 class="heloc__form-title">Your Business Income</h3>
+          <div class="heloc__form">
+            <div class="form-group">
+              <label for="seGrossIncome">Annual Gross Business Income</label>
+              <input type="text" id="seGrossIncome" value="" placeholder="$200,000" inputmode="numeric">
+            </div>
+            <div class="form-group">
+              <label for="seMonthlyExpenses">Average Monthly Business Expenses</label>
+              <input type="text" id="seMonthlyExpenses" value="" placeholder="$5,000" inputmode="numeric">
+              <span class="heloc__helper">Rent, utilities, salaries, supplies, gas, etc.</span>
+              <span class="heloc__helper" id="seQualifyingIncome" style="color:var(--green-mid); font-weight:600; margin-top:6px;">Your qualifying income: --</span>
+            </div>
+          </div>
+
+          <h3 class="heloc__form-title" style="margin-top:24px;">Your Property</h3>
+          <div class="heloc__form">
+            <div class="form-group">
+              <label for="seHomeValue">Estimated Home Value</label>
+              <input type="text" id="seHomeValue" value="" placeholder="$800,000" inputmode="numeric">
+            </div>
+            <div class="form-group">
+              <label for="seBalance">Current Mortgage Balance</label>
+              <input type="text" id="seBalance" value="" placeholder="$400,000" inputmode="numeric">
+            </div>
+
+            <!-- ===== REFINANCE FIELDS ===== -->
+            <div id="seRefiFields">
+              <div class="form-group">
+                <label for="seCurrentRate">Current Interest Rate (%)</label>
+                <input type="text" id="seCurrentRate" value="" placeholder="5.49" inputmode="decimal">
+              </div>
+              <div class="form-group">
+                <label for="seCurrentAmort">Current Remaining Amortization</label>
+                <select id="seCurrentAmort">
+                  <option value="5">5 Years</option>
+                  <option value="10">10 Years</option>
+                  <option value="15">15 Years</option>
+                  <option value="20" selected>20 Years</option>
+                  <option value="25">25 Years</option>
+                  <option value="30">30 Years</option>
+                </select>
+                <span class="heloc__helper heloc__helper--result" id="seCurrentPaymentDisplay">Estimated current monthly payment: --</span>
+              </div>
+              <div class="form-group" style="margin-top:8px;">
+                <label>Would You Like to Access Equity?</label>
+                <div class="heloc__toggle" id="seEquityToggle">
+                  <button type="button" class="heloc__toggle-btn active" data-value="no">No</button>
+                  <button type="button" class="heloc__toggle-btn" data-value="yes">Yes</button>
+                </div>
+              </div>
+              <div class="form-group" id="seEquityField" style="display:none;">
+                <label for="seEquityAmount">How Much Would You Like to Access?</label>
+                <input type="text" id="seEquityAmount" value="" placeholder="$100,000" inputmode="numeric">
+              </div>
+              <div class="form-group">
+                <label for="seRefiNewAmort">New Amortization Period</label>
+                <select id="seRefiNewAmort">
+                  <option value="5">5 Years</option>
+                  <option value="10">10 Years</option>
+                  <option value="15">15 Years</option>
+                  <option value="20">20 Years</option>
+                  <option value="25" selected>25 Years</option>
+                  <option value="30">30 Years</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="seRefiTerm">New Term Length</label>
+                <select id="seRefiTerm">
+                  <option value="1">1 Year</option>
+                  <option value="2">2 Years</option>
+                  <option value="3">3 Years</option>
+                  <option value="4">4 Years</option>
+                  <option value="5" selected>5 Years</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Rate Type</label>
+                <div class="heloc__toggle" id="seRefiRateType">
+                  <button type="button" class="heloc__toggle-btn active" data-value="fixed">Fixed</button>
+                  <button type="button" class="heloc__toggle-btn" data-value="variable">Variable</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="seRefiNewRate">New Refinance Rate (%)</label>
+                <input type="text" id="seRefiNewRate" value="4.04" inputmode="decimal" readonly style="background:#f0f0f0; cursor:default;">
+                <span class="heloc__helper">Rate based on selected term and type</span>
+              </div>
+            </div>
+
+            <!-- ===== HELOC FIELDS ===== -->
+            <div id="seHelocFields" style="display:none;">
+              <div class="form-group">
+                <label for="seHelocBorrow">How Much Do You Want to Borrow?</label>
+                <input type="text" id="seHelocBorrow" value="" placeholder="$50,000" inputmode="numeric">
+              </div>
+            </div>
+
+            <!-- ===== DEBT CONSOLIDATION FIELDS ===== -->
+            <div id="seDebtFields" style="display:none;">
+              <div class="form-group">
+                <label for="seDebtAmount">Total Debt to Consolidate</label>
+                <input type="text" id="seDebtAmount" value="" placeholder="$50,000" inputmode="numeric">
+                <span class="heloc__helper">Credit cards, car loans, lines of credit, etc.</span>
+              </div>
+              <div class="form-group">
+                <label for="seDebtRate">Average Interest Rate on Debt (%)</label>
+                <input type="text" id="seDebtRate" value="" placeholder="19.99" inputmode="decimal">
+              </div>
+              <div class="form-group">
+                <label for="seDebtNewAmort">New Amortization Period</label>
+                <select id="seDebtNewAmort">
+                  <option value="5">5 Years</option>
+                  <option value="10">10 Years</option>
+                  <option value="15">15 Years</option>
+                  <option value="20">20 Years</option>
+                  <option value="25" selected>25 Years</option>
+                  <option value="30">30 Years</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="seDebtTerm">New Term Length</label>
+                <select id="seDebtTerm">
+                  <option value="1">1 Year</option>
+                  <option value="2">2 Years</option>
+                  <option value="3">3 Years</option>
+                  <option value="4">4 Years</option>
+                  <option value="5" selected>5 Years</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Rate Type</label>
+                <div class="heloc__toggle" id="seDebtRateType">
+                  <button type="button" class="heloc__toggle-btn active" data-value="fixed">Fixed</button>
+                  <button type="button" class="heloc__toggle-btn" data-value="variable">Variable</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="seDebtNewRate">New Mortgage Rate (%)</label>
+                <input type="text" id="seDebtNewRate" value="4.04" inputmode="decimal" readonly style="background:#f0f0f0; cursor:default;">
+                <span class="heloc__helper">Rate based on selected term and type</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Results Card -->
+        <div class="heloc__results-card">
+          <div class="heloc__results-inner">
+          <h3 class="heloc__results-title">Your Estimate</h3>
+
+          <!-- ===== REFINANCE RESULTS ===== -->
+          <div id="seRefiResults">
+            <div class="renewal-savings-hero">
+              <span class="renewal-savings-hero__label">You Could Save</span>
+              <span class="renewal-savings-hero__amount" id="seRefiTermSavings">$0</span>
+              <span class="renewal-savings-hero__term" id="seRefiTermLabel">over your 5-year term</span>
+            </div>
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">Max Mortgage (80% LTV)</span>
+              <span class="heloc__result-value" id="seRefiMaxMortgage">$0</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">Available Equity</span>
+              <span class="heloc__result-value" id="seRefiAvailEquity">$0</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+            <div id="seRefiNewMortgageRow" style="display:none;">
+              <div class="heloc__result-row">
+                <span class="heloc__result-label">New Mortgage Amount</span>
+                <span class="heloc__result-value" id="seRefiNewMortgage">$0</span>
+              </div>
+              <div class="heloc__result-divider"></div>
+            </div>
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">Current Monthly Payment*</span>
+              <span class="heloc__result-value heloc__result-value--warning" id="seRefiCurrentPayment">$0</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">New Monthly Payment</span>
+              <span class="heloc__result-value heloc__result-value--highlight" id="seRefiNewPayment">$0</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">Monthly Savings</span>
+              <span class="heloc__result-value heloc__result-value--savings" id="seRefiMonthlySavings">$0</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">Annual Savings</span>
+              <span class="heloc__result-value heloc__result-value--savings" id="seRefiAnnualSavings">$0</span>
+            </div>
+            <div class="heloc__warning" id="seRefiWarning" style="display:none;">
+              Your requested equity exceeds your available equity. Please adjust your inputs.
+            </div>
+          </div>
+
+          <!-- ===== HELOC RESULTS ===== -->
+          <div id="seHelocResults" style="display:none;">
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">Maximum HELOC Limit</span>
+              <span class="heloc__result-value heloc__result-value--highlight" id="seHelocMaxLimit">$0</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">HELOC Amount</span>
+              <span class="heloc__result-value" id="seHelocAmount">$0</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">Monthly Payment (Interest Only)</span>
+              <span class="heloc__result-value heloc__result-value--highlight" id="seHelocMonthly">$0</span>
+            </div>
+            <div class="heloc__warning" id="seHelocWarning" style="display:none;">
+              Your requested amount exceeds your available HELOC limit.
+            </div>
+          </div>
+
+          <!-- ===== DEBT CONSOLIDATION RESULTS ===== -->
+          <div id="seDebtResults" style="display:none;">
+            <div class="renewal-savings-hero">
+              <span class="renewal-savings-hero__label">You Could Save</span>
+              <span class="renewal-savings-hero__amount" id="seDebtMonthlySavingsHero">$0/mo</span>
+              <span class="renewal-savings-hero__term">by consolidating your debt into your mortgage</span>
+            </div>
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">Max Mortgage (80% LTV)</span>
+              <span class="heloc__result-value" id="seDebtMaxMortgage">$0</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">New Mortgage Amount</span>
+              <span class="heloc__result-value" id="seDebtNewMortgage">$0</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">Current Mortgage Payment*</span>
+              <span class="heloc__result-value heloc__result-value--warning" id="seDebtCurrentMortgagePayment">$0</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">Current Debt Payment*</span>
+              <span class="heloc__result-value heloc__result-value--warning" id="seDebtCurrentDebtPayment">$0</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">New Combined Payment</span>
+              <span class="heloc__result-value heloc__result-value--highlight" id="seDebtNewPayment">$0</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">Monthly Savings</span>
+              <span class="heloc__result-value heloc__result-value--savings" id="seDebtMonthlySavings">$0</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">Annual Savings</span>
+              <span class="heloc__result-value heloc__result-value--savings" id="seDebtAnnualSavings">$0</span>
+            </div>
+            <div class="heloc__warning" id="seDebtWarning" style="display:none;">
+              Your combined mortgage and debt exceeds 80% of your home value.
+            </div>
+          </div>
+
+          <a href="#" class="btn btn--white btn--large heloc__results-cta open-modal">Speak to a Specialist</a>
+          <p class="heloc__results-disclosure">* Current monthly payment is an estimate based on the information provided.<br>These numbers represent a non-binding estimate. Rates and terms subject to approval.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= EDUCATIONAL CONTENT ======= -->
+  <section class="heloc-info">
+    <div class="container heloc-info__container">
+      <div class="heloc-info__body">
+        <h2>Mortgage Options for Self-Employed Canadians</h2>
+        <p>Being self-employed doesn't mean you can't get a great mortgage. Lenders look at your net business income — your gross revenue minus business expenses — to determine how much you qualify for. Understanding your options can help you make the most of your equity and save money.</p>
+
+        <h2>Refinancing as a Self-Employed Borrower</h2>
+        <p>Refinancing replaces your existing mortgage with a new one, letting you take advantage of lower rates, extend your amortization to reduce payments, or access equity for business investment or personal needs. Self-employed borrowers can refinance up to 80% of their home's value.</p>
+
+        <h2>HELOC (Home Equity Line of Credit)</h2>
+        <p>A HELOC gives you a revolving credit line secured by your home equity. It's a flexible option for self-employed individuals who may have variable cash flow — you only pay interest on what you borrow, and you can draw and repay as needed.</p>
+
+        <h2>Debt Consolidation</h2>
+        <p>If you're carrying high-interest business or personal debt, consolidating it into your mortgage can dramatically reduce your monthly payments. By rolling credit card balances, lines of credit, or business loans into a mortgage at a much lower rate, you simplify your payments and keep more money in your pocket.</p>
+
+        <div class="article__cta-box">
+          <h3>Self-employed and need mortgage advice?</h3>
+          <p>Our specialists work with lenders who understand self-employed income. Get expert guidance tailored to your situation — no obligation, no credit check required.</p>
+          <a href="#" class="btn btn--primary btn--large open-modal">Speak to a Specialist</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= FOOTER ======= -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="/" class="navbar__logo">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+              <rect width="32" height="32" rx="7" fill="#2A7D5B"/>
+              <path d="M7 23V13l9-5.5 9 5.5v10H7z" fill="#1B3C2D"/>
+              <rect x="12.5" y="16.5" width="7" height="6.5" rx="1" fill="#F7F3EE"/>
+            </svg>
+            <span>MyMortgageExpert</span>
+          </a>
+          <p class="footer__tagline">Helping Canadians find the best mortgage rates since 2019.</p>
+        </div>
+        <div class="footer__links">
+          <div class="footer__col">
+            <h4>About</h4>
+            <a href="#">Our Story</a>
+            <a href="#">How It Works</a>
+            <a href="#">Careers</a>
+            <a href="#">Contact</a>
+          </div>
+          <div class="footer__col">
+            <h4>Resources</h4>
+            <a href="#">Mortgage Guides</a>
+            <a href="#">Blog</a>
+            <a href="#">FAQ</a>
+            <a href="#">Glossary</a>
+          </div>
+          <div class="footer__col">
+            <h4>Calculators</h4>
+            <a href="#">Payment Calculator</a>
+            <a href="#">Affordability</a>
+            <a href="#">Land Transfer Tax</a>
+            <a href="#">CMHC Insurance</a>
+          </div>
+          <div class="footer__col">
+            <h4>Legal</h4>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Accessibility</a>
+            <a href="#">Disclaimer</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; 2026 MyMortgageExpert. All rights reserved.</p>
+        <div class="footer__legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======= PRE-APPROVAL MODAL ======= -->
+  <div class="modal-overlay" id="preApprovalModal">
+    <div class="modal">
+      <button class="modal__close" id="modalClose" aria-label="Close">&times;</button>
+      <h2 class="modal__title">Get Pre-Approved</h2>
+      <p class="modal__subtitle">Fill in your details and we'll connect you with a licensed mortgage broker.</p>
+      <form class="modal__form" id="preApprovalForm">
+        <div class="modal__row">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" placeholder="First Name" required>
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" placeholder="Last Name" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" placeholder="(555) 555-5555" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="you@example.com" required>
+        </div>
+        <button type="submit" class="btn btn--primary btn--large modal__submit">Find Your Broker</button>
+      </form>
+      <p class="modal__disclosure">By providing your contact information, you authorize the broker to contact you about your inquiry. MyMortgageExpert does not provide any mortgage services and is not responsible for any services offered by the broker.</p>
+    </div>
+  </div>
+
+  <script>
+    // ===========================
+    // Mobile Menu
+    // ===========================
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      navLinks.classList.toggle('active');
+    });
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('active');
+      });
+    });
+
+    // ===========================
+    // Pre-Approval Modal
+    // ===========================
+    const modal = document.getElementById('preApprovalModal');
+    const modalClose = document.getElementById('modalClose');
+    const preApprovalForm = document.getElementById('preApprovalForm');
+
+    document.querySelectorAll('.open-modal').forEach(btn => {
+      btn.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        return false;
+      };
+    });
+
+    modalClose.addEventListener('click', () => {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+
+    const broker = {
+      name: 'Lighthouse Lending',
+      phone: '905-234-3323',
+      phoneTel: '19052343323',
+      licence: 'FSRA# 13301',
+      logo: '../lighthouse-lending-logo.png'
+    };
+
+    preApprovalForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const firstName = document.getElementById('firstName').value;
+      const modalEl = modal.querySelector('.modal') || modal.lastElementChild;
+      modalEl.innerHTML = '<button class="modal__close" id="modalCloseLoading" aria-label="Close">&times;</button>' +
+        '<div class="help-loading">' +
+          '<div class="help-loading__spinner"></div>' +
+          '<h2 class="help-loading__text">Pairing you with the best Broker</h2>' +
+        '</div>';
+      document.getElementById('modalCloseLoading').addEventListener('click', () => {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+      setTimeout(() => {
+        modalEl.innerHTML = '<button class="modal__close" id="modalCloseResult" aria-label="Close">&times;</button>' +
+          '<div class="broker-result">' +
+            '<h2 class="broker-result__heading">You\'ve Been Matched!</h2>' +
+            '<p class="broker-result__subtext">' + firstName + ', here is your matched broker:</p>' +
+            '<img class="broker-result__logo" src="' + broker.logo + '" alt="' + broker.name + '">' +
+            '<h3 class="broker-result__name">' + broker.name + '</h3>' +
+            '<div class="broker-result__info">' +
+              '<span>' + broker.phone + '</span>' +
+              '<span>' + broker.licence + '</span>' +
+            '</div>' +
+            '<a href="tel:' + broker.phoneTel + '" class="btn btn--primary btn--large broker-result__cta">Call Now</a>' +
+          '</div>';
+        document.getElementById('modalCloseResult').addEventListener('click', () => {
+          modal.classList.remove('active');
+          document.body.style.overflow = '';
+        });
+      }, 3000);
+    });
+
+    // Navbar scroll shadow
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.style.boxShadow = window.scrollY > 10 ? '0 2px 16px rgba(0,0,0,0.06)' : 'none';
+    });
+
+    // ===========================
+    // Self-Employed Calculator
+    // ===========================
+    const MAX_LTV = 0.80;
+    const HELOC_RATE = 0.0495;
+
+    const SITE_RATES = {
+      1: { fixed: 5.99, variable: 4.95 },
+      2: { fixed: 4.64, variable: 4.70 },
+      3: { fixed: 4.24, variable: 4.55 },
+      4: { fixed: 4.14, variable: 4.50 },
+      5: { fixed: 4.04, variable: 4.45 }
+    };
+
+    let currentMode = 'refinance';
+    let refiRateType = 'fixed';
+    let debtRateType = 'fixed';
+    let wantsEquity = false;
+
+    // --- Element refs ---
+    const modeToggle = document.getElementById('seMode');
+    const grossIncomeInput = document.getElementById('seGrossIncome');
+    const monthlyExpensesInput = document.getElementById('seMonthlyExpenses');
+    const qualifyingIncomeDisplay = document.getElementById('seQualifyingIncome');
+    const homeValueInput = document.getElementById('seHomeValue');
+    const balanceInput = document.getElementById('seBalance');
+
+    // Refinance refs
+    const refiFields = document.getElementById('seRefiFields');
+    const refiResults = document.getElementById('seRefiResults');
+    const currentRateInput = document.getElementById('seCurrentRate');
+    const currentAmortSelect = document.getElementById('seCurrentAmort');
+    const currentPaymentDisplay = document.getElementById('seCurrentPaymentDisplay');
+    const equityToggle = document.getElementById('seEquityToggle');
+    const equityField = document.getElementById('seEquityField');
+    const equityAmountInput = document.getElementById('seEquityAmount');
+    const refiNewAmortSelect = document.getElementById('seRefiNewAmort');
+    const refiTermSelect = document.getElementById('seRefiTerm');
+    const refiRateTypeToggle = document.getElementById('seRefiRateType');
+    const refiNewRateInput = document.getElementById('seRefiNewRate');
+    const refiNewMortgageRow = document.getElementById('seRefiNewMortgageRow');
+    const refiWarning = document.getElementById('seRefiWarning');
+
+    // HELOC refs
+    const helocFields = document.getElementById('seHelocFields');
+    const helocResults = document.getElementById('seHelocResults');
+    const helocBorrowInput = document.getElementById('seHelocBorrow');
+    const helocWarning = document.getElementById('seHelocWarning');
+
+    // Debt Consolidation refs
+    const debtFields = document.getElementById('seDebtFields');
+    const debtResults = document.getElementById('seDebtResults');
+    const debtAmountInput = document.getElementById('seDebtAmount');
+    const debtRateInput = document.getElementById('seDebtRate');
+    const debtNewAmortSelect = document.getElementById('seDebtNewAmort');
+    const debtTermSelect = document.getElementById('seDebtTerm');
+    const debtRateTypeToggle = document.getElementById('seDebtRateType');
+    const debtNewRateInput = document.getElementById('seDebtNewRate');
+    const debtWarning = document.getElementById('seDebtWarning');
+
+    // --- Utilities ---
+    function formatCurrency(value) {
+      return '$' + Math.round(value).toLocaleString('en-CA');
+    }
+
+    function parseCurrency(str) {
+      return Number(str.replace(/[^0-9]/g, '')) || 0;
+    }
+
+    function bindCurrencyFormat(input) {
+      input.addEventListener('input', function() {
+        const raw = this.value.replace(/[^0-9]/g, '');
+        if (raw === '') { this.value = ''; calculate(); return; }
+        this.value = '$' + Number(raw).toLocaleString('en-CA');
+        calculate();
+      });
+    }
+
+    function calcMonthlyPayment(principal, annualRate, years) {
+      if (principal <= 0) return 0;
+      const r = annualRate / 12;
+      const n = years * 12;
+      if (r === 0) return principal / n;
+      return principal * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+    }
+
+    // --- Currency formatting on inputs ---
+    [grossIncomeInput, monthlyExpensesInput, homeValueInput, balanceInput, equityAmountInput, helocBorrowInput, debtAmountInput].forEach(bindCurrencyFormat);
+    [currentRateInput, debtRateInput].forEach(input => input.addEventListener('input', calculate));
+    [currentAmortSelect, refiNewAmortSelect, debtNewAmortSelect].forEach(sel => sel.addEventListener('change', calculate));
+
+    // --- Mode toggle ---
+    modeToggle.addEventListener('click', function(e) {
+      const btn = e.target.closest('.heloc__toggle-btn');
+      if (!btn) return;
+      modeToggle.querySelectorAll('.heloc__toggle-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentMode = btn.dataset.value;
+      updateModeVisibility();
+      calculate();
+    });
+
+    function updateModeVisibility() {
+      refiFields.style.display = currentMode === 'refinance' ? '' : 'none';
+      helocFields.style.display = currentMode === 'heloc' ? '' : 'none';
+      debtFields.style.display = currentMode === 'consolidation' ? '' : 'none';
+      refiResults.style.display = currentMode === 'refinance' ? '' : 'none';
+      helocResults.style.display = currentMode === 'heloc' ? '' : 'none';
+      debtResults.style.display = currentMode === 'consolidation' ? '' : 'none';
+    }
+
+    // --- Rate type toggles ---
+    refiRateTypeToggle.addEventListener('click', function(e) {
+      const btn = e.target.closest('.heloc__toggle-btn');
+      if (!btn) return;
+      refiRateTypeToggle.querySelectorAll('.heloc__toggle-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      refiRateType = btn.dataset.value;
+      updateRefiRate();
+    });
+
+    debtRateTypeToggle.addEventListener('click', function(e) {
+      const btn = e.target.closest('.heloc__toggle-btn');
+      if (!btn) return;
+      debtRateTypeToggle.querySelectorAll('.heloc__toggle-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      debtRateType = btn.dataset.value;
+      updateDebtRate();
+    });
+
+    function updateRefiRate() {
+      const term = parseInt(refiTermSelect.value);
+      const rates = SITE_RATES[term];
+      if (rates) refiNewRateInput.value = rates[refiRateType];
+      calculate();
+    }
+
+    function updateDebtRate() {
+      const term = parseInt(debtTermSelect.value);
+      const rates = SITE_RATES[term];
+      if (rates) debtNewRateInput.value = rates[debtRateType];
+      calculate();
+    }
+
+    // Term changes update rate
+    refiTermSelect.addEventListener('change', updateRefiRate);
+    debtTermSelect.addEventListener('change', updateDebtRate);
+
+    // --- Equity toggle ---
+    equityToggle.addEventListener('click', function(e) {
+      const btn = e.target.closest('.heloc__toggle-btn');
+      if (!btn) return;
+      equityToggle.querySelectorAll('.heloc__toggle-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      wantsEquity = btn.dataset.value === 'yes';
+      equityField.style.display = wantsEquity ? '' : 'none';
+      refiNewMortgageRow.style.display = wantsEquity ? '' : 'none';
+      if (!wantsEquity) equityAmountInput.value = '';
+      calculate();
+    });
+
+    // --- Main calculate ---
+    function calculate() {
+      // Qualifying income
+      const grossIncome = parseCurrency(grossIncomeInput.value);
+      const monthlyExpenses = parseCurrency(monthlyExpensesInput.value);
+      const netIncome = grossIncome - (monthlyExpenses * 12);
+      if (grossIncome > 0) {
+        qualifyingIncomeDisplay.textContent = 'Your qualifying income: ' + formatCurrency(Math.max(0, netIncome)) + '/yr';
+      } else {
+        qualifyingIncomeDisplay.textContent = 'Your qualifying income: --';
+      }
+
+      // Shared inputs
+      const homeValue = parseCurrency(homeValueInput.value);
+      const balance = parseCurrency(balanceInput.value);
+      const maxMortgage = Math.round(homeValue * MAX_LTV);
+
+      if (currentMode === 'refinance') calculateRefinance(homeValue, balance, maxMortgage);
+      else if (currentMode === 'heloc') calculateHeloc(homeValue, balance, maxMortgage);
+      else calculateDebt(homeValue, balance, maxMortgage);
+    }
+
+    function calculateRefinance(homeValue, balance, maxMortgage) {
+      const currentRate = parseFloat(currentRateInput.value) / 100 || 0;
+      const currentAmort = parseInt(currentAmortSelect.value);
+      const equityAmount = wantsEquity ? parseCurrency(equityAmountInput.value) : 0;
+      const newAmort = parseInt(refiNewAmortSelect.value);
+      const newRate = parseFloat(refiNewRateInput.value) / 100 || 0;
+      const term = parseInt(refiTermSelect.value);
+
+      const availableEquity = Math.max(0, maxMortgage - balance);
+      const overLimit = equityAmount > availableEquity && equityAmount > 0 && homeValue > 0;
+      const newBalance = balance + equityAmount;
+
+      const currentPayment = calcMonthlyPayment(balance, currentRate, currentAmort);
+      const newPayment = overLimit ? 0 : calcMonthlyPayment(newBalance, newRate, newAmort);
+      const monthlySavings = overLimit ? 0 : Math.max(0, currentPayment - newPayment);
+      const annualSavings = monthlySavings * 12;
+      const termSavings = monthlySavings * term * 12;
+
+      refiWarning.style.display = overLimit ? '' : 'none';
+      currentPaymentDisplay.textContent = (balance > 0 && currentRate > 0)
+        ? 'Estimated current monthly payment: ' + formatCurrency(currentPayment)
+        : 'Estimated current monthly payment: --';
+
+      document.getElementById('seRefiMaxMortgage').textContent = formatCurrency(maxMortgage);
+      document.getElementById('seRefiAvailEquity').textContent = formatCurrency(availableEquity);
+      document.getElementById('seRefiNewMortgage').textContent = overLimit ? '$0' : formatCurrency(newBalance);
+      document.getElementById('seRefiTermSavings').textContent = formatCurrency(termSavings);
+      document.getElementById('seRefiTermLabel').textContent = 'over your ' + term + '-year term';
+      document.getElementById('seRefiCurrentPayment').textContent = formatCurrency(currentPayment);
+      document.getElementById('seRefiNewPayment').textContent = overLimit ? '$0' : formatCurrency(newPayment);
+      document.getElementById('seRefiMonthlySavings').textContent = formatCurrency(monthlySavings);
+      document.getElementById('seRefiAnnualSavings').textContent = formatCurrency(annualSavings);
+    }
+
+    function calculateHeloc(homeValue, balance, maxMortgage) {
+      const borrowAmount = parseCurrency(helocBorrowInput.value);
+      const maxLimit = Math.max(0, maxMortgage - balance);
+      const exceeds = borrowAmount > maxLimit && borrowAmount > 0 && homeValue > 0;
+      const helocAmount = (borrowAmount > 0 && !exceeds) ? borrowAmount : 0;
+      const monthlyPayment = helocAmount * (HELOC_RATE / 12);
+
+      helocWarning.style.display = exceeds ? '' : 'none';
+      document.getElementById('seHelocMaxLimit').textContent = formatCurrency(maxLimit);
+      document.getElementById('seHelocAmount').textContent = formatCurrency(helocAmount);
+      document.getElementById('seHelocMonthly').textContent = formatCurrency(monthlyPayment);
+    }
+
+    function calculateDebt(homeValue, balance, maxMortgage) {
+      const debtAmount = parseCurrency(debtAmountInput.value);
+      const debtRate = parseFloat(debtRateInput.value) / 100 || 0;
+      const newAmort = parseInt(debtNewAmortSelect.value);
+      const newRate = parseFloat(debtNewRateInput.value) / 100 || 0;
+      const term = parseInt(debtTermSelect.value);
+
+      const newMortgageAmount = balance + debtAmount;
+      const overLimit = newMortgageAmount > maxMortgage && debtAmount > 0 && homeValue > 0;
+
+      // Current payments (separate)
+      const currentMortgagePayment = calcMonthlyPayment(balance, 0.0549, 20); // assume 5.49% / 20yr for existing
+      const currentDebtPayment = debtAmount * (debtRate / 12); // interest-only on unsecured debt
+
+      // New combined payment
+      const newCombinedPayment = overLimit ? 0 : calcMonthlyPayment(newMortgageAmount, newRate, newAmort);
+      const totalCurrentPayments = currentMortgagePayment + currentDebtPayment;
+      const monthlySavings = overLimit ? 0 : Math.max(0, totalCurrentPayments - newCombinedPayment);
+      const annualSavings = monthlySavings * 12;
+
+      debtWarning.style.display = overLimit ? '' : 'none';
+      document.getElementById('seDebtMaxMortgage').textContent = formatCurrency(maxMortgage);
+      document.getElementById('seDebtNewMortgage').textContent = overLimit ? '$0' : formatCurrency(newMortgageAmount);
+      document.getElementById('seDebtCurrentMortgagePayment').textContent = formatCurrency(currentMortgagePayment);
+      document.getElementById('seDebtCurrentDebtPayment').textContent = formatCurrency(currentDebtPayment);
+      document.getElementById('seDebtNewPayment').textContent = overLimit ? '$0' : formatCurrency(newCombinedPayment);
+      document.getElementById('seDebtMonthlySavings').textContent = formatCurrency(monthlySavings);
+      document.getElementById('seDebtAnnualSavings').textContent = formatCurrency(annualSavings);
+      document.getElementById('seDebtMonthlySavingsHero').textContent = formatCurrency(monthlySavings) + '/mo';
+    }
+
+    // Initial
+    updateModeVisibility();
+    calculate();
+  </script>
+</body>
+</html>

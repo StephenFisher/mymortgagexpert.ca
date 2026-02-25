@@ -271,6 +271,77 @@ button, input, select {
   color: var(--green-dark);
 }
 
+/* Navbar Dropdown */
+.navbar__dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.navbar__dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 500;
+  color: var(--text-mid);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.navbar__dropdown-toggle:hover {
+  color: var(--green-dark);
+}
+
+.navbar__dropdown-toggle svg {
+  transition: transform 0.2s;
+}
+
+.navbar__dropdown:hover .navbar__dropdown-toggle svg {
+  transform: rotate(180deg);
+}
+
+.navbar__dropdown-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: -12px;
+  min-width: 220px;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+  padding: 8px 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: all 0.2s ease;
+  z-index: 1000;
+}
+
+.navbar__dropdown:hover .navbar__dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.navbar__dropdown-menu a {
+  display: block;
+  padding: 10px 20px;
+  color: var(--text-mid);
+  font-size: 0.92rem;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
+}
+
+.navbar__dropdown-menu a:hover {
+  background: var(--green-pale);
+  color: var(--green-dark);
+}
+
 .navbar__right {
   display: flex;
   align-items: center;
@@ -434,31 +505,66 @@ button, input, select {
   margin-bottom: 16px;
 }
 
-.hero__tabs {
-  display: flex;
-  background: var(--cream);
-  border-radius: var(--radius-sm);
-  padding: 4px;
-  margin-bottom: 24px;
-}
-
-.hero__tab {
-  flex: 1;
-  padding: 10px 16px;
-  border: none;
-  background: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
+.hero__helper {
+  display: block;
+  font-size: 0.75rem;
   color: var(--text-mid);
-  transition: all 0.2s;
-  font-size: 0.9rem;
+  margin-top: 4px;
 }
 
-.hero__tab.active {
-  background: var(--white);
+.hero__result {
+  display: none;
+  border-top: 1.5px solid var(--border);
+  margin-top: 20px;
+  padding-top: 20px;
+}
+
+.hero__result.active {
+  display: block;
+}
+
+.hero__result-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12px;
+}
+
+.hero__result-label {
+  font-size: 0.82rem;
+  color: var(--text-mid);
+  font-weight: 500;
+}
+
+.hero__result-value {
+  font-size: 1rem;
+  font-weight: 700;
   color: var(--green-dark);
-  box-shadow: var(--shadow-sm);
+}
+
+.hero__result-value--hero {
+  font-size: 1.5rem;
+  color: var(--green-mid);
+}
+
+.hero__result-cta {
+  width: 100%;
+  text-align: center;
+  margin-top: 8px;
+}
+
+.hero__result-message {
+  display: none;
+  border-top: 1.5px solid var(--border);
+  margin-top: 20px;
+  padding-top: 20px;
+  font-size: 0.88rem;
+  color: var(--text-mid);
+  text-align: center;
+}
+
+.hero__result-message.active {
+  display: block;
 }
 
 .hero__form {
@@ -696,7 +802,7 @@ button, input, select {
 /* Calculator card grid (right) */
 .calculators__grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
 }
 
@@ -1247,6 +1353,336 @@ button, input, select {
 }
 
 /* ===========================
+   HELOC CALCULATOR PAGE
+   =========================== */
+.heloc {
+  padding: 100px 0 80px;
+  background: var(--cream);
+}
+
+.heloc__nav {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.heloc__back {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--green-mid);
+  transition: color 0.2s;
+}
+
+.heloc__back:hover {
+  color: var(--green-dark);
+}
+
+.heloc__header {
+  margin-bottom: 48px;
+  text-align: center;
+}
+
+.heloc__tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--green-mid);
+  background: var(--green-pale);
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.heloc__title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--green-dark);
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.heloc__subtitle {
+  color: var(--text-mid);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.heloc__layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.heloc__form-card {
+  background: var(--white);
+  padding: 32px;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+}
+
+.heloc__form-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--green-dark);
+  margin-bottom: 24px;
+}
+
+.heloc__form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.heloc__helper {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-light);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.heloc__toggle {
+  display: flex;
+  background: var(--cream);
+  border-radius: var(--radius-sm);
+  padding: 4px;
+}
+
+.heloc__toggle-btn {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  background: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text-mid);
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.heloc__toggle-btn.active {
+  background: var(--white);
+  color: var(--green-dark);
+  box-shadow: var(--shadow-sm);
+}
+
+.heloc__toggle--three .heloc__toggle-btn {
+  font-size: 0.8rem;
+  padding: 10px 8px;
+}
+
+.heloc__split-row {
+  display: flex;
+  gap: 12px;
+}
+.heloc__split-row .form-group {
+  flex: 1;
+  min-width: 0;
+}
+
+.heloc__results-card {
+  background: var(--green-dark);
+  color: var(--white);
+  border-radius: var(--radius-xl);
+  padding: 0;
+}
+
+.heloc__results-inner {
+  position: sticky;
+  top: 100px;
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.heloc__results-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 28px;
+}
+
+.heloc__result-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+}
+
+.heloc__result-label {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
+
+.heloc__result-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.heloc__result-value--highlight {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #E8F5EE;
+}
+
+.heloc__result-value--savings {
+  color: #7FE08A;
+}
+
+.heloc__result-value--warning {
+  color: #F5A623;
+}
+
+.heloc__helper--result {
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-top: 4px;
+}
+
+.renewal-savings-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px 0 24px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+
+.renewal-savings-hero__label {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 4px;
+}
+
+.renewal-savings-hero__amount {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #7FE08A;
+  line-height: 1.1;
+}
+
+.renewal-savings-hero__term {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.5);
+  margin-top: 4px;
+}
+
+.heloc__result-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.heloc__warning {
+  background: rgba(255, 200, 50, 0.15);
+  border: 1px solid rgba(255, 200, 50, 0.3);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  margin-top: 16px;
+  font-size: 0.85rem;
+  color: #FFD866;
+  line-height: 1.5;
+}
+
+.heloc__results-cta {
+  width: 100%;
+  margin-top: 28px;
+}
+
+.heloc__results-disclosure {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+  margin-top: 16px;
+  line-height: 1.4;
+}
+
+/* HELOC Educational Content */
+.heloc-info {
+  padding: 80px 0;
+  background: var(--white);
+}
+
+.heloc-info__container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.heloc-info__body {
+  font-size: 1.08rem;
+  line-height: 1.85;
+  color: var(--text-dark);
+}
+
+.heloc-info__body p {
+  margin-bottom: 24px;
+}
+
+.heloc-info__body h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--green-dark);
+  margin-top: 48px;
+  margin-bottom: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.heloc-info__body h2:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.heloc-info__body ul {
+  margin-bottom: 24px;
+  padding-left: 0;
+  list-style: none;
+}
+
+.heloc-info__body li {
+  margin-bottom: 14px;
+  padding-left: 24px;
+  position: relative;
+  line-height: 1.7;
+}
+
+.heloc-info__body li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 8px;
+  height: 8px;
+  background: var(--green-mid);
+  border-radius: 50%;
+}
+
+.heloc-info__body strong {
+  font-weight: 700;
+  color: var(--green-dark);
+}
+
+/* ===========================
    MODAL
    =========================== */
 .modal-overlay {
@@ -1530,6 +1966,40 @@ button, input, select {
     text-align: center;
   }
 
+  /* Navbar Dropdown - mobile */
+  .navbar__dropdown {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .navbar__dropdown-toggle {
+    display: none;
+  }
+
+  .navbar__dropdown-menu {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    background: none;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .navbar__dropdown-menu a {
+    padding: 0;
+    padding-left: 12px;
+    font-size: inherit;
+    color: var(--text-mid);
+  }
+
   /* Hero */
   .hero {
     padding: 40px 0 48px;
@@ -1631,11 +2101,7 @@ button, input, select {
   }
 
   .calculators__grid {
-    grid-template-columns: 1fr;
-  }
-
-  .calc-card--span {
-    grid-column: auto;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   /* Stats */
@@ -1740,6 +2206,16 @@ button, input, select {
     gap: 12px;
     text-align: center;
   }
+
+  /* HELOC Calculator */
+  .heloc { padding: 80px 0 60px; }
+  .heloc__layout { grid-template-columns: 1fr; }
+  .heloc__results-inner { position: static; }
+  .heloc__title { font-size: 1.8rem; }
+  .heloc__form-card { padding: 20px; }
+  .heloc-info__container { padding: 0 20px; }
+  .heloc-info__body { font-size: 0.98rem; }
+  .heloc-info__body h2 { font-size: 1.3rem; margin-top: 36px; }
 }
 
 @media (max-width: 480px) {
@@ -1764,6 +2240,10 @@ button, input, select {
   .rate-ticker__label,
   .rate-ticker__item {
     font-size: 0.68rem;
+  }
+
+  .calculators__grid {
+    grid-template-columns: 1fr;
   }
 
   .rates__grid {
@@ -1813,4 +2293,9 @@ button, input, select {
   .article__body h2 {
     font-size: 1.15rem !important;
   }
+
+  /* HELOC Calculator */
+  .heloc__title { font-size: 1.5rem; }
+  .heloc__results-inner { padding: 28px 20px; }
+  .heloc-info__body h2 { font-size: 1.15rem; }
 }

@@ -23,7 +23,18 @@
         <span>MyMortgageExpert</span>
       </a>
       <nav class="navbar__links" id="navLinks">
-        <a href="/#calculators">Calculators</a>
+        <div class="navbar__dropdown">
+          <button class="navbar__dropdown-toggle">Calculators <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="navbar__dropdown-menu">
+            <a href="/calculators/heloc.html">HELOC Calculator</a>
+            <a href="/calculators/refinance.html">Refinance Calculator</a>
+            <a href="/calculators/renewal.html">Renewal Calculator</a>
+            <a href="/calculators/home-equity-loan.html">Home Equity Loan Calculator</a>
+            <a href="/calculators/self-employed.html">Self-Employed Calculator</a>
+            <a href="/calculators/land-transfer-tax.html">Land Transfer Tax Calculator</a>
+            <a href="/calculators/closing-costs.html">Closing Costs Calculator</a>
+          </div>
+        </div>
         <a href="/#rates">Mortgages</a>
         <a href="/#lenders">Lenders</a>
         <a href="/#about">About</a>
@@ -257,22 +268,33 @@
       e.preventDefault();
       const firstName = document.getElementById('firstName').value;
       const modalEl = document.querySelector('.modal');
-      modalEl.innerHTML = '<button class="modal__close" id="modalCloseResult" aria-label="Close">&times;</button>' +
-        '<div class="broker-result">' +
-          '<h2 class="broker-result__heading">You\'ve Been Matched!</h2>' +
-          '<p class="broker-result__subtext">' + firstName + ', here is your matched broker:</p>' +
-          '<img class="broker-result__logo" src="' + broker.logo + '" alt="' + broker.name + '">' +
-          '<h3 class="broker-result__name">' + broker.name + '</h3>' +
-          '<div class="broker-result__info">' +
-            '<span>' + broker.phone + '</span>' +
-            '<span>' + broker.licence + '</span>' +
-          '</div>' +
-          '<a href="tel:' + broker.phoneTel + '" class="btn btn--primary btn--large broker-result__cta">Call Now</a>' +
+      modalEl.innerHTML = '<button class="modal__close" id="modalCloseLoading" aria-label="Close">&times;</button>' +
+        '<div class="help-loading">' +
+          '<div class="help-loading__spinner"></div>' +
+          '<h2 class="help-loading__text">Pairing you with the best Broker</h2>' +
         '</div>';
-      document.getElementById('modalCloseResult').addEventListener('click', () => {
+      document.getElementById('modalCloseLoading').addEventListener('click', () => {
         modal.classList.remove('active');
         document.body.style.overflow = '';
       });
+      setTimeout(() => {
+        modalEl.innerHTML = '<button class="modal__close" id="modalCloseResult" aria-label="Close">&times;</button>' +
+          '<div class="broker-result">' +
+            '<h2 class="broker-result__heading">You\'ve Been Matched!</h2>' +
+            '<p class="broker-result__subtext">' + firstName + ', here is your matched broker:</p>' +
+            '<img class="broker-result__logo" src="' + broker.logo + '" alt="' + broker.name + '">' +
+            '<h3 class="broker-result__name">' + broker.name + '</h3>' +
+            '<div class="broker-result__info">' +
+              '<span>' + broker.phone + '</span>' +
+              '<span>' + broker.licence + '</span>' +
+            '</div>' +
+            '<a href="tel:' + broker.phoneTel + '" class="btn btn--primary btn--large broker-result__cta">Call Now</a>' +
+          '</div>';
+        document.getElementById('modalCloseResult').addEventListener('click', () => {
+          modal.classList.remove('active');
+          document.body.style.overflow = '';
+        });
+      }, 3000);
     });
 
     // Navbar scroll shadow

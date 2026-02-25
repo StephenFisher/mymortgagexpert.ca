@@ -23,7 +23,18 @@
         <span>MyMortgageExpert</span>
       </a>
       <nav class="navbar__links" id="navLinks">
-        <a href="#calculators">Calculators</a>
+        <div class="navbar__dropdown">
+          <button class="navbar__dropdown-toggle">Calculators <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="navbar__dropdown-menu">
+            <a href="/calculators/heloc.html">HELOC Calculator</a>
+            <a href="/calculators/refinance.html">Refinance Calculator</a>
+            <a href="/calculators/renewal.html">Renewal Calculator</a>
+            <a href="/calculators/home-equity-loan.html">Home Equity Loan Calculator</a>
+            <a href="/calculators/self-employed.html">Self-Employed Calculator</a>
+            <a href="/calculators/land-transfer-tax.html">Land Transfer Tax Calculator</a>
+            <a href="/calculators/closing-costs.html">Closing Costs Calculator</a>
+          </div>
+        </div>
         <a href="#rates">Mortgages</a>
         <a href="#lenders">Lenders</a>
         <a href="#about">About</a>
@@ -74,24 +85,35 @@
         </div>
       </div>
       <div class="hero__form-card">
-        <h3 class="hero__form-title">Calculate Your Payment</h3>
-        <div class="hero__tabs">
-          <button class="hero__tab active" data-tab="purchase">Pay off Debt</button>
-          <button class="hero__tab" data-tab="renewal">Renewal</button>
-          <button class="hero__tab" data-tab="refinance">Refinance</button>
-        </div>
-
+        <h3 class="hero__form-title">What Can You Afford?</h3>
         <form class="hero__form" id="heroForm">
           <div class="form-group form-group--full">
-            <label for="homePrice">Home Price</label>
-            <input type="text" id="homePrice" value="600000" placeholder="600000">
+            <label for="heroIncome">Annual Household Income</label>
+            <input type="text" id="heroIncome" placeholder="$100,000">
           </div>
           <div class="form-group form-group--full">
-            <label for="downPayment">Down Payment</label>
-            <input type="text" id="downPayment" value="120000" placeholder="120000">
+            <label for="heroDebts">Monthly Debt Payments</label>
+            <input type="text" id="heroDebts" placeholder="$500">
+            <span class="hero__helper">Car loans, credit cards, student loans, etc.</span>
           </div>
-          <button type="submit" class="btn btn--primary btn--large hero__submit">Calculate Payment</button>
+          <button type="submit" class="btn btn--primary btn--large hero__submit" id="heroSubmit">See What You Can Afford</button>
         </form>
+        <div class="hero__result" id="heroResult">
+          <div class="hero__result-row">
+            <span class="hero__result-label">You could afford up to</span>
+            <span class="hero__result-value hero__result-value--hero" id="heroMaxPrice">$0</span>
+          </div>
+          <div class="hero__result-row">
+            <span class="hero__result-label">Estimated monthly payment</span>
+            <span class="hero__result-value" id="heroMonthly">$0</span>
+          </div>
+          <div class="hero__result-row">
+            <span class="hero__result-label">Minimum down payment</span>
+            <span class="hero__result-value" id="heroDown">$0</span>
+          </div>
+          <a href="#" class="btn btn--primary btn--large hero__result-cta open-modal">Get Pre-Approved &rarr;</a>
+        </div>
+        <div class="hero__result-message" id="heroResultMessage"></div>
       </div>
     </div>
   </section>
@@ -108,25 +130,21 @@
           <span class="rate-card__badge">5-Year Fixed</span>
           <span class="rate-card__value">4.04%</span>
           <span class="rate-card__meta">as low as &middot; Insured rate</span>
-          <a href="#" class="rate-card__link">View Details &rarr;</a>
         </div>
         <div class="rate-card">
           <span class="rate-card__badge">5-Year Variable</span>
           <span class="rate-card__value">4.45%</span>
           <span class="rate-card__meta">as low as &middot; Insured rate</span>
-          <a href="#" class="rate-card__link">View Details &rarr;</a>
         </div>
         <div class="rate-card">
           <span class="rate-card__badge">3-Year Fixed</span>
           <span class="rate-card__value">4.24%</span>
           <span class="rate-card__meta">as low as &middot; Insured rate</span>
-          <a href="#" class="rate-card__link">View Details &rarr;</a>
         </div>
         <div class="rate-card">
-          <span class="rate-card__badge">5-Year Fixed</span>
-          <span class="rate-card__value">4.39%</span>
-          <span class="rate-card__meta">as low as &middot; Uninsured rate</span>
-          <a href="#" class="rate-card__link">View Details &rarr;</a>
+          <span class="rate-card__badge">3-Year Variable</span>
+          <span class="rate-card__value">4.55%</span>
+          <span class="rate-card__meta">as low as &middot; Insured rate</span>
         </div>
       </div>
     </div>
@@ -175,34 +193,38 @@
               <path d="M12 14h8M12 18h5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
             </svg>
           </div>
-          <h3 class="calculators__featured-title">Mortgage Payment Calculator</h3>
-          <p class="calculators__featured-text">Calculate your monthly mortgage payment based on home price, down payment, interest rate, and amortization period. See how different rates impact your budget.</p>
-          <a href="#" class="calculators__featured-link">Try Calculator &rarr;</a>
+          <h3 class="calculators__featured-title">Mortgage Calculators</h3>
+          <p class="calculators__featured-text">Use our free calculators to estimate payments, compare renewal rates, explore refinancing options, and see how much equity you can access. No sign-up required — get instant results to help you make smarter mortgage decisions.</p>
         </div>
         <div class="calculators__grid">
-          <a href="#" class="calc-card">
-            <h4 class="calc-card__title">Affordability Calculator</h4>
-            <p class="calc-card__text">Discover how much home you can afford based on your income and expenses.</p>
+          <a href="calculators/heloc.html" class="calc-card">
+            <h4 class="calc-card__title">HELOC Calculator</h4>
+            <p class="calc-card__text">Estimate your home equity line of credit limit, monthly payment, and consolidation savings.</p>
             <span class="calc-card__link">Calculate &rarr;</span>
           </a>
-          <a href="#" class="calc-card">
+          <a href="calculators/refinance.html" class="calc-card">
+            <h4 class="calc-card__title">Refinance Calculator</h4>
+            <p class="calc-card__text">Compare your current payment to a new mortgage with a lower rate, new amortization, or equity access.</p>
+            <span class="calc-card__link">Calculate &rarr;</span>
+          </a>
+          <a href="calculators/home-equity-loan.html" class="calc-card">
+            <h4 class="calc-card__title">Home Equity Loan Calculator</h4>
+            <p class="calc-card__text">Estimate your home equity loan amount and monthly interest payment.</p>
+            <span class="calc-card__link">Calculate &rarr;</span>
+          </a>
+          <a href="calculators/renewal.html" class="calc-card">
+            <h4 class="calc-card__title">Renewal Calculator</h4>
+            <p class="calc-card__text">Same mortgage, better rate. See how much you could save by switching lenders at renewal.</p>
+            <span class="calc-card__link">Calculate &rarr;</span>
+          </a>
+          <a href="calculators/land-transfer-tax.html" class="calc-card">
             <h4 class="calc-card__title">Land Transfer Tax</h4>
-            <p class="calc-card__text">Estimate land transfer tax for your province and purchase price.</p>
+            <p class="calc-card__text">Estimate Ontario provincial and Toronto municipal land transfer tax with first-time buyer rebates.</p>
             <span class="calc-card__link">Calculate &rarr;</span>
           </a>
-          <a href="#" class="calc-card">
-            <h4 class="calc-card__title">CMHC Insurance</h4>
-            <p class="calc-card__text">Find out your default insurance premium for down payments under 20%.</p>
-            <span class="calc-card__link">Calculate &rarr;</span>
-          </a>
-          <a href="#" class="calc-card">
+          <a href="calculators/closing-costs.html" class="calc-card">
             <h4 class="calc-card__title">Closing Costs</h4>
-            <p class="calc-card__text">Estimate all closing costs including legal fees, inspections, and more.</p>
-            <span class="calc-card__link">Calculate &rarr;</span>
-          </a>
-          <a href="#" class="calc-card calc-card--span">
-            <h4 class="calc-card__title">Penalty Calculator</h4>
-            <p class="calc-card__text">Calculate the penalty for breaking your mortgage early.</p>
+            <p class="calc-card__text">Estimate all closing costs including land transfer tax, legal fees, insurance, and more.</p>
             <span class="calc-card__link">Calculate &rarr;</span>
           </a>
         </div>
@@ -447,10 +469,10 @@
           </div>
           <div class="footer__col">
             <h4>Calculators</h4>
-            <a href="#">Payment Calculator</a>
-            <a href="#">Affordability</a>
-            <a href="#">Land Transfer Tax</a>
-            <a href="#">CMHC Insurance</a>
+            <a href="calculators/heloc.html">HELOC Calculator</a>
+            <a href="calculators/refinance.html">Refinance</a>
+            <a href="calculators/renewal.html">Renewal</a>
+            <a href="calculators/closing-costs.html">Closing Costs</a>
           </div>
           <div class="footer__col">
             <h4>Legal</h4>
