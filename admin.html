@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — MyMortgageExpert</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f5f5f0; color: #1B3C2D; min-height: 100vh; }
+
+    /* ===== Login ===== */
+    .login { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; }
+    .login__card { background: #fff; border-radius: 16px; padding: 48px 40px; max-width: 400px; width: 100%; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+    .login__logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.15rem; margin-bottom: 32px; justify-content: center; }
+    .login__title { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; text-align: center; }
+    .login__subtitle { color: #6b7c74; font-size: 0.9rem; margin-bottom: 28px; text-align: center; }
+    .login__input { width: 100%; padding: 12px 16px; border: 1.5px solid #d9ddd8; border-radius: 10px; font-size: 0.95rem; font-family: inherit; margin-bottom: 16px; transition: border-color 0.2s; outline: none; }
+    .login__input:focus { border-color: #2A7D5B; }
+    .login__btn { width: 100%; padding: 14px; background: #2A7D5B; color: #fff; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .login__btn:hover { background: #1B3C2D; }
+    .login__error { background: #fef2f2; color: #b91c1c; padding: 10px 14px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 16px; display: none; }
+    .login__error.active { display: block; }
+
+    /* ===== Dashboard ===== */
+    .dashboard { display: none; }
+    .dashboard.active { display: block; }
+    .login.hidden { display: none; }
+
+    .dash-header { background: #1B3C2D; color: #fff; padding: 16px 0; }
+    .dash-header__inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
+    .dash-header__logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.1rem; }
+    .dash-header__right { display: flex; align-items: center; gap: 16px; }
+    .dash-header__user { font-size: 0.85rem; opacity: 0.8; }
+    .dash-header__logout { background: rgba(255,255,255,0.15); color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; cursor: pointer; font-family: inherit; transition: background 0.2s; }
+    .dash-header__logout:hover { background: rgba(255,255,255,0.25); }
+
+    .dash-body { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+
+    .dash-tabs { display: flex; gap: 8px; margin-bottom: 32px; flex-wrap: wrap; }
+    .dash-tab { padding: 10px 20px; border-radius: 10px; border: 1.5px solid #d9ddd8; background: #fff; font-size: 0.9rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s; color: #1B3C2D; }
+    .dash-tab.active { background: #1B3C2D; color: #fff; border-color: #1B3C2D; }
+
+    .dash-panel { display: none; }
+    .dash-panel.active { display: block; }
+
+    .dash-card { background: #fff; border-radius: 16px; padding: 32px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); margin-bottom: 24px; }
+    .dash-card__title { font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; }
+
+    .dash-table { width: 100%; border-collapse: collapse; }
+    .dash-table th { text-align: left; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #6b7c74; padding: 8px 12px; border-bottom: 2px solid #e8ebe6; }
+    .dash-table td { padding: 12px; border-bottom: 1px solid #e8ebe6; font-size: 0.95rem; }
+    .dash-table input { padding: 8px 12px; border: 1.5px solid #d9ddd8; border-radius: 8px; font-size: 0.95rem; font-family: inherit; width: 100%; max-width: 200px; outline: none; transition: border-color 0.2s; }
+    .dash-table input:focus { border-color: #2A7D5B; }
+    .dash-table input[type="number"] { max-width: 120px; }
+
+    .dash-form { display: grid; gap: 16px; }
+    .dash-form label { font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 4px; }
+    .dash-form input, .dash-form select { width: 100%; padding: 10px 14px; border: 1.5px solid #d9ddd8; border-radius: 8px; font-size: 0.95rem; font-family: inherit; outline: none; transition: border-color 0.2s; }
+    .dash-form input:focus { border-color: #2A7D5B; }
+    .dash-form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .dash-btn { padding: 12px 24px; border-radius: 10px; font-size: 0.9rem; font-weight: 600; cursor: pointer; font-family: inherit; border: none; transition: all 0.2s; }
+    .dash-btn--primary { background: #2A7D5B; color: #fff; }
+    .dash-btn--primary:hover { background: #1B3C2D; }
+    .dash-btn--danger { background: #fef2f2; color: #b91c1c; }
+    .dash-btn--danger:hover { background: #fecaca; }
+    .dash-btn--outline { background: #fff; color: #1B3C2D; border: 1.5px solid #d9ddd8; }
+    .dash-btn--outline:hover { border-color: #1B3C2D; }
+    .dash-btn--sm { padding: 6px 14px; font-size: 0.8rem; }
+
+    .dash-actions { display: flex; gap: 12px; margin-top: 20px; align-items: center; }
+    .dash-status { font-size: 0.85rem; color: #2A7D5B; font-weight: 500; margin-left: 8px; opacity: 0; transition: opacity 0.3s; }
+    .dash-status.show { opacity: 1; }
+
+    .lender-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #e8ebe6; }
+    .lender-row:last-child { border-bottom: none; }
+    .lender-row__order { color: #6b7c74; font-size: 0.85rem; min-width: 24px; }
+    .lender-row input { flex: 1; padding: 8px 12px; border: 1.5px solid #d9ddd8; border-radius: 8px; font-size: 0.95rem; font-family: inherit; outline: none; }
+    .lender-row input:focus { border-color: #2A7D5B; }
+
+    .add-row { display: flex; gap: 12px; margin-top: 16px; }
+    .add-row input { flex: 1; padding: 10px 14px; border: 1.5px solid #d9ddd8; border-radius: 8px; font-size: 0.95rem; font-family: inherit; outline: none; }
+    .add-row input:focus { border-color: #2A7D5B; }
+
+    .homepage-rate-row { display: grid; grid-template-columns: 1fr 100px 1fr; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid #e8ebe6; }
+    .homepage-rate-row:last-child { border-bottom: none; }
+    .homepage-rate-row input { padding: 8px 12px; border: 1.5px solid #d9ddd8; border-radius: 8px; font-size: 0.95rem; font-family: inherit; outline: none; }
+    .homepage-rate-row input:focus { border-color: #2A7D5B; }
+
+    @media (max-width: 600px) {
+      .dash-form__row { grid-template-columns: 1fr; }
+      .dash-header__inner { flex-direction: column; gap: 12px; text-align: center; }
+      .homepage-rate-row { grid-template-columns: 1fr; }
+      .login__card { padding: 32px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== LOGIN ===== -->
+  <div class="login" id="loginScreen">
+    <div class="login__card">
+      <div class="login__logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="7" fill="#1B3C2D"/>
+          <path d="M7 23V13l9-5.5 9 5.5v10H7z" fill="#2A7D5B"/>
+          <rect x="12.5" y="16.5" width="7" height="6.5" rx="1" fill="#F7F3EE"/>
+        </svg>
+        <span>MyMortgageExpert</span>
+      </div>
+      <h1 class="login__title">Admin Dashboard</h1>
+      <p class="login__subtitle">Sign in to manage rates, broker info, and lenders.</p>
+      <div class="login__error" id="loginError"></div>
+      <form id="loginForm">
+        <input type="email" class="login__input" id="loginEmail" placeholder="Email address" required>
+        <input type="password" class="login__input" id="loginPassword" placeholder="Password" required>
+        <button type="submit" class="login__btn" id="loginBtn">Sign In</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== DASHBOARD ===== -->
+  <div class="dashboard" id="dashboard">
+    <header class="dash-header">
+      <div class="dash-header__inner">
+        <div class="dash-header__logo">
+          <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="7" fill="#2A7D5B"/>
+            <path d="M7 23V13l9-5.5 9 5.5v10H7z" fill="#1B3C2D"/>
+            <rect x="12.5" y="16.5" width="7" height="6.5" rx="1" fill="#F7F3EE"/>
+          </svg>
+          <span>MME Admin</span>
+        </div>
+        <div class="dash-header__right">
+          <span class="dash-header__user" id="dashUser"></span>
+          <button class="dash-header__logout" id="logoutBtn">Sign Out</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="dash-body">
+      <div class="dash-tabs">
+        <button class="dash-tab active" data-panel="rates">Calculator Rates</button>
+        <button class="dash-tab" data-panel="homepage">Homepage Rates</button>
+        <button class="dash-tab" data-panel="broker">Broker Info</button>
+        <button class="dash-tab" data-panel="lenders">Lenders</button>
+      </div>
+
+      <!-- ===== CALCULATOR RATES ===== -->
+      <div class="dash-panel active" id="panel-rates">
+        <div class="dash-card">
+          <div class="dash-card__title">Calculator Rates <span class="dash-status" id="ratesStatus">Saved!</span></div>
+          <p style="color:#6b7c74; font-size:0.85rem; margin-bottom:20px;">These rates are used across all calculator pages (Refinance, Renewal, Self-Employed).</p>
+          <table class="dash-table">
+            <thead>
+              <tr>
+                <th>Term</th>
+                <th>Fixed Rate (%)</th>
+                <th>Variable Rate (%)</th>
+              </tr>
+            </thead>
+            <tbody id="ratesTableBody">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+          <div class="dash-actions">
+            <button class="dash-btn dash-btn--primary" id="saveRatesBtn">Save Rates</button>
+            <span class="dash-status" id="ratesStatusAction"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== HOMEPAGE RATES ===== -->
+      <div class="dash-panel" id="panel-homepage">
+        <div class="dash-card">
+          <div class="dash-card__title">Homepage Rate Cards <span class="dash-status" id="homepageStatus"></span></div>
+          <p style="color:#6b7c74; font-size:0.85rem; margin-bottom:20px;">These are the 4 rate cards displayed in the "Today's Lowest Rates" section on the homepage.</p>
+          <div id="homepageRatesList">
+            <!-- Populated by JS -->
+          </div>
+          <div class="dash-actions">
+            <button class="dash-btn dash-btn--primary" id="saveHomepageBtn">Save Homepage Rates</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== BROKER INFO ===== -->
+      <div class="dash-panel" id="panel-broker">
+        <div class="dash-card">
+          <div class="dash-card__title">Broker Information <span class="dash-status" id="brokerStatus"></span></div>
+          <p style="color:#6b7c74; font-size:0.85rem; margin-bottom:20px;">This broker is shown after a user submits the Get Pre-Approved or Help forms.</p>
+          <div class="dash-form" id="brokerForm">
+            <div class="dash-form__row">
+              <div>
+                <label>Broker Name</label>
+                <input type="text" id="brokerName">
+              </div>
+              <div>
+                <label>Licence</label>
+                <input type="text" id="brokerLicence">
+              </div>
+            </div>
+            <div class="dash-form__row">
+              <div>
+                <label>Phone Display (e.g. 905-234-3323)</label>
+                <input type="text" id="brokerPhone">
+              </div>
+              <div>
+                <label>Phone Tel (e.g. 19052343323)</label>
+                <input type="text" id="brokerPhoneTel">
+              </div>
+            </div>
+            <div>
+              <label>Logo Filename (e.g. lighthouse-lending-logo.png)</label>
+              <input type="text" id="brokerLogo">
+            </div>
+          </div>
+          <div class="dash-actions">
+            <button class="dash-btn dash-btn--primary" id="saveBrokerBtn">Save Broker</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== LENDERS ===== -->
+      <div class="dash-panel" id="panel-lenders">
+        <div class="dash-card">
+          <div class="dash-card__title">Lender Network <span class="dash-status" id="lendersStatus"></span></div>
+          <p style="color:#6b7c74; font-size:0.85rem; margin-bottom:20px;">These lenders are displayed on the homepage "Access to 30+ Lenders" section.</p>
+          <div id="lendersList">
+            <!-- Populated by JS -->
+          </div>
+          <div class="add-row">
+            <input type="text" id="newLenderName" placeholder="Add new lender...">
+            <button class="dash-btn dash-btn--outline" id="addLenderBtn">Add</button>
+          </div>
+          <div class="dash-actions">
+            <button class="dash-btn dash-btn--primary" id="saveLendersBtn">Save Lenders</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // =============================================
+    // Supabase Init
+    // =============================================
+    const SUPABASE_URL = 'https://qsynstslucmrzwskhxty.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzeW5zdHNsdWNtcnp3c2toeHR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNDYxNzIsImV4cCI6MjA4NzYyMjE3Mn0.nL9oQr3HBhcMhCM3uh6dVEsWFpn0795IrybosXIu1Es';
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // =============================================
+    // Helpers
+    // =============================================
+    function flashStatus(el, text) {
+      el.textContent = text || 'Saved!';
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 2500);
+    }
+
+    // =============================================
+    // Auth
+    // =============================================
+    const loginScreen = document.getElementById('loginScreen');
+    const dashboard = document.getElementById('dashboard');
+    const loginForm = document.getElementById('loginForm');
+    const loginError = document.getElementById('loginError');
+
+    async function checkSession() {
+      const { data: { session } } = await sb.auth.getSession();
+      if (session) {
+        showDashboard(session.user);
+      }
+    }
+    checkSession();
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      loginError.classList.remove('active');
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      document.getElementById('loginBtn').textContent = 'Signing in...';
+
+      const { data, error } = await sb.auth.signInWithPassword({ email, password });
+      if (error) {
+        loginError.textContent = error.message;
+        loginError.classList.add('active');
+        document.getElementById('loginBtn').textContent = 'Sign In';
+        return;
+      }
+      showDashboard(data.user);
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      await sb.auth.signOut();
+      dashboard.classList.remove('active');
+      loginScreen.classList.remove('hidden');
+      document.getElementById('loginBtn').textContent = 'Sign In';
+    });
+
+    function showDashboard(user) {
+      loginScreen.classList.add('hidden');
+      dashboard.classList.add('active');
+      document.getElementById('dashUser').textContent = user.email;
+      loadRates();
+      loadBroker();
+      loadLenders();
+      loadHomepageRates();
+    }
+
+    // =============================================
+    // Tabs
+    // =============================================
+    document.querySelectorAll('.dash-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.dash-panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('panel-' + tab.dataset.panel).classList.add('active');
+      });
+    });
+
+    // =============================================
+    // RATES
+    // =============================================
+    let ratesData = [];
+
+    async function loadRates() {
+      const { data, error } = await sb.from('rates').select('*').order('term_years');
+      if (error) { console.error(error); return; }
+      ratesData = data;
+      renderRates();
+    }
+
+    function renderRates() {
+      const tbody = document.getElementById('ratesTableBody');
+      tbody.innerHTML = ratesData.map(r => `
+        <tr>
+          <td><strong>${r.term_years}-Year</strong></td>
+          <td><input type="number" step="0.01" value="${r.fixed_rate}" data-term="${r.term_years}" data-type="fixed"></td>
+          <td><input type="number" step="0.01" value="${r.variable_rate}" data-term="${r.term_years}" data-type="variable"></td>
+        </tr>
+      `).join('');
+    }
+
+    document.getElementById('saveRatesBtn').addEventListener('click', async () => {
+      const rows = document.querySelectorAll('#ratesTableBody tr');
+      const updates = [];
+      rows.forEach(row => {
+        const fixedInput = row.querySelector('input[data-type="fixed"]');
+        const variableInput = row.querySelector('input[data-type="variable"]');
+        updates.push({
+          term_years: parseInt(fixedInput.dataset.term),
+          fixed_rate: parseFloat(fixedInput.value),
+          variable_rate: parseFloat(variableInput.value)
+        });
+      });
+
+      for (const u of updates) {
+        const { error } = await sb.from('rates').update({
+          fixed_rate: u.fixed_rate,
+          variable_rate: u.variable_rate,
+          updated_at: new Date().toISOString()
+        }).eq('term_years', u.term_years);
+        if (error) { alert('Error saving rates: ' + error.message); return; }
+      }
+      flashStatus(document.getElementById('ratesStatus'));
+    });
+
+    // =============================================
+    // HOMEPAGE RATES
+    // =============================================
+    let homepageRatesData = [];
+
+    async function loadHomepageRates() {
+      const { data, error } = await sb.from('homepage_rates').select('*').order('display_order');
+      if (error) { console.error(error); return; }
+      homepageRatesData = data;
+      renderHomepageRates();
+    }
+
+    function renderHomepageRates() {
+      const list = document.getElementById('homepageRatesList');
+      list.innerHTML = homepageRatesData.map((r, i) => `
+        <div class="homepage-rate-row" data-id="${r.id}">
+          <input type="text" value="${r.badge_text}" data-field="badge_text" placeholder="e.g. 5-Year Fixed">
+          <input type="number" step="0.01" value="${r.rate_value}" data-field="rate_value" placeholder="4.04">
+          <input type="text" value="${r.meta_text}" data-field="meta_text" placeholder="as low as · Insured rate">
+        </div>
+      `).join('');
+    }
+
+    document.getElementById('saveHomepageBtn').addEventListener('click', async () => {
+      const rows = document.querySelectorAll('.homepage-rate-row');
+      for (const row of rows) {
+        const id = row.dataset.id;
+        const badge_text = row.querySelector('[data-field="badge_text"]').value;
+        const rate_value = parseFloat(row.querySelector('[data-field="rate_value"]').value);
+        const meta_text = row.querySelector('[data-field="meta_text"]').value;
+        const { error } = await sb.from('homepage_rates').update({
+          badge_text, rate_value, meta_text, updated_at: new Date().toISOString()
+        }).eq('id', id);
+        if (error) { alert('Error: ' + error.message); return; }
+      }
+      flashStatus(document.getElementById('homepageStatus'));
+    });
+
+    // =============================================
+    // BROKER
+    // =============================================
+    let brokerData = null;
+
+    async function loadBroker() {
+      const { data, error } = await sb.from('broker').select('*').eq('is_active', true).limit(1).single();
+      if (error) { console.error(error); return; }
+      brokerData = data;
+      document.getElementById('brokerName').value = data.name;
+      document.getElementById('brokerLicence').value = data.licence;
+      document.getElementById('brokerPhone').value = data.phone_display;
+      document.getElementById('brokerPhoneTel').value = data.phone_tel;
+      document.getElementById('brokerLogo').value = data.logo_url || '';
+    }
+
+    document.getElementById('saveBrokerBtn').addEventListener('click', async () => {
+      if (!brokerData) return;
+      const { error } = await sb.from('broker').update({
+        name: document.getElementById('brokerName').value,
+        licence: document.getElementById('brokerLicence').value,
+        phone_display: document.getElementById('brokerPhone').value,
+        phone_tel: document.getElementById('brokerPhoneTel').value,
+        logo_url: document.getElementById('brokerLogo').value,
+        updated_at: new Date().toISOString()
+      }).eq('id', brokerData.id);
+      if (error) { alert('Error: ' + error.message); return; }
+      flashStatus(document.getElementById('brokerStatus'));
+    });
+
+    // =============================================
+    // LENDERS
+    // =============================================
+    let lendersData = [];
+
+    async function loadLenders() {
+      const { data, error } = await sb.from('lenders').select('*').order('display_order');
+      if (error) { console.error(error); return; }
+      lendersData = data;
+      renderLenders();
+    }
+
+    function renderLenders() {
+      const list = document.getElementById('lendersList');
+      list.innerHTML = lendersData.map((l, i) => `
+        <div class="lender-row" data-id="${l.id}">
+          <span class="lender-row__order">${i + 1}.</span>
+          <input type="text" value="${l.name}" data-field="name">
+          <button class="dash-btn dash-btn--danger dash-btn--sm" onclick="removeLender('${l.id}')">Remove</button>
+        </div>
+      `).join('');
+    }
+
+    window.removeLender = function(id) {
+      lendersData = lendersData.filter(l => l.id !== id);
+      renderLenders();
+    };
+
+    document.getElementById('addLenderBtn').addEventListener('click', () => {
+      const nameInput = document.getElementById('newLenderName');
+      const name = nameInput.value.trim();
+      if (!name) return;
+      lendersData.push({ id: 'new-' + Date.now(), name, display_order: lendersData.length + 1, is_active: true });
+      renderLenders();
+      nameInput.value = '';
+    });
+
+    document.getElementById('saveLendersBtn').addEventListener('click', async () => {
+      // Delete all existing, then re-insert with updated order and names
+      const { error: delError } = await sb.from('lenders').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      if (delError) { alert('Error clearing lenders: ' + delError.message); return; }
+
+      const rows = document.querySelectorAll('.lender-row');
+      const inserts = [];
+      rows.forEach((row, i) => {
+        const name = row.querySelector('input[data-field="name"]').value.trim();
+        if (name) {
+          inserts.push({ name, display_order: i + 1, is_active: true });
+        }
+      });
+
+      if (inserts.length > 0) {
+        const { error } = await sb.from('lenders').insert(inserts);
+        if (error) { alert('Error saving lenders: ' + error.message); return; }
+      }
+      loadLenders();
+      flashStatus(document.getElementById('lendersStatus'));
+    });
+  </script>
+</body>
+</html>

@@ -361,8 +361,8 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// Broker info (hardcoded for now)
-const broker = {
+// Broker info (defaults — overridden by Supabase if available)
+var broker = {
   name: 'Lighthouse Lending',
   phone: '905-234-3323',
   phoneTel: '19052343323',

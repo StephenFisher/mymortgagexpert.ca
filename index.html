@@ -592,6 +592,44 @@
 
   <!-- Google Places API — uncomment and add your key when ready -->
   <!-- <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initHelpAutocomplete" async defer></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
   <script src="script.js"></script>
+  <script>
+    // Load live data from Supabase
+    (async function() {
+      // Update homepage rate cards
+      const hpRates = await fetchHomepageRates();
+      if (hpRates) {
+        const cards = document.querySelectorAll('.rate-card');
+        hpRates.forEach((r, i) => {
+          if (cards[i]) {
+            cards[i].querySelector('.rate-card__badge').textContent = r.badge_text;
+            cards[i].querySelector('.rate-card__value').textContent = parseFloat(r.rate_value).toFixed(2) + '%';
+            cards[i].querySelector('.rate-card__meta').textContent = r.meta_text;
+          }
+        });
+      }
+
+      // Update lenders list
+      const lenders = await fetchLenders();
+      if (lenders) {
+        const row = document.querySelector('.lenders__row');
+        if (row) {
+          row.innerHTML = lenders.map(l => '<span class="lender-name">' + l.name + '</span>').join('');
+        }
+      }
+
+      // Update broker info
+      const b = await fetchBroker();
+      if (b && typeof broker !== 'undefined') {
+        broker.name = b.name;
+        broker.phone = b.phone;
+        broker.phoneTel = b.phoneTel;
+        broker.licence = b.licence;
+        broker.logo = b.logo;
+      }
+    })();
+  </script>
 </body>
 </html>

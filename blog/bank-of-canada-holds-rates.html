@@ -246,7 +246,7 @@
       }
     });
 
-    const broker = {
+    var broker = {
       name: 'Lighthouse Lending',
       phone: '905-234-3323',
       phoneTel: '19052343323',
@@ -292,6 +292,14 @@
     window.addEventListener('scroll', () => {
       navbar.style.boxShadow = window.scrollY > 10 ? '0 2px 16px rgba(0,0,0,0.06)' : 'none';
     });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../supabase-config.js"></script>
+  <script>
+    (async function() {
+      const b = await fetchBroker();
+      if (b) { broker.name = b.name; broker.phone = b.phone; broker.phoneTel = b.phoneTel; broker.licence = b.licence; broker.logo = '../' + b.logo; }
+    })();
   </script>
 </body>
 </html>
