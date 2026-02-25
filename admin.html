@@ -119,6 +119,21 @@
         <input type="password" class="login__input" id="loginPassword" placeholder="Password" required>
         <button type="submit" class="login__btn" id="loginBtn">Sign In</button>
       </form>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="#" id="forgotPasswordLink" style="color:#2A7D5B; font-size:0.85rem; text-decoration:none;">Forgot password?</a>
+      </p>
+      <div id="resetScreen" style="display:none;">
+        <p style="color:#6b7c74; font-size:0.9rem; margin-bottom:16px; text-align:center;">Enter your email and we'll send you a reset link.</p>
+        <div class="login__error" id="resetError"></div>
+        <div id="resetSuccess" style="background:#f0fdf4; color:#166534; padding:10px 14px; border-radius:8px; font-size:0.85rem; margin-bottom:16px; display:none;"></div>
+        <form id="resetForm">
+          <input type="email" class="login__input" id="resetEmail" placeholder="Email address" required>
+          <button type="submit" class="login__btn" id="resetBtn">Send Reset Link</button>
+        </form>
+        <p style="text-align:center; margin-top:16px;">
+          <a href="#" id="backToLogin" style="color:#2A7D5B; font-size:0.85rem; text-decoration:none;">&larr; Back to sign in</a>
+        </p>
+      </div>
     </div>
   </div>
 
@@ -277,6 +292,69 @@
       }
     }
     checkSession();
+
+    // =============================================
+    // Password Reset
+    // =============================================
+    const resetScreen = document.getElementById('resetScreen');
+    const resetForm = document.getElementById('resetForm');
+    const resetError = document.getElementById('resetError');
+    const resetSuccess = document.getElementById('resetSuccess');
+
+    document.getElementById('forgotPasswordLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      loginForm.style.display = 'none';
+      document.getElementById('forgotPasswordLink').parentElement.style.display = 'none';
+      resetScreen.style.display = '';
+      loginError.classList.remove('active');
+    });
+
+    document.getElementById('backToLogin').addEventListener('click', (e) => {
+      e.preventDefault();
+      resetScreen.style.display = 'none';
+      loginForm.style.display = '';
+      document.getElementById('forgotPasswordLink').parentElement.style.display = '';
+      resetError.classList.remove('active');
+      resetSuccess.style.display = 'none';
+    });
+
+    resetForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      resetError.classList.remove('active');
+      resetSuccess.style.display = 'none';
+      const email = document.getElementById('resetEmail').value;
+      document.getElementById('resetBtn').textContent = 'Sending...';
+
+      const { error } = await sb.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + '/admin.html'
+      });
+
+      document.getElementById('resetBtn').textContent = 'Send Reset Link';
+      if (error) {
+        resetError.textContent = error.message;
+        resetError.classList.add('active');
+        return;
+      }
+      resetSuccess.textContent = 'Reset link sent! Check your email.';
+      resetSuccess.style.display = 'block';
+    });
+
+    // Handle password reset token from email link
+    (async function() {
+      const hash = window.location.hash;
+      if (hash && hash.includes('type=recovery')) {
+        const newPassword = prompt('Enter your new password:');
+        if (newPassword) {
+          const { error } = await sb.auth.updateUser({ password: newPassword });
+          if (error) {
+            alert('Error resetting password: ' + error.message);
+          } else {
+            alert('Password updated successfully! You can now sign in.');
+            window.location.hash = '';
+          }
+        }
+      }
+    })();
 
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
