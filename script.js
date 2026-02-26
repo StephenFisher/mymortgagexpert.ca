@@ -500,7 +500,10 @@ if (contactModal) {
     var cPhone = document.getElementById('contactPhone').value;
     var cEmail = document.getElementById('contactEmail').value;
     var cComments = document.getElementById('contactComments').value;
-    (async function() { await submitLead({ first_name: cName, last_name: '', email: cEmail, phone: cPhone, source: 'contact', page: window.location.pathname, notes: cComments }); })();
+    (async function() {
+      var brokerId = await fetchActiveBrokerId();
+      await submitLead({ first_name: cName, last_name: '', email: cEmail, phone: cPhone, source: 'contact', page: window.location.pathname, broker_id: brokerId, notes: cComments });
+    })();
     e.target.closest('.modal').innerHTML = '<button class="modal__close" id="contactModalCloseSuccess" aria-label="Close">&times;</button><div style="text-align:center; padding:40px 20px;"><h2 class="modal__title">Message Sent</h2><p class="modal__subtitle">Thanks, ' + cName + '. We\'ll be in touch shortly.</p></div>';
     document.getElementById('contactModalCloseSuccess').addEventListener('click', function() { contactModal.classList.remove('active'); document.body.style.overflow = ''; });
   });
