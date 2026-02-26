@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purchase Calculator — MyMortgageExpert</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@800&family=Playfair+Display:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ======= NAV BAR ======= -->
+  <header class="navbar" id="navbar">
+    <div class="container navbar__inner">
+      <a href="/" class="navbar__logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="7" fill="#1B3C2D"/>
+          <path d="M7 23V13l9-5.5 9 5.5v10H7z" fill="#2A7D5B"/>
+          <rect x="12.5" y="16.5" width="7" height="6.5" rx="1" fill="#F7F3EE"/>
+        </svg>
+        <span>MyMortgageExpert</span>
+      </a>
+      <nav class="navbar__links" id="navLinks">
+        <div class="navbar__dropdown">
+          <button class="navbar__dropdown-toggle">Calculators <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="navbar__dropdown-menu">
+            <a href="/calculators/heloc.html">HELOC Calculator</a>
+            <a href="/calculators/refinance.html">Refinance Calculator</a>
+            <a href="/calculators/renewal.html">Renewal Calculator</a>
+            <a href="/calculators/home-equity-loan.html">Home Equity Loan Calculator</a>
+            <a href="/calculators/self-employed.html">Self-Employed Calculator</a>
+            <a href="/calculators/land-transfer-tax.html">Land Transfer Tax Calculator</a>
+            <a href="/calculators/purchase.html">Purchase Calculator</a>
+            <a href="/calculators/affordability.html">Affordability Calculator</a>
+          </div>
+        </div>
+        <a href="/mortgages.html">Mortgages</a>
+        <a href="/how-it-works.html">How It Works</a>
+        <a href="/about.html">About</a>
+        <a href="tel:18445002535" class="navbar__mobile-phone">1-844-500-2535</a>
+        <a href="#" class="btn btn--primary navbar__mobile-cta open-modal">Get Pre-Approved</a>
+      </nav>
+      <div class="navbar__right">
+        <a href="tel:18445002535" class="navbar__phone">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M14.67 11.44l-2.18-.93a1 1 0 00-1.05.18l-1.2 1.07a10.5 10.5 0 01-4.9-4.9l1.07-1.2a1 1 0 00.18-1.05l-.93-2.18A1 1 0 004.6 1.5H2.5A1 1 0 001.5 2.6 13 13 0 0013.4 14.5a1 1 0 001.1-1h-2.1a1 1 0 00-1.06-.93z" stroke="#1B3C2D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          1-844-500-2535
+        </a>
+        <a href="#" class="btn btn--primary navbar__cta open-modal">Get Pre-Approved</a>
+      </div>
+      <button class="navbar__hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ======= PURCHASE CALCULATOR ======= -->
+  <section class="heloc">
+    <div class="container">
+      <div class="heloc__nav">
+        <a href="/" class="heloc__back">&larr; Back to Home</a>
+      </div>
+
+      <div class="heloc__header">
+        <span class="heloc__tag">CALCULATOR</span>
+        <h1 class="heloc__title">Purchase Calculator</h1>
+        <p class="heloc__subtitle">See the full picture &mdash; your monthly payment, closing costs, and total cash needed to buy a home in Ontario.</p>
+      </div>
+
+      <div class="heloc__layout">
+        <!-- LEFT: Input Form -->
+        <div class="heloc__form-card">
+          <h3 class="heloc__form-title">Your Purchase Details</h3>
+          <div class="heloc__form">
+            <div class="form-group">
+              <label>First-Time Home Buyer?</label>
+              <div class="heloc__toggle" id="ccFthbToggle">
+                <button type="button" class="heloc__toggle-btn active" data-value="no">No</button>
+                <button type="button" class="heloc__toggle-btn" data-value="yes">Yes</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="ccPrice">Purchase Price</label>
+              <input type="text" id="ccPrice" value="" placeholder="$500,000" inputmode="numeric">
+            </div>
+            <div class="heloc__split-row">
+              <div class="form-group">
+                <label for="ccDownPayment">Down Payment ($)</label>
+                <input type="text" id="ccDownPayment" value="" placeholder="$25,000" inputmode="numeric">
+              </div>
+              <div class="form-group">
+                <label for="ccDownPct">Down Payment (%)</label>
+                <input type="text" id="ccDownPct" value="" placeholder="5" inputmode="decimal">
+              </div>
+            </div>
+            <span class="heloc__helper" id="ccDownHelper">Minimum: 5% on first $500K, 10% on portion above $500K, 20% on $1M+</span>
+            <div class="form-group">
+              <label>Property Location</label>
+              <div class="heloc__toggle" id="ccLocationToggle">
+                <button type="button" class="heloc__toggle-btn active" data-value="ontario">Ontario</button>
+                <button type="button" class="heloc__toggle-btn" data-value="toronto">Toronto</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="ccAmortization">Amortization</label>
+              <select id="ccAmortization">
+                <option value="25" selected>25 Years</option>
+                <option value="30">30 Years</option>
+              </select>
+              <span class="heloc__helper" id="ccAmortHelper">Maximum amortization period for your mortgage</span>
+            </div>
+            <div class="form-group">
+              <label for="ccTerm">Mortgage Term</label>
+              <select id="ccTerm"></select>
+            </div>
+            <div class="form-group">
+              <label>Rate Type</label>
+              <div class="heloc__toggle" id="ccRateTypeToggle">
+                <button type="button" class="heloc__toggle-btn active" data-value="fixed">Fixed</button>
+                <button type="button" class="heloc__toggle-btn" data-value="variable">Variable</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="ccRate">Interest Rate (%)</label>
+              <input type="text" id="ccRate" value="4.04" inputmode="decimal" readonly style="background:#f0f0f0; cursor:default;">
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Results Card -->
+        <div class="heloc__results-card" id="ccResults">
+          <div class="heloc__results-inner">
+            <h3 class="heloc__results-title">Your Purchase Estimate</h3>
+
+            <!-- Hero: Monthly Payment -->
+            <div class="renewal-savings-hero" id="ccPaymentHero">
+              <span class="renewal-savings-hero__label">Estimated Monthly Payment</span>
+              <span class="renewal-savings-hero__amount" id="rMonthlyPayment">$0</span>
+              <span class="renewal-savings-hero__term" id="rPaymentTermLabel">5-year fixed at 4.04%</span>
+            </div>
+
+            <!-- Section: Your Mortgage -->
+            <div class="heloc__result-section-title">Your Mortgage</div>
+
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">Purchase Price</span>
+              <span class="heloc__result-value" id="rPurchasePrice">$0</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">Down Payment</span>
+              <span class="heloc__result-value" id="rDownPayment">$0</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">Mortgage Amount</span>
+              <span class="heloc__result-value" id="rMortgageAmount">$0</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+
+            <div id="ccCmhcMortgageRow" style="display:none;">
+              <div class="heloc__result-row">
+                <span class="heloc__result-label">CMHC Insurance Premium</span>
+                <span class="heloc__result-value" id="rCmhc">$0</span>
+              </div>
+              <div class="heloc__result-divider"></div>
+            </div>
+
+            <div class="heloc__result-row">
+              <span class="heloc__result-label heloc__result-label--bold">Total Mortgage</span>
+              <span class="heloc__result-value heloc__result-value--highlight" id="rTotalMortgage">$0</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+
+            <!-- Section: Closing Costs -->
+            <div class="heloc__result-section-title" style="margin-top:16px;">Closing Costs</div>
+
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">Provincial Land Transfer Tax</span>
+              <span class="heloc__result-value" id="rProvLTT">$0</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+
+            <div id="ccTorontoRow" style="display:none;">
+              <div class="heloc__result-row">
+                <span class="heloc__result-label">Toronto Municipal LTT</span>
+                <span class="heloc__result-value" id="rMuniLTT">$0</span>
+              </div>
+              <div class="heloc__result-divider"></div>
+            </div>
+
+            <div id="ccRebateRow" style="display:none;">
+              <div class="heloc__result-row">
+                <span class="heloc__result-label">First-Time Buyer Rebates</span>
+                <span class="heloc__result-value heloc__result-value--savings" id="rRebate">-$0</span>
+              </div>
+              <div class="heloc__result-divider"></div>
+            </div>
+
+            <div id="ccPstRow" style="display:none;">
+              <div class="heloc__result-row">
+                <span class="heloc__result-label">PST on CMHC (8%)</span>
+                <span class="heloc__result-value" id="rPstCmhc">$0</span>
+              </div>
+              <div class="heloc__result-divider"></div>
+            </div>
+
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">Legal Fees &amp; Disbursements *</span>
+              <span class="heloc__result-value" id="rLegal">$2,260</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">Title Insurance *</span>
+              <span class="heloc__result-value" id="rTitle">$300</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+
+            <div class="heloc__result-row">
+              <span class="heloc__result-label heloc__result-label--bold">Total Closing Costs</span>
+              <span class="heloc__result-value heloc__result-value--highlight" id="rTotalClosing">$0</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+
+            <!-- Section: Cash to Close -->
+            <div class="heloc__result-section-title" style="margin-top:16px;">Cash to Close</div>
+
+            <div class="heloc__result-row">
+              <span class="heloc__result-label heloc__result-label--bold">Down Payment + Closing Costs</span>
+              <span class="heloc__result-value heloc__result-value--highlight" id="rTotalCash">$0</span>
+            </div>
+
+            <a href="#" class="btn btn--white btn--large heloc__results-cta open-modal">Speak to a Specialist</a>
+            <p class="heloc__results-disclosure">Monthly payment calculated on mortgage + CMHC premium at the displayed rate. CMHC premium is added to your mortgage. PST on CMHC and all closing costs are due in cash at closing.<br>* Amounts are estimates for reference only and may vary.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= EDUCATIONAL CONTENT ======= -->
+  <section class="heloc-info">
+    <div class="container heloc-info__container">
+      <div class="heloc-info__body">
+        <h2>Understanding Your Home Purchase Costs</h2>
+        <p>Buying a home involves more than just the purchase price. Your monthly mortgage payment, closing costs, and the total cash you need on closing day all factor into whether a home fits your budget. This calculator gives you the full picture so there are no surprises.</p>
+
+        <h2>Your Monthly Payment</h2>
+        <p>Your monthly mortgage payment is determined by three things: the amount you borrow (including CMHC insurance if applicable), your interest rate, and your amortization period. A longer amortization means lower payments but more interest paid over the life of the mortgage. The term you choose (1 to 5 years) sets how long your rate is locked in before renewal.</p>
+
+        <h2>Closing Costs in Ontario</h2>
+        <p>Closing costs typically range from 1.5% to 4% of the purchase price and must be paid in cash on closing day. The major components include:</p>
+        <ul>
+          <li><strong>Land transfer tax:</strong> Ontario charges a provincial LTT on a marginal bracket system, and Toronto adds a municipal tax on top. This is usually the largest closing cost.</li>
+          <li><strong>CMHC insurance:</strong> Required if your down payment is less than 20%. The premium (2.8%–4% of the mortgage) is added to your mortgage, but the 8% PST on the premium must be paid in cash at closing.</li>
+          <li><strong>Legal fees:</strong> A real estate lawyer handles the title search, document review, mortgage registration, and fund transfers. Budget $1,500–$2,000 plus HST.</li>
+          <li><strong>Title insurance:</strong> Protects against title defects, fraud, and survey issues. A one-time cost of approximately $300.</li>
+          <li><strong>Home inspection:</strong> Not mandatory but strongly recommended. Typically $400–$600 depending on the property size.</li>
+        </ul>
+
+        <h2>First-Time Home Buyer Savings</h2>
+        <p>First-time buyers in Ontario can save significantly on closing costs through land transfer tax rebates:</p>
+        <ul>
+          <li><strong>Provincial rebate:</strong> Up to $4,000, covering the full LTT on homes up to $368,000.</li>
+          <li><strong>Toronto rebate:</strong> Up to $4,475, covering the full municipal LTT on homes up to $400,000.</li>
+          <li><strong>Combined savings:</strong> A first-time buyer in Toronto could save up to $8,475 in land transfer tax.</li>
+        </ul>
+
+        <div class="article__cta-box">
+          <h3>Need help planning your home purchase?</h3>
+          <p>Speak with a licensed mortgage specialist who can walk you through every cost and help you find the best rate for your situation.</p>
+          <a href="#" class="btn btn--primary btn--large open-modal">Speak to a Specialist</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= FOOTER ======= -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="/" class="navbar__logo">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+              <rect width="32" height="32" rx="7" fill="#2A7D5B"/>
+              <path d="M7 23V13l9-5.5 9 5.5v10H7z" fill="#1B3C2D"/>
+              <rect x="12.5" y="16.5" width="7" height="6.5" rx="1" fill="#F7F3EE"/>
+            </svg>
+            <span>MyMortgageExpert</span>
+          </a>
+          <p class="footer__tagline">Helping Canadians find the best mortgage rates since 2019.</p>
+        </div>
+        <div class="footer__links">
+          <div class="footer__col">
+            <h4>About</h4>
+            <a href="/about.html">Our Story</a>
+            <a href="/how-it-works.html">How It Works</a>
+            <a href="#" class="open-contact-modal">Contact</a>
+          </div>
+          <div class="footer__col">
+            <h4>Resources</h4>
+            <a href="/guides/first-time-home-buyer.html">First-Time Buyer Guide</a>
+            <a href="/guides/refinancing-your-mortgage.html">Refinancing Guide</a>
+            <a href="/guides/mortgage-renewal.html">Mortgage Renewal Guide</a>
+          </div>
+          <div class="footer__col">
+            <h4>Calculators</h4>
+            <a href="/calculators/heloc.html">HELOC Calculator</a>
+            <a href="/calculators/refinance.html">Refinance</a>
+            <a href="/calculators/renewal.html">Renewal</a>
+            <a href="/calculators/purchase.html">Purchase Calculator</a>
+          </div>
+          <div class="footer__col">
+            <h4>Legal</h4>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Accessibility</a>
+            <a href="#">Disclaimer</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; 2026 MyMortgageExpert. All rights reserved.</p>
+        <div class="footer__legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======= SPECIALIST MODAL ======= -->
+  <div class="modal-overlay" id="preApprovalModal">
+    <div class="modal" id="preApprovalModalInner">
+      <button class="modal__close" id="modalClose" aria-label="Close">&times;</button>
+      <h2 class="modal__title">Speak to a Specialist</h2>
+      <p class="modal__subtitle">Enter your details and we'll connect you with a licensed mortgage broker.</p>
+      <form class="modal__form" id="specialistForm">
+        <div class="form-group">
+          <label for="specName">Name</label>
+          <input type="text" id="specName" placeholder="Your Name" required>
+        </div>
+        <div class="form-group">
+          <label for="specPhone">Phone Number</label>
+          <input type="tel" id="specPhone" placeholder="(555) 555-5555" required>
+        </div>
+        <div class="form-group">
+          <label for="specEmail">Email</label>
+          <input type="email" id="specEmail" placeholder="you@example.com" required>
+        </div>
+        <p class="modal__disclosure" style="margin-bottom:12px;">By clicking below you consent to being contacted by a licensed broker.</p>
+        <button type="submit" class="btn btn--primary btn--large modal__submit">Connect Me With My Broker</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======= CONTACT MODAL ======= -->
+  <div class="modal-overlay" id="contactModal">
+    <div class="modal">
+      <button class="modal__close" id="contactModalClose" aria-label="Close">&times;</button>
+      <h2 class="modal__title">Contact Us</h2>
+      <p class="modal__subtitle">Have a question? Send us a message and we'll get back to you.</p>
+      <form class="modal__form" id="contactForm">
+        <div class="form-group">
+          <label for="contactName">Name</label>
+          <input type="text" id="contactName" placeholder="Your Name" required>
+        </div>
+        <div class="form-group">
+          <label for="contactPhone">Phone Number</label>
+          <input type="tel" id="contactPhone" placeholder="(555) 555-5555" required>
+        </div>
+        <div class="form-group">
+          <label for="contactEmail">Email</label>
+          <input type="email" id="contactEmail" placeholder="you@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="contactComments">Comments</label>
+          <textarea id="contactComments" rows="4" placeholder="How can we help?" required style="width:100%; padding:12px 14px; border:1.5px solid var(--border); border-radius:var(--radius-md); font-family:inherit; font-size:0.92rem; resize:vertical;"></textarea>
+        </div>
+        <p class="modal__disclosure" style="margin-bottom:16px;">By sending this message you consent to MyMortgageExpert collecting your personal information to respond to your inquiry. We will not share your information with third parties.</p>
+        <button type="submit" class="btn btn--primary btn--large modal__submit">Send Message</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // ===========================
+    // Mobile Menu
+    // ===========================
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      navLinks.classList.toggle('active');
+    });
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('active');
+      });
+    });
+
+    // Navbar dropdown (mobile)
+    document.querySelectorAll('.navbar__dropdown-toggle').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        btn.parentElement.classList.toggle('active');
+      });
+    });
+
+    // ===========================
+    // Pre-Approval Modal
+    // ===========================
+    const modal = document.getElementById('preApprovalModal');
+    const modalClose = document.getElementById('modalClose');
+    document.querySelectorAll('.open-modal').forEach(btn => {
+      btn.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        return false;
+      };
+    });
+
+    modalClose.addEventListener('click', () => {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (modal.classList.contains('active')) { modal.classList.remove('active'); document.body.style.overflow = ''; }
+        if (contactModal.classList.contains('active')) { contactModal.classList.remove('active'); document.body.style.overflow = ''; }
+      }
+    });
+
+    // Contact modal
+    var contactModal = document.getElementById('contactModal');
+    var contactModalClose = document.getElementById('contactModalClose');
+    document.querySelectorAll('.open-contact-modal').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        contactModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+    contactModalClose.addEventListener('click', function() { contactModal.classList.remove('active'); document.body.style.overflow = ''; });
+    contactModal.addEventListener('click', function(e) { if (e.target === contactModal) { contactModal.classList.remove('active'); document.body.style.overflow = ''; } });
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var cName = document.getElementById('contactName').value;
+      var cPhone = document.getElementById('contactPhone').value;
+      var cEmail = document.getElementById('contactEmail').value;
+      var cComments = document.getElementById('contactComments').value;
+      (async function() { await submitLead({ first_name: cName, last_name: '', email: cEmail, phone: cPhone, source: 'contact', page: window.location.pathname, notes: cComments }); })();
+      e.target.closest('.modal').innerHTML = '<button class="modal__close" id="contactModalCloseSuccess" aria-label="Close">&times;</button><div style="text-align:center; padding:40px 20px;"><h2 class="modal__title">Message Sent</h2><p class="modal__subtitle">Thanks, ' + cName + '. We\'ll be in touch shortly.</p></div>';
+      document.getElementById('contactModalCloseSuccess').addEventListener('click', function() { contactModal.classList.remove('active'); document.body.style.overflow = ''; });
+    });
+
+    var broker = {
+      name: 'Lighthouse Lending',
+      phone: '905-234-3323',
+      phoneTel: '19052343323',
+      licence: 'FSRA# 13301',
+      logo: '../lighthouse-lending-logo.png'
+    };
+
+    function getCalculatorData() {
+      return {
+        type: 'purchase',
+        inputs: {
+          purchasePrice: document.getElementById('ccPrice').value,
+          downPayment: document.getElementById('ccDownPayment').value,
+          downPaymentPct: document.getElementById('ccDownPct').value + '%',
+          location: (document.querySelector('#ccLocationToggle .heloc__toggle-btn.active') || {}).textContent || '',
+          firstTimeBuyer: (document.querySelector('#ccFthbToggle .heloc__toggle-btn.active') || {}).textContent || '',
+          amortization: document.getElementById('ccAmortization').value + ' years',
+          term: document.getElementById('ccTerm').value + ' years',
+          rateType: (document.querySelector('#ccRateTypeToggle .heloc__toggle-btn.active') || {}).textContent || 'Fixed',
+          interestRate: document.getElementById('ccRate').value + '%'
+        },
+        results: {
+          monthlyPayment: document.getElementById('rMonthlyPayment').textContent,
+          purchasePrice: document.getElementById('rPurchasePrice').textContent,
+          downPayment: document.getElementById('rDownPayment').textContent,
+          mortgageAmount: document.getElementById('rMortgageAmount').textContent,
+          cmhcInsurance: document.getElementById('rCmhc').textContent,
+          totalMortgage: document.getElementById('rTotalMortgage').textContent,
+          provincialLTT: document.getElementById('rProvLTT').textContent,
+          municipalLTT: document.getElementById('rMuniLTT').textContent,
+          rebates: document.getElementById('rRebate').textContent,
+          pstOnCmhc: document.getElementById('rPstCmhc').textContent,
+          legalFees: document.getElementById('rLegal').textContent,
+          titleInsurance: document.getElementById('rTitle').textContent,
+          totalClosingCosts: document.getElementById('rTotalClosing').textContent,
+          totalCashNeeded: document.getElementById('rTotalCash').textContent
+        }
+      };
+    }
+
+    // Specialist form submit
+    document.getElementById('specialistForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var name = document.getElementById('specName').value;
+      var phone = document.getElementById('specPhone').value;
+      var email = document.getElementById('specEmail').value;
+
+      // Gather calculator data for lead notes
+      var calcData = typeof getCalculatorData === 'function' ? getCalculatorData() : {};
+      var notes = '';
+      if (calcData.inputs) {
+        notes = Object.keys(calcData.inputs).map(function(k) { return k + ': ' + calcData.inputs[k]; }).join(' | ');
+      }
+      if (calcData.results) {
+        notes += (notes ? ' || Results: ' : 'Results: ') + Object.keys(calcData.results).map(function(k) { return k + ': ' + calcData.results[k]; }).join(' | ');
+      }
+
+      (async function() {
+        var brokerId = await fetchActiveBrokerId();
+        await submitLead({
+          first_name: name, last_name: '', email: email, phone: phone,
+          source: 'calculator', page: window.location.pathname,
+          broker_id: brokerId,
+          notes: notes
+        });
+      })();
+
+      var modalEl = document.getElementById('preApprovalModalInner');
+      modalEl.innerHTML = '<button class="modal__close" id="modalCloseLoading" aria-label="Close">&times;</button>' +
+        '<div class="help-loading">' +
+          '<div class="help-loading__spinner"></div>' +
+          '<h2 class="help-loading__text">Pairing you with the best Broker</h2>' +
+        '</div>';
+      document.getElementById('modalCloseLoading').addEventListener('click', function() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+      setTimeout(function() {
+        modalEl.innerHTML = '<button class="modal__close" id="modalCloseResult" aria-label="Close">&times;</button>' +
+          '<div class="broker-result">' +
+            '<h2 class="broker-result__heading">You\'ve Been Matched!</h2>' +
+            '<p class="broker-result__subtext">' + name + ', here is your matched broker:</p>' +
+            '<img class="broker-result__logo" src="' + broker.logo + '" alt="' + broker.name + '">' +
+            '<h3 class="broker-result__name">' + broker.name + '</h3>' +
+            '<div class="broker-result__info">' +
+              '<span>' + broker.phone + '</span>' +
+              '<span>' + broker.licence + '</span>' +
+            '</div>' +
+            '<a href="tel:' + broker.phoneTel + '" class="btn btn--primary btn--large broker-result__cta">Call Now</a>' +
+          '</div>';
+        document.getElementById('modalCloseResult').addEventListener('click', function() {
+          modal.classList.remove('active');
+          document.body.style.overflow = '';
+        });
+      }, 3000);
+    });
+
+    // Navbar scroll shadow
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.style.boxShadow = window.scrollY > 10 ? '0 2px 16px rgba(0,0,0,0.06)' : 'none';
+    });
+
+    // ===========================
+    // Purchase Calculator
+    // ===========================
+
+    // Default rates (replaced by Supabase fetch)
+    var SITE_RATES = {
+      1: { fixed: 5.99, variable: 4.95 },
+      2: { fixed: 4.64, variable: 4.70 },
+      3: { fixed: 4.24, variable: 4.55 },
+      5: { fixed: 4.04, variable: 4.45 }
+    };
+
+    // Populate term dropdown from defaults
+    (function() {
+      var sel = document.getElementById('ccTerm');
+      var terms = Object.keys(SITE_RATES).map(Number).sort(function(a,b){return a-b;});
+      sel.innerHTML = terms.map(function(t){return '<option value="'+t+'"'+(t===5?' selected':'')+'>'+t+(t===1?' Year':' Years')+'</option>';}).join('');
+    })();
+
+    // DOM references
+    const priceInput = document.getElementById('ccPrice');
+    const downPaymentInput = document.getElementById('ccDownPayment');
+    const downPctInput = document.getElementById('ccDownPct');
+    const downHelper = document.getElementById('ccDownHelper');
+    const locationToggle = document.getElementById('ccLocationToggle');
+    const fthbToggle = document.getElementById('ccFthbToggle');
+    const amortSelect = document.getElementById('ccAmortization');
+    const amortHelper = document.getElementById('ccAmortHelper');
+    const termSelect = document.getElementById('ccTerm');
+    const rateTypeToggle = document.getElementById('ccRateTypeToggle');
+    const rateInput = document.getElementById('ccRate');
+
+    const ccTorontoRow = document.getElementById('ccTorontoRow');
+    const ccRebateRow = document.getElementById('ccRebateRow');
+    const ccCmhcMortgageRow = document.getElementById('ccCmhcMortgageRow');
+    const ccPstRow = document.getElementById('ccPstRow');
+
+    // Fixed cost defaults
+    const LEGAL_FEES = 800;
+    const LEGAL_HST = 0.13;
+    const TITLE_INSURANCE = 300;
+
+    let isToronto = false;
+    let isFthb = false;
+    let rateType = 'fixed';
+    let updatingDown = false;
+
+    function fmt(v) { return '$' + Math.round(v).toLocaleString('en-CA'); }
+    function parse(s) { return Number(s.replace(/[^0-9]/g, '')) || 0; }
+
+    // ---- Rate management ----
+    function updateRate() {
+      var term = parseInt(termSelect.value);
+      var rates = SITE_RATES[term];
+      if (rates) {
+        rateInput.value = rates[rateType];
+      }
+      calculate();
+    }
+
+    rateTypeToggle.addEventListener('click', function(e) {
+      var btn = e.target.closest('.heloc__toggle-btn');
+      if (!btn) return;
+      rateTypeToggle.querySelectorAll('.heloc__toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      rateType = btn.dataset.value;
+      updateRate();
+    });
+
+    termSelect.addEventListener('change', updateRate);
+    amortSelect.addEventListener('change', function() {
+      enforceAmortRules();
+      calculate();
+    });
+
+    // ---- Amortization enforcement ----
+    function enforceAmortRules() {
+      var price = parse(priceInput.value);
+      var downPayment = parse(downPaymentInput.value);
+      var downPct = price > 0 ? (downPayment / price) * 100 : 0;
+      var isInsured = downPct < 20;
+      var opt30 = amortSelect.querySelector('option[value="30"]');
+      if (isFthb && isInsured) {
+        opt30.disabled = true;
+        if (parseInt(amortSelect.value) === 30) amortSelect.value = '25';
+        amortHelper.textContent = 'First-time buyers with less than 20% down: max 25 years';
+      } else {
+        opt30.disabled = false;
+        amortHelper.textContent = 'Maximum amortization period for your mortgage';
+      }
+    }
+
+    // ---- Monthly payment formula ----
+    function calcMonthlyPayment(principal, annualRate, years) {
+      if (principal <= 0) return 0;
+      var r = annualRate / 12;
+      var n = years * 12;
+      if (r === 0) return principal / n;
+      return principal * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+    }
+
+    // ---- Down payment rules ----
+    function calcMinDown(price) {
+      if (price <= 0) return 0;
+      if (isFthb) {
+        if (price >= 1500000) return price * 0.20;
+        if (price <= 500000) return price * 0.05;
+        return 500000 * 0.05 + (price - 500000) * 0.10;
+      } else {
+        if (price >= 1000000) return price * 0.20;
+        if (price <= 500000) return price * 0.05;
+        return 500000 * 0.05 + (price - 500000) * 0.10;
+      }
+    }
+
+    function updateDownHelper() {
+      downHelper.textContent = isFthb
+        ? 'Minimum: 5% on first $500K, 10% on $500K\u2013$1.5M, 20% on $1.5M+'
+        : 'Minimum: 5% on first $500K, 10% on portion above $500K, 20% on $1M+';
+    }
+
+    // ---- Input handlers ----
+    priceInput.addEventListener('input', function() {
+      var raw = this.value.replace(/[^0-9]/g, '');
+      if (raw === '') { this.value = ''; downPaymentInput.value = ''; downPctInput.value = ''; calculate(); return; }
+      this.value = '$' + Number(raw).toLocaleString('en-CA');
+      var price = Number(raw);
+      var minDown = Math.round(calcMinDown(price));
+      var pct = price > 0 ? ((minDown / price) * 100) : 0;
+      updatingDown = true;
+      downPaymentInput.value = '$' + minDown.toLocaleString('en-CA');
+      downPctInput.value = pct % 1 === 0 ? pct.toFixed(0) : pct.toFixed(2);
+      updatingDown = false;
+      calculate();
+    });
+
+    downPaymentInput.addEventListener('input', function() {
+      if (updatingDown) return;
+      var raw = this.value.replace(/[^0-9]/g, '');
+      if (raw === '') { this.value = ''; downPctInput.value = ''; calculate(); return; }
+      this.value = '$' + Number(raw).toLocaleString('en-CA');
+      var price = parse(priceInput.value);
+      if (price > 0) {
+        var pct = (Number(raw) / price) * 100;
+        updatingDown = true;
+        downPctInput.value = pct % 1 === 0 ? pct.toFixed(0) : pct.toFixed(2);
+        updatingDown = false;
+      }
+      calculate();
+    });
+
+    downPctInput.addEventListener('input', function() {
+      if (updatingDown) return;
+      var pct = parseFloat(this.value) || 0;
+      var price = parse(priceInput.value);
+      if (price > 0) {
+        var amount = Math.round(price * (pct / 100));
+        updatingDown = true;
+        downPaymentInput.value = '$' + amount.toLocaleString('en-CA');
+        updatingDown = false;
+      }
+      calculate();
+    });
+
+    locationToggle.addEventListener('click', function(e) {
+      var btn = e.target.closest('.heloc__toggle-btn');
+      if (!btn) return;
+      locationToggle.querySelectorAll('.heloc__toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      isToronto = btn.dataset.value === 'toronto';
+      ccTorontoRow.style.display = isToronto ? '' : 'none';
+      calculate();
+    });
+
+    fthbToggle.addEventListener('click', function(e) {
+      var btn = e.target.closest('.heloc__toggle-btn');
+      if (!btn) return;
+      fthbToggle.querySelectorAll('.heloc__toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      isFthb = btn.dataset.value === 'yes';
+      ccRebateRow.style.display = isFthb ? '' : 'none';
+      updateDownHelper();
+      var price = parse(priceInput.value);
+      if (price > 0) {
+        var minDown = Math.round(calcMinDown(price));
+        var pct = (minDown / price) * 100;
+        updatingDown = true;
+        downPaymentInput.value = '$' + minDown.toLocaleString('en-CA');
+        downPctInput.value = pct % 1 === 0 ? pct.toFixed(0) : pct.toFixed(2);
+        updatingDown = false;
+      }
+      enforceAmortRules();
+      calculate();
+    });
+
+    // ---- LTT calculations ----
+    function calcOntarioLTT(price) {
+      if (price <= 55000) return price * 0.005;
+      if (price <= 250000) return 55000 * 0.005 + (price - 55000) * 0.01;
+      if (price <= 400000) return 55000 * 0.005 + 195000 * 0.01 + (price - 250000) * 0.015;
+      if (price <= 2000000) return 55000 * 0.005 + 195000 * 0.01 + 150000 * 0.015 + (price - 400000) * 0.02;
+      return 55000 * 0.005 + 195000 * 0.01 + 150000 * 0.015 + 1600000 * 0.02 + (price - 2000000) * 0.025;
+    }
+
+    function calcTorontoMLTT(price) {
+      if (price <= 55000) return price * 0.005;
+      if (price <= 250000) return 55000 * 0.005 + (price - 55000) * 0.01;
+      if (price <= 400000) return 55000 * 0.005 + 195000 * 0.01 + (price - 250000) * 0.015;
+      if (price <= 2000000) return 55000 * 0.005 + 195000 * 0.01 + 150000 * 0.015 + (price - 400000) * 0.02;
+      return 55000 * 0.005 + 195000 * 0.01 + 150000 * 0.015 + 1600000 * 0.02 + (price - 2000000) * 0.025;
+    }
+
+    function getCmhcRate(downPct) {
+      if (downPct >= 20) return 0;
+      if (downPct >= 15) return 0.028;
+      if (downPct >= 10) return 0.031;
+      return 0.04;
+    }
+
+    // ---- Main calculation ----
+    function calculate() {
+      var price = parse(priceInput.value);
+      var downPayment = parse(downPaymentInput.value);
+      var mortgage = Math.max(0, price - downPayment);
+      var downPct = price > 0 ? (downPayment / price) * 100 : 0;
+      var annualRate = parseFloat(rateInput.value) / 100 || 0;
+      var amortYears = parseInt(amortSelect.value);
+      var term = parseInt(termSelect.value);
+
+      // Land transfer tax
+      var provLTT = calcOntarioLTT(price);
+      var muniLTT = isToronto ? calcTorontoMLTT(price) : 0;
+
+      // FTHB rebates
+      var provRebate = isFthb ? Math.min(provLTT, 4000) : 0;
+      var muniRebate = (isFthb && isToronto) ? Math.min(muniLTT, 4475) : 0;
+      var totalRebate = provRebate + muniRebate;
+
+      // CMHC
+      var cmhcLimit = isFthb ? 1500000 : 1000000;
+      var needsCmhc = downPct < 20 && price > 0 && price < cmhcLimit;
+      var cmhcRate = needsCmhc ? getCmhcRate(downPct) : 0;
+      var cmhcPremium = mortgage * cmhcRate;
+      var pstOnCmhc = cmhcPremium * 0.08;
+      ccCmhcMortgageRow.style.display = needsCmhc ? '' : 'none';
+      ccPstRow.style.display = needsCmhc ? '' : 'none';
+
+      // Fixed costs
+      var legalTotal = Math.round(LEGAL_FEES * (1 + LEGAL_HST));
+      var fixedCosts = legalTotal + TITLE_INSURANCE;
+
+      // Totals
+      var netLTT = provLTT + muniLTT - totalRebate;
+      var totalClosing = netLTT + pstOnCmhc + fixedCosts;
+      var totalCash = downPayment + totalClosing;
+
+      // Mortgage payment (CMHC rolled into mortgage)
+      var totalMortgage = mortgage + cmhcPremium;
+      var monthlyPayment = calcMonthlyPayment(totalMortgage, annualRate, amortYears);
+
+      // Update hero
+      document.getElementById('rMonthlyPayment').textContent = fmt(monthlyPayment);
+      document.getElementById('rPaymentTermLabel').textContent = term + '-year ' + rateType + ' at ' + parseFloat(rateInput.value).toFixed(2) + '%';
+
+      // Update mortgage section
+      document.getElementById('rPurchasePrice').textContent = fmt(price);
+      document.getElementById('rDownPayment').textContent = fmt(downPayment);
+      document.getElementById('rMortgageAmount').textContent = fmt(mortgage);
+      document.getElementById('rCmhc').textContent = fmt(cmhcPremium);
+      document.getElementById('rTotalMortgage').textContent = fmt(totalMortgage);
+
+      // Update closing costs
+      document.getElementById('rProvLTT').textContent = fmt(provLTT);
+      document.getElementById('rMuniLTT').textContent = fmt(muniLTT);
+      document.getElementById('rRebate').textContent = '-' + fmt(totalRebate);
+      document.getElementById('rPstCmhc').textContent = fmt(pstOnCmhc);
+      document.getElementById('rLegal').textContent = fmt(legalTotal);
+      document.getElementById('rTitle').textContent = fmt(TITLE_INSURANCE);
+      document.getElementById('rTotalClosing').textContent = fmt(totalClosing);
+
+      // Update cash to close
+      document.getElementById('rTotalCash').textContent = fmt(totalCash);
+
+      // Enforce amortization rules
+      enforceAmortRules();
+    }
+
+    calculate();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../supabase-config.js"></script>
+  <script>
+    (async function() {
+      var rates = await fetchRates('purchase');
+      if (rates) {
+        SITE_RATES = rates;
+        var sel = document.getElementById('ccTerm');
+        var terms = Object.keys(rates).map(Number).sort(function(a,b){return a-b;});
+        sel.innerHTML = terms.map(function(t){return '<option value="'+t+'"'+(t===5?' selected':'')+'>'+t+(t===1?' Year':' Years')+'</option>';}).join('');
+        updateRate();
+      }
+      var b = await fetchBroker();
+      if (b) { broker.name = b.name; broker.phone = b.phone; broker.phoneTel = b.phoneTel; broker.licence = b.licence; broker.logo = '../' + b.logo; }
+    })();
+  </script>
+</body>
+</html>

@@ -32,11 +32,12 @@
             <a href="/calculators/home-equity-loan.html">Home Equity Loan Calculator</a>
             <a href="/calculators/self-employed.html">Self-Employed Calculator</a>
             <a href="/calculators/land-transfer-tax.html">Land Transfer Tax Calculator</a>
-            <a href="/calculators/closing-costs.html">Closing Costs Calculator</a>
+            <a href="/calculators/purchase.html">Purchase Calculator</a>
+            <a href="/calculators/affordability.html">Affordability Calculator</a>
           </div>
         </div>
-        <a href="#rates">Mortgages</a>
-        <a href="#lenders">Lenders</a>
+        <a href="/mortgages.html">Mortgages</a>
+        <a href="/how-it-works.html">How It Works</a>
         <a href="/about.html">About</a>
         <a href="tel:18445002535" class="navbar__mobile-phone">1-844-500-2535</a>
         <a href="#" class="btn btn--primary navbar__mobile-cta open-modal">Get Pre-Approved</a>
@@ -225,9 +226,9 @@
             <p class="calc-card__text">Estimate Ontario provincial and Toronto municipal land transfer tax with first-time buyer rebates.</p>
             <span class="calc-card__link">Calculate &rarr;</span>
           </a>
-          <a href="calculators/closing-costs.html" class="calc-card">
-            <h4 class="calc-card__title">Closing Costs</h4>
-            <p class="calc-card__text">Estimate all closing costs including land transfer tax, legal fees, insurance, and more.</p>
+          <a href="calculators/purchase.html" class="calc-card">
+            <h4 class="calc-card__title">Purchase Calculator</h4>
+            <p class="calc-card__text">See your monthly payment, closing costs, and total cash needed to buy a home.</p>
             <span class="calc-card__link">Calculate &rarr;</span>
           </a>
         </div>
@@ -307,7 +308,7 @@
       <p class="section-subtitle">Everything you need to know about mortgages in Canada.</p>
 
       <div class="guides__grid">
-        <a href="#" class="guide-card">
+        <a href="/guides/first-time-home-buyer.html" class="guide-card">
           <div class="guide-card__icon">
             <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
               <path d="M6 28V14l12-7 12 7v14" stroke="#2A7D5B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -321,7 +322,7 @@
             <span class="guide-card__link">Read Guide &rarr;</span>
           </div>
         </a>
-        <a href="#" class="guide-card">
+        <a href="/guides/refinancing-your-mortgage.html" class="guide-card">
           <div class="guide-card__icon">
             <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
               <rect x="8" y="17" width="16" height="13" rx="2" stroke="#2A7D5B" stroke-width="1.8"/>
@@ -330,13 +331,13 @@
             </svg>
           </div>
           <div class="guide-card__body">
-            <span class="guide-card__tag">RATE TYPES</span>
-            <h3 class="guide-card__title">Fixed vs. Variable Rates</h3>
-            <p class="guide-card__excerpt">Compare the pros and cons of fixed and variable rate mortgages to make the best choice for your situation.</p>
+            <span class="guide-card__tag">REFINANCING</span>
+            <h3 class="guide-card__title">Complete Guide to Refinancing</h3>
+            <p class="guide-card__excerpt">Understand when refinancing makes sense, what it costs, and how to access your home equity the smart way.</p>
             <span class="guide-card__link">Read Guide &rarr;</span>
           </div>
         </a>
-        <a href="#" class="guide-card">
+        <a href="/guides/mortgage-renewal.html" class="guide-card">
           <div class="guide-card__icon">
             <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
               <rect x="8" y="6" width="20" height="24" rx="2" stroke="#2A7D5B" stroke-width="1.8"/>
@@ -459,23 +460,21 @@
           <div class="footer__col">
             <h4>About</h4>
             <a href="/about.html">Our Story</a>
-            <a href="#">How It Works</a>
-            <a href="#">Careers</a>
-            <a href="#">Contact</a>
+            <a href="/how-it-works.html">How It Works</a>
+            <a href="#" class="open-contact-modal">Contact</a>
           </div>
           <div class="footer__col">
             <h4>Resources</h4>
-            <a href="#">Mortgage Guides</a>
-            <a href="#">Blog</a>
-            <a href="#">FAQ</a>
-            <a href="#">Glossary</a>
+            <a href="/guides/first-time-home-buyer.html">First-Time Buyer Guide</a>
+            <a href="/guides/refinancing-your-mortgage.html">Refinancing Guide</a>
+            <a href="/guides/mortgage-renewal.html">Mortgage Renewal Guide</a>
           </div>
           <div class="footer__col">
             <h4>Calculators</h4>
             <a href="calculators/heloc.html">HELOC Calculator</a>
             <a href="calculators/refinance.html">Refinance</a>
             <a href="calculators/renewal.html">Renewal</a>
-            <a href="calculators/closing-costs.html">Closing Costs</a>
+            <a href="calculators/purchase.html">Purchase Calculator</a>
           </div>
           <div class="footer__col">
             <h4>Legal</h4>
@@ -590,6 +589,35 @@
         <button type="submit" class="btn btn--primary btn--large modal__submit">Find Your Broker</button>
       </form>
       <p class="modal__disclosure">By providing your contact information, you authorize the broker to contact you about your inquiry. MyMortgageExpert does not provide any mortgage services and is not responsible for any services offered by the broker.</p>
+    </div>
+  </div>
+
+  <!-- ======= CONTACT MODAL ======= -->
+  <div class="modal-overlay" id="contactModal">
+    <div class="modal">
+      <button class="modal__close" id="contactModalClose" aria-label="Close">&times;</button>
+      <h2 class="modal__title">Contact Us</h2>
+      <p class="modal__subtitle">Have a question? Send us a message and we'll get back to you.</p>
+      <form class="modal__form" id="contactForm">
+        <div class="form-group">
+          <label for="contactName">Name</label>
+          <input type="text" id="contactName" placeholder="Your Name" required>
+        </div>
+        <div class="form-group">
+          <label for="contactPhone">Phone Number</label>
+          <input type="tel" id="contactPhone" placeholder="(555) 555-5555" required>
+        </div>
+        <div class="form-group">
+          <label for="contactEmail">Email</label>
+          <input type="email" id="contactEmail" placeholder="you@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="contactComments">Comments</label>
+          <textarea id="contactComments" rows="4" placeholder="How can we help?" required style="width:100%; padding:12px 14px; border:1.5px solid var(--border); border-radius:var(--radius-md); font-family:inherit; font-size:0.92rem; resize:vertical;"></textarea>
+        </div>
+        <p class="modal__disclosure" style="margin-bottom:16px;">By sending this message you consent to MyMortgageExpert collecting your personal information to respond to your inquiry. We will not share your information with third parties.</p>
+        <button type="submit" class="btn btn--primary btn--large modal__submit">Send Message</button>
+      </form>
     </div>
   </div>
 

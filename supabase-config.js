@@ -92,6 +92,13 @@ async function fetchActiveBrokerId() {
 // Submit a lead to Supabase → returns { data, error }
 async function submitLead(leadData) {
   try {
+    // Map legacy 'notes' field to schema-compatible columns
+    if (leadData.notes !== undefined) {
+      if (!leadData.calculator_inputs) {
+        leadData.calculator_inputs = { notes: leadData.notes };
+      }
+      delete leadData.notes;
+    }
     const { data, error } = await _supabase.from('leads').insert([leadData]);
     if (error) throw error;
     return { data, error: null };

@@ -32,11 +32,12 @@
             <a href="/calculators/home-equity-loan.html">Home Equity Loan Calculator</a>
             <a href="/calculators/self-employed.html">Self-Employed Calculator</a>
             <a href="/calculators/land-transfer-tax.html">Land Transfer Tax Calculator</a>
-            <a href="/calculators/closing-costs.html">Closing Costs Calculator</a>
+            <a href="/calculators/purchase.html">Purchase Calculator</a>
+            <a href="/calculators/affordability.html">Affordability Calculator</a>
           </div>
         </div>
-        <a href="/#rates">Mortgages</a>
-        <a href="/#lenders">Lenders</a>
+        <a href="/mortgages.html">Mortgages</a>
+        <a href="/how-it-works.html">How It Works</a>
         <a href="/about.html">About</a>
         <a href="tel:18445002535" class="navbar__mobile-phone">1-844-500-2535</a>
         <a href="#" class="btn btn--primary navbar__mobile-cta open-modal">Get Pre-Approved</a>
@@ -205,16 +206,14 @@
           <div class="footer__col">
             <h4>About</h4>
             <a href="/about.html">Our Story</a>
-            <a href="#">How It Works</a>
-            <a href="#">Careers</a>
-            <a href="#">Contact</a>
+            <a href="/how-it-works.html">How It Works</a>
+            <a href="#" class="open-contact-modal">Contact</a>
           </div>
           <div class="footer__col">
             <h4>Resources</h4>
-            <a href="#">Mortgage Guides</a>
-            <a href="#">Blog</a>
-            <a href="#">FAQ</a>
-            <a href="#">Glossary</a>
+            <a href="/guides/first-time-home-buyer.html">First-Time Buyer Guide</a>
+            <a href="/guides/refinancing-your-mortgage.html">Refinancing Guide</a>
+            <a href="/guides/mortgage-renewal.html">Mortgage Renewal Guide</a>
           </div>
           <div class="footer__col">
             <h4>Calculators</h4>
@@ -242,34 +241,57 @@
     </div>
   </footer>
 
-  <!-- ======= PRE-APPROVAL MODAL ======= -->
+  <!-- ======= SPECIALIST MODAL ======= -->
   <div class="modal-overlay" id="preApprovalModal">
-    <div class="modal">
+    <div class="modal" id="preApprovalModalInner">
       <button class="modal__close" id="modalClose" aria-label="Close">&times;</button>
-      <h2 class="modal__title">Get Pre-Approved</h2>
-      <p class="modal__subtitle">Fill in your details and we'll connect you with a licensed mortgage broker.</p>
-      <form class="modal__form" id="preApprovalForm">
-        <div class="modal__row">
-          <div class="form-group">
-            <label for="firstName">First Name</label>
-            <input type="text" id="firstName" placeholder="First Name" required>
-          </div>
-          <div class="form-group">
-            <label for="lastName">Last Name</label>
-            <input type="text" id="lastName" placeholder="Last Name" required>
-          </div>
+      <h2 class="modal__title">Speak to a Specialist</h2>
+      <p class="modal__subtitle">Enter your details and we'll connect you with a licensed mortgage broker.</p>
+      <form class="modal__form" id="specialistForm">
+        <div class="form-group">
+          <label for="specName">Name</label>
+          <input type="text" id="specName" placeholder="Your Name" required>
         </div>
         <div class="form-group">
-          <label for="phone">Phone Number</label>
-          <input type="tel" id="phone" placeholder="(555) 555-5555" required>
+          <label for="specPhone">Phone Number</label>
+          <input type="tel" id="specPhone" placeholder="(555) 555-5555" required>
         </div>
         <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" placeholder="you@example.com" required>
+          <label for="specEmail">Email</label>
+          <input type="email" id="specEmail" placeholder="you@example.com" required>
         </div>
-        <button type="submit" class="btn btn--primary btn--large modal__submit">Find Your Broker</button>
+        <p class="modal__disclosure" style="margin-bottom:12px;">By clicking below you consent to being contacted by a licensed broker.</p>
+        <button type="submit" class="btn btn--primary btn--large modal__submit">Connect Me With My Broker</button>
       </form>
-      <p class="modal__disclosure">By providing your contact information, you authorize the broker to contact you about your inquiry. MyMortgageExpert does not provide any mortgage services and is not responsible for any services offered by the broker.</p>
+    </div>
+  </div>
+
+  <!-- ======= CONTACT MODAL ======= -->
+  <div class="modal-overlay" id="contactModal">
+    <div class="modal">
+      <button class="modal__close" id="contactModalClose" aria-label="Close">&times;</button>
+      <h2 class="modal__title">Contact Us</h2>
+      <p class="modal__subtitle">Have a question? Send us a message and we'll get back to you.</p>
+      <form class="modal__form" id="contactForm">
+        <div class="form-group">
+          <label for="contactName">Name</label>
+          <input type="text" id="contactName" placeholder="Your Name" required>
+        </div>
+        <div class="form-group">
+          <label for="contactPhone">Phone Number</label>
+          <input type="tel" id="contactPhone" placeholder="(555) 555-5555" required>
+        </div>
+        <div class="form-group">
+          <label for="contactEmail">Email</label>
+          <input type="email" id="contactEmail" placeholder="you@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="contactComments">Comments</label>
+          <textarea id="contactComments" rows="4" placeholder="How can we help?" required style="width:100%; padding:12px 14px; border:1.5px solid var(--border); border-radius:var(--radius-md); font-family:inherit; font-size:0.92rem; resize:vertical;"></textarea>
+        </div>
+        <p class="modal__disclosure" style="margin-bottom:16px;">By sending this message you consent to MyMortgageExpert collecting your personal information to respond to your inquiry. We will not share your information with third parties.</p>
+        <button type="submit" class="btn btn--primary btn--large modal__submit">Send Message</button>
+      </form>
     </div>
   </div>
 
@@ -295,8 +317,6 @@
     // ===========================
     const modal = document.getElementById('preApprovalModal');
     const modalClose = document.getElementById('modalClose');
-    const preApprovalForm = document.getElementById('preApprovalForm');
-
     document.querySelectorAll('.open-modal').forEach(btn => {
       btn.onclick = function(e) {
         e.preventDefault();
@@ -320,10 +340,33 @@
     });
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal.classList.contains('active')) {
-        modal.classList.remove('active');
-        document.body.style.overflow = '';
+      if (e.key === 'Escape') {
+        if (modal.classList.contains('active')) { modal.classList.remove('active'); document.body.style.overflow = ''; }
+        if (contactModal.classList.contains('active')) { contactModal.classList.remove('active'); document.body.style.overflow = ''; }
       }
+    });
+
+    // Contact modal
+    var contactModal = document.getElementById('contactModal');
+    var contactModalClose = document.getElementById('contactModalClose');
+    document.querySelectorAll('.open-contact-modal').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        contactModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+    contactModalClose.addEventListener('click', function() { contactModal.classList.remove('active'); document.body.style.overflow = ''; });
+    contactModal.addEventListener('click', function(e) { if (e.target === contactModal) { contactModal.classList.remove('active'); document.body.style.overflow = ''; } });
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var cName = document.getElementById('contactName').value;
+      var cPhone = document.getElementById('contactPhone').value;
+      var cEmail = document.getElementById('contactEmail').value;
+      var cComments = document.getElementById('contactComments').value;
+      (async function() { await submitLead({ first_name: cName, last_name: '', email: cEmail, phone: cPhone, source: 'contact', page: window.location.pathname, notes: cComments }); })();
+      e.target.closest('.modal').innerHTML = '<button class="modal__close" id="contactModalCloseSuccess" aria-label="Close">&times;</button><div style="text-align:center; padding:40px 20px;"><h2 class="modal__title">Message Sent</h2><p class="modal__subtitle">Thanks, ' + cName + '. We\'ll be in touch shortly.</p></div>';
+      document.getElementById('contactModalCloseSuccess').addEventListener('click', function() { contactModal.classList.remove('active'); document.body.style.overflow = ''; });
     });
 
     var broker = {
@@ -352,39 +395,48 @@
       };
     }
 
-    preApprovalForm.addEventListener('submit', (e) => {
+    // Specialist form submit
+    document.getElementById('specialistForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      const firstName = document.getElementById('firstName').value;
-      const lastName = document.getElementById('lastName').value;
-      const phone = document.getElementById('phone').value;
-      const email = document.getElementById('email').value;
+      var name = document.getElementById('specName').value;
+      var phone = document.getElementById('specPhone').value;
+      var email = document.getElementById('specEmail').value;
+
+      // Gather calculator data for lead notes
+      var calcData = typeof getCalculatorData === 'function' ? getCalculatorData() : {};
+      var notes = '';
+      if (calcData.inputs) {
+        notes = Object.keys(calcData.inputs).map(function(k) { return k + ': ' + calcData.inputs[k]; }).join(' | ');
+      }
+      if (calcData.results) {
+        notes += (notes ? ' || Results: ' : 'Results: ') + Object.keys(calcData.results).map(function(k) { return k + ': ' + calcData.results[k]; }).join(' | ');
+      }
 
       (async function() {
-        const brokerId = await fetchActiveBrokerId();
-        const calcData = getCalculatorData();
+        var brokerId = await fetchActiveBrokerId();
         await submitLead({
-          first_name: firstName, last_name: lastName, email: email, phone: phone,
+          first_name: name, last_name: '', email: email, phone: phone,
           source: 'calculator', page: window.location.pathname,
-          calculator_type: calcData.type, calculator_inputs: calcData.inputs, calculator_results: calcData.results,
-          broker_id: brokerId
+          broker_id: brokerId,
+          notes: notes
         });
       })();
 
-      const modalEl = document.querySelector('.modal');
+      var modalEl = document.getElementById('preApprovalModalInner');
       modalEl.innerHTML = '<button class="modal__close" id="modalCloseLoading" aria-label="Close">&times;</button>' +
         '<div class="help-loading">' +
           '<div class="help-loading__spinner"></div>' +
           '<h2 class="help-loading__text">Pairing you with the best Broker</h2>' +
         '</div>';
-      document.getElementById('modalCloseLoading').addEventListener('click', () => {
+      document.getElementById('modalCloseLoading').addEventListener('click', function() {
         modal.classList.remove('active');
         document.body.style.overflow = '';
       });
-      setTimeout(() => {
+      setTimeout(function() {
         modalEl.innerHTML = '<button class="modal__close" id="modalCloseResult" aria-label="Close">&times;</button>' +
           '<div class="broker-result">' +
             '<h2 class="broker-result__heading">You\'ve Been Matched!</h2>' +
-            '<p class="broker-result__subtext">' + firstName + ', here is your matched broker:</p>' +
+            '<p class="broker-result__subtext">' + name + ', here is your matched broker:</p>' +
             '<img class="broker-result__logo" src="' + broker.logo + '" alt="' + broker.name + '">' +
             '<h3 class="broker-result__name">' + broker.name + '</h3>' +
             '<div class="broker-result__info">' +
@@ -393,7 +445,7 @@
             '</div>' +
             '<a href="tel:' + broker.phoneTel + '" class="btn btn--primary btn--large broker-result__cta">Call Now</a>' +
           '</div>';
-        document.getElementById('modalCloseResult').addEventListener('click', () => {
+        document.getElementById('modalCloseResult').addEventListener('click', function() {
           modal.classList.remove('active');
           document.body.style.overflow = '';
         });

@@ -1222,7 +1222,7 @@ button, input, select {
 }
 
 .article__container {
-  max-width: 720px;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 0 40px;
 }
@@ -1494,6 +1494,23 @@ button, input, select {
   padding: 10px 8px;
 }
 
+.heloc__toggle--four .heloc__toggle-btn {
+  font-size: 0.78rem;
+  padding: 10px 6px;
+}
+
+.heloc__toggle--six {
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.heloc__toggle--six .heloc__toggle-btn {
+  font-size: 0.75rem;
+  padding: 9px 6px;
+  flex: 1 1 auto;
+  min-width: calc(33.33% - 4px);
+}
+
 .heloc__split-row {
   display: flex;
   gap: 12px;
@@ -1599,6 +1616,19 @@ button, input, select {
 .heloc__result-divider {
   height: 1px;
   background: rgba(255, 255, 255, 0.12);
+}
+
+.heloc__result-section-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 12px;
+  margin-top: 8px;
+}
+
+.heloc__result-label--bold {
+  font-weight: 700;
 }
 
 .heloc__warning {
@@ -2310,4 +2340,55 @@ button, input, select {
   .heloc__title { font-size: 1.5rem; }
   .heloc__results-inner { padding: 28px 20px; }
   .heloc-info__body h2 { font-size: 1.15rem; }
+
+  .transfer-quiz__question .heloc__toggle { max-width: 100%; }
+}
+
+/* ===== Transfer Quiz ===== */
+.transfer-quiz {
+  text-align: center;
+}
+.transfer-quiz > p {
+  max-width: 100%;
+  margin-bottom: 28px;
+}
+.transfer-quiz__question {
+  margin-bottom: 20px;
+}
+.transfer-quiz__question label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  color: var(--text-dark);
+}
+.transfer-quiz__question .heloc__toggle {
+  max-width: 240px;
+  margin: 0 auto;
+}
+.transfer-quiz__result {
+  margin-top: 24px;
+  padding: 24px;
+  background: var(--green-pale);
+  border-radius: 10px;
+  border: 2px solid var(--green-mid);
+  text-align: center;
+}
+.transfer-quiz__result h4 {
+  font-size: 0.95rem;
+  color: var(--text-mid);
+  margin-bottom: 4px;
+}
+.transfer-quiz__result .result-type {
+  font-size: 1.4rem;
+  font-weight: 800;
+  display: block;
+  margin-bottom: 8px;
+}
+.transfer-quiz__result p {
+  font-size: 0.92rem;
+  color: var(--text-dark);
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }

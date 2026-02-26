@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mortgage Products — MyMortgageExpert</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@800&family=Playfair+Display:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ======= NAV BAR ======= -->
+  <header class="navbar" id="navbar">
+    <div class="container navbar__inner">
+      <a href="/" class="navbar__logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="7" fill="#1B3C2D"/>
+          <path d="M7 23V13l9-5.5 9 5.5v10H7z" fill="#2A7D5B"/>
+          <rect x="12.5" y="16.5" width="7" height="6.5" rx="1" fill="#F7F3EE"/>
+        </svg>
+        <span>MyMortgageExpert</span>
+      </a>
+      <nav class="navbar__links" id="navLinks">
+        <div class="navbar__dropdown">
+          <button class="navbar__dropdown-toggle">Calculators <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="navbar__dropdown-menu">
+            <a href="/calculators/heloc.html">HELOC Calculator</a>
+            <a href="/calculators/refinance.html">Refinance Calculator</a>
+            <a href="/calculators/renewal.html">Renewal Calculator</a>
+            <a href="/calculators/home-equity-loan.html">Home Equity Loan Calculator</a>
+            <a href="/calculators/self-employed.html">Self-Employed Calculator</a>
+            <a href="/calculators/land-transfer-tax.html">Land Transfer Tax Calculator</a>
+            <a href="/calculators/purchase.html">Purchase Calculator</a>
+            <a href="/calculators/affordability.html">Affordability Calculator</a>
+          </div>
+        </div>
+        <a href="/mortgages.html">Mortgages</a>
+        <a href="/how-it-works.html">How It Works</a>
+        <a href="/about.html">About</a>
+        <a href="tel:18445002535" class="navbar__mobile-phone">1-844-500-2535</a>
+        <a href="#" class="btn btn--primary navbar__mobile-cta open-modal">Get Pre-Approved</a>
+      </nav>
+      <div class="navbar__right">
+        <a href="tel:18445002535" class="navbar__phone">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M14.67 11.44l-2.18-.93a1 1 0 00-1.05.18l-1.2 1.07a10.5 10.5 0 01-4.9-4.9l1.07-1.2a1 1 0 00.18-1.05l-.93-2.18A1 1 0 004.6 1.5H2.5A1 1 0 001.5 2.6 13 13 0 0013.4 14.5a1 1 0 001.1-1h-2.1a1 1 0 00-1.06-.93z" stroke="#1B3C2D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          1-844-500-2535
+        </a>
+        <a href="#" class="btn btn--primary navbar__cta open-modal">Get Pre-Approved</a>
+      </div>
+      <button class="navbar__hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ======= MORTGAGES ======= -->
+  <article class="article">
+    <div class="container article__container">
+      <div class="article__header">
+        <span class="article__tag">MORTGAGE PRODUCTS</span>
+        <h1 class="article__title">Find the Right Mortgage for Your Situation</h1>
+        <div class="article__meta">
+          <span>Not every mortgage is the same. Here's how each product works and when it makes sense.</span>
+        </div>
+      </div>
+
+      <!-- Product Toggle -->
+      <div style="max-width:700px; margin: 0 auto 40px;">
+        <div class="heloc__toggle heloc__toggle--six" id="mtgToggle">
+          <button type="button" class="heloc__toggle-btn active" data-value="refinance">Refinance</button>
+          <button type="button" class="heloc__toggle-btn" data-value="renewal">Renewal</button>
+          <button type="button" class="heloc__toggle-btn" data-value="homeEquity">Home Equity Loan</button>
+          <button type="button" class="heloc__toggle-btn" data-value="heloc">HELOC</button>
+          <button type="button" class="heloc__toggle-btn" data-value="insured">Insured / Insurable</button>
+          <button type="button" class="heloc__toggle-btn" data-value="uninsurable">Uninsurable</button>
+        </div>
+      </div>
+
+      <!-- ===== REFINANCE ===== -->
+      <div class="article__body" id="mtgRefinance">
+        <h2>Mortgage Refinancing</h2>
+        <p>Refinancing means replacing your current mortgage with a new one &mdash; typically at a lower rate, with different terms, or for a larger amount to access your home equity. It's one of the most common ways Canadian homeowners restructure their finances.</p>
+
+        <h2>Who Is It For?</h2>
+        <ul>
+          <li><strong>Homeowners looking to lower their rate.</strong> If rates have dropped since you signed your mortgage, refinancing could save you hundreds per month.</li>
+          <li><strong>People consolidating debt.</strong> Rolling high-interest credit cards and loans into your mortgage at 4-5% instead of 20%+ can dramatically reduce your interest costs.</li>
+          <li><strong>Those accessing home equity.</strong> Need funds for renovations, investing, or a major purchase? You can borrow up to 80% of your home's value.</li>
+          <li><strong>Homeowners wanting to change their terms.</strong> Switch from variable to fixed, shorten/extend your amortization, or adjust your payment schedule.</li>
+        </ul>
+
+        <h2>How It Works</h2>
+        <p>When you refinance, your current mortgage is discharged and replaced with a new one. You can borrow up to <strong>80% of your home's appraised value</strong>, minus what you currently owe. The difference is available to you as cash.</p>
+        <p>For example, if your home is worth $800,000 and you owe $350,000, you could refinance up to $640,000 and receive up to $290,000 in equity.</p>
+
+        <h2>Key Details</h2>
+        <ul>
+          <li><strong>Maximum LTV:</strong> 80% of appraised home value</li>
+          <li><strong>Prepayment penalty:</strong> If you break your mortgage mid-term, expect a penalty. Variable rate: typically 3 months' interest. Fixed rate: the greater of 3 months' interest or the Interest Rate Differential (IRD).</li>
+          <li><strong>Costs:</strong> Appraisal fee ($300-$500), legal fees ($800-$1,500), discharge fee ($200-$350)</li>
+          <li><strong>Best timing:</strong> At renewal (no penalty) or when the savings clearly outweigh the costs</li>
+        </ul>
+
+        <div class="article__cta-box" style="text-align:center;">
+          <h3>See how much you could save</h3>
+          <p>Run the numbers with our refinance calculator to compare your current payment against a new one.</p>
+          <a href="/calculators/refinance.html" class="btn btn--primary" style="padding:14px 32px;">Open Refinance Calculator</a>
+        </div>
+      </div>
+
+      <!-- ===== RENEWAL / TRANSFER ===== -->
+      <div class="article__body" id="mtgRenewal" style="display:none;">
+        <h2>Mortgage Renewal &amp; Transfer</h2>
+        <p>When your mortgage term ends (typically every 1-5 years), you need to renew. You can stay with your current lender or <strong>transfer</strong> to a new one &mdash; often at a better rate. A transfer is sometimes called a "switch" and is one of the easiest ways to save money on your mortgage.</p>
+
+        <h2>Who Is It For?</h2>
+        <ul>
+          <li><strong>Anyone whose mortgage term is ending.</strong> If your renewal is coming up in the next 120 days, now is the time to shop.</li>
+          <li><strong>Homeowners who got a high rate last time.</strong> Rates change constantly. What was competitive 5 years ago might not be today.</li>
+          <li><strong>People who want a better deal.</strong> You don't need a complicated financial reason &mdash; a lower rate means more money in your pocket every month.</li>
+        </ul>
+
+        <h2>How It Works</h2>
+        <p><strong>Renewing</strong> with your current lender is the simplest option &mdash; you sign a new term agreement and continue. No appraisal, no qualification, no legal fees. But the rate they offer is rarely their best one.</p>
+        <p><strong>Transferring</strong> to a new lender means a new lender pays off your old mortgage and issues a new one. You'll need to requalify (income, credit, stress test), but many lenders cover the legal and appraisal costs to win your business. The process typically takes 2-4 weeks.</p>
+
+        <h2>Key Details</h2>
+        <ul>
+          <li><strong>No penalty at renewal.</strong> When your term expires, you can switch lenders without any prepayment penalty.</li>
+          <li><strong>Start shopping 120 days early.</strong> Lock in a rate hold while you compare options. This protects you if rates rise.</li>
+          <li><strong>Stress test applies if switching.</strong> You'll need to qualify at the higher of your rate + 2% or the Bank of Canada qualifying rate.</li>
+          <li><strong>Transfer costs:</strong> Often $0 &mdash; many lenders cover legal and appraisal fees to attract new clients.</li>
+        </ul>
+
+        <div class="article__cta-box" style="text-align:center;">
+          <h3>Compare your renewal options</h3>
+          <p>See how much you could save by switching to a lower rate at renewal.</p>
+          <a href="/calculators/renewal.html" class="btn btn--primary" style="padding:14px 32px;">Open Renewal Calculator</a>
+        </div>
+      </div>
+
+      <!-- ===== HOME EQUITY LOAN ===== -->
+      <div class="article__body" id="mtgHomeEquity" style="display:none;">
+        <h2>Home Equity Loan</h2>
+        <p>A home equity loan is a <strong>second mortgage</strong> that lets you borrow a lump sum against the equity in your home, without touching your existing first mortgage. You receive the full amount upfront and repay it with fixed monthly payments over a set term.</p>
+
+        <h2>Who Is It For?</h2>
+        <ul>
+          <li><strong>Homeowners who want to keep their current mortgage.</strong> If you have a great rate on your first mortgage, a home equity loan lets you access equity without breaking it.</li>
+          <li><strong>People who need a specific amount.</strong> Renovations, tuition, a down payment on a second property &mdash; a lump sum works better than a revolving credit line for one-time needs.</li>
+          <li><strong>Those who prefer fixed payments.</strong> Unlike a HELOC, a home equity loan has a fixed rate and predictable payments from day one.</li>
+        </ul>
+
+        <h2>How It Works</h2>
+        <p>Your total borrowing (first mortgage + home equity loan) typically can't exceed <strong>80% of your home's appraised value</strong>. The home equity loan sits behind your first mortgage as a second charge on the property.</p>
+        <p>For example, if your home is worth $700,000 and you owe $350,000 on your first mortgage, you could potentially borrow up to $210,000 as a home equity loan ($700,000 &times; 80% - $350,000).</p>
+
+        <h2>Key Details</h2>
+        <ul>
+          <li><strong>Maximum combined LTV:</strong> 80% of appraised home value</li>
+          <li><strong>Rate:</strong> Typically higher than a first mortgage (usually 1-3% more) since it's a second charge</li>
+          <li><strong>Payment type:</strong> Fixed monthly payments (principal + interest)</li>
+          <li><strong>Term:</strong> Usually 1-5 years, with amortization up to 25-30 years</li>
+          <li><strong>No need to break your first mortgage.</strong> This is the key advantage &mdash; your existing mortgage stays untouched.</li>
+        </ul>
+
+        <div class="article__cta-box" style="text-align:center;">
+          <h3>Find out how much equity you can access</h3>
+          <p>Calculate your available equity and estimated monthly payments.</p>
+          <a href="/calculators/home-equity-loan.html" class="btn btn--primary" style="padding:14px 32px;">Open Home Equity Loan Calculator</a>
+        </div>
+      </div>
+
+      <!-- ===== HELOC ===== -->
+      <div class="article__body" id="mtgHeloc" style="display:none;">
+        <h2>Home Equity Line of Credit (HELOC)</h2>
+        <p>A HELOC is a <strong>revolving line of credit</strong> secured against your home's equity. Think of it like a credit card backed by your house &mdash; you can draw funds as needed, repay them, and draw again, up to your approved limit. You only pay interest on what you actually use.</p>
+
+        <h2>Who Is It For?</h2>
+        <ul>
+          <li><strong>Homeowners who want flexible access to funds.</strong> A HELOC is ideal when you don't know exactly how much you'll need or when you'll need it.</li>
+          <li><strong>People funding ongoing projects.</strong> Home renovations done in phases, tuition payments spread over semesters, or business expenses that fluctuate.</li>
+          <li><strong>Those looking to consolidate debt over time.</strong> Use the HELOC to pay off high-interest debt, then pay it down at a much lower rate.</li>
+          <li><strong>Emergency fund alternative.</strong> Many homeowners set up a HELOC as a safety net &mdash; it costs nothing until you use it.</li>
+        </ul>
+
+        <h2>How It Works</h2>
+        <p>A HELOC lets you borrow up to <strong>65% of your home's appraised value</strong> on its own, or up to 80% when combined with a mortgage. The credit limit is set once, and you can draw and repay as often as you like during the draw period.</p>
+        <p>Most HELOCs are <strong>interest-only</strong> during the draw period, meaning your minimum payment covers only the interest on what you've borrowed. You can pay down the principal at any time without penalty.</p>
+
+        <h2>Key Details</h2>
+        <ul>
+          <li><strong>Maximum LTV:</strong> 65% standalone, or 80% combined with a mortgage</li>
+          <li><strong>Rate:</strong> Variable rate, typically prime + 0.5% to prime + 1%</li>
+          <li><strong>Payment type:</strong> Interest-only minimum payments (you can pay more at any time)</li>
+          <li><strong>Revolving:</strong> Repaid amounts become available to borrow again</li>
+          <li><strong>No fixed term:</strong> The credit line stays open as long as you maintain your mortgage in good standing</li>
+        </ul>
+
+        <h2>HELOC vs. Home Equity Loan</h2>
+        <ul>
+          <li><strong>HELOC:</strong> Revolving credit, variable rate, interest-only payments, flexible draw &mdash; best for ongoing or unpredictable needs.</li>
+          <li><strong>Home Equity Loan:</strong> Lump sum, fixed rate, fixed payments &mdash; best for a one-time, known amount.</li>
+        </ul>
+
+        <div class="article__cta-box" style="text-align:center;">
+          <h3>See what your HELOC could look like</h3>
+          <p>Calculate your maximum credit limit and estimated monthly interest payments.</p>
+          <a href="/calculators/heloc.html" class="btn btn--primary" style="padding:14px 32px;">Open HELOC Calculator</a>
+        </div>
+      </div>
+
+      <!-- ===== INSURED / INSURABLE ===== -->
+      <div class="article__body" id="mtgInsured" style="display:none;">
+        <p style="text-align:center; margin-bottom:16px;"><a href="#tq1" style="color:var(--green-mid); font-weight:600;">Take the quiz below</a></p>
+        <h2>Insured &amp; Insurable Mortgages</h2>
+        <p>In Canada, mortgages fall into insurance categories that affect your rate, qualification, and what lenders can offer you. <strong>Insured</strong> and <strong>insurable</strong> mortgages both carry mortgage default insurance, which protects the lender &mdash; and gets you a lower rate in return.</p>
+
+        <h2>What's the Difference?</h2>
+        <ul>
+          <li><strong>Insured (high-ratio):</strong> You put down <strong>less than 20%</strong>, so mortgage default insurance from CMHC, Sagen, or Canada Guaranty is <em>required by law</em>. The insurance premium is added to your mortgage balance.</li>
+          <li><strong>Insurable (conventional):</strong> You put down <strong>20% or more</strong>, but the property and mortgage still meet insurer guidelines. The lender <em>chooses</em> to insure the mortgage on the back end (called portfolio or bulk insurance). You don't pay the premium &mdash; the lender does.</li>
+        </ul>
+
+        <h2>Who Is It For?</h2>
+        <ul>
+          <li><strong>First-time home buyers.</strong> Most FTHB purchases are insured since the minimum down payment is 5%. Insured mortgages for first-time buyers allow purchase prices up to $1.5 million.</li>
+          <li><strong>Buyers putting 5-19.99% down.</strong> Insurance is mandatory, but you get access to the lowest rates available.</li>
+          <li><strong>Buyers putting 20%+ down on a qualifying property.</strong> Your mortgage may be insurable, giving you rates very close to insured &mdash; typically 0.05-0.10% higher.</li>
+        </ul>
+
+        <h2>Key Details</h2>
+        <ul>
+          <li><strong>CMHC insurance premiums:</strong> Range from 2.80% to 4.00% of the mortgage amount, depending on your down payment percentage. Added to your mortgage balance.</li>
+          <li><strong>Purchase price limits:</strong> Insured mortgages allow up to $1.5M for first-time buyers, $1M for non-FTHB. Above these thresholds, the mortgage becomes uninsurable.</li>
+          <li><strong>Maximum amortization:</strong> 25 years for insured mortgages (first-time home buyers), 30 years for non-first-time buyer insured. Insurable mortgages can go up to 30 years.</li>
+          <li><strong>Rate advantage:</strong> Insured mortgages get the lowest rates because lenders carry zero default risk. Insurable rates are very close behind.</li>
+          <li><strong>Stress test applies:</strong> You must qualify at the higher of your contract rate + 2% or the minimum qualifying rate (currently 5.25%).</li>
+        </ul>
+
+        <h2>CMHC Premium Schedule</h2>
+        <ul>
+          <li><strong>5% down (95% LTV):</strong> 4.00% premium</li>
+          <li><strong>10% down (90% LTV):</strong> 3.10% premium</li>
+          <li><strong>15% down (85% LTV):</strong> 2.80% premium</li>
+        </ul>
+        <p>For example, on a $500,000 home with 5% down ($25,000), your CMHC premium would be $19,000 (4.00% &times; $475,000), bringing your total mortgage to $494,000.</p>
+
+        <div class="article__cta-box transfer-quiz" id="tq1">
+          <h3>Is Your Transfer Insured or Uninsurable?</h3>
+          <p>Answer a few quick questions to find out how your mortgage transfer would be classified.</p>
+
+          <div class="transfer-quiz__question" id="tq1_q1">
+            <label>Are you increasing your mortgage amount?</label>
+            <div class="heloc__toggle" data-step="1">
+              <button type="button" class="heloc__toggle-btn" data-value="yes">Yes</button>
+              <button type="button" class="heloc__toggle-btn" data-value="no">No</button>
+            </div>
+          </div>
+
+          <div class="transfer-quiz__question" id="tq1_q2" style="display:none;">
+            <label>Is this property your primary residence?</label>
+            <div class="heloc__toggle" data-step="2">
+              <button type="button" class="heloc__toggle-btn" data-value="yes">Yes</button>
+              <button type="button" class="heloc__toggle-btn" data-value="no">No</button>
+            </div>
+          </div>
+
+          <div class="transfer-quiz__question" id="tq1_q3" style="display:none;">
+            <label>Is your property value under $1,000,000?</label>
+            <div class="heloc__toggle" data-step="3">
+              <button type="button" class="heloc__toggle-btn" data-value="yes">Yes</button>
+              <button type="button" class="heloc__toggle-btn" data-value="no">No</button>
+            </div>
+          </div>
+
+          <div class="transfer-quiz__question" id="tq1_q4" style="display:none;">
+            <label>Was your original mortgage insured? (Less than 20% down payment at purchase)</label>
+            <div class="heloc__toggle" data-step="4">
+              <button type="button" class="heloc__toggle-btn" data-value="yes">Yes</button>
+              <button type="button" class="heloc__toggle-btn" data-value="no">No</button>
+            </div>
+          </div>
+
+          <div class="transfer-quiz__result" id="tq1_result" style="display:none;"></div>
+        </div>
+      </div>
+
+      <!-- ===== UNINSURABLE ===== -->
+      <div class="article__body" id="mtgUninsurable" style="display:none;">
+        <p style="text-align:center; margin-bottom:16px;"><a href="#tq2" style="color:var(--green-mid); font-weight:600;">Take the quiz below</a></p>
+        <h2>Uninsurable Mortgages</h2>
+        <p>An uninsurable mortgage is one that <strong>doesn't qualify for mortgage default insurance</strong> from CMHC, Sagen, or Canada Guaranty. This doesn't mean you can't get a mortgage &mdash; it means the lender takes on 100% of the default risk, which affects your rate and available options.</p>
+
+        <h2>What Makes a Mortgage Uninsurable?</h2>
+        <ul>
+          <li><strong>Purchase price over $1.5M</strong> (FTHB) or <strong>over $1M</strong> (non-FTHB) &mdash; exceeds the insurable threshold</li>
+          <li><strong>Refinances</strong> &mdash; when you break and replace your mortgage to access equity, the new mortgage is uninsurable</li>
+          <li><strong>Amortization over 30 years</strong> &mdash; extended amortizations beyond insurer limits</li>
+          <li><strong>Non-owner-occupied / rental properties</strong> &mdash; investment properties cannot be insured</li>
+          <li><strong>Properties that don't meet insurer guidelines</strong> &mdash; certain property types (mixed-use, large acreage, etc.)</li>
+        </ul>
+
+        <h2>Who Is It For?</h2>
+        <ul>
+          <li><strong>Buyers of higher-value homes.</strong> If you're purchasing above the $1M-$1.5M threshold, your mortgage will be uninsurable regardless of your down payment.</li>
+          <li><strong>Homeowners refinancing.</strong> Any refinance transaction is classified as uninsurable, even if the original mortgage was insured.</li>
+          <li><strong>Real estate investors.</strong> Rental and investment properties always fall into the uninsurable category.</li>
+          <li><strong>Anyone needing an extended amortization.</strong> If you want a 35-year amortization to lower payments, only uninsurable mortgage products offer this (through select lenders).</li>
+        </ul>
+
+        <h2>Key Details</h2>
+        <ul>
+          <li><strong>Minimum 20% down payment.</strong> Since insurance isn't available, lenders require at least 20% equity.</li>
+          <li><strong>Higher rates.</strong> Typically 0.10-0.25% higher than insured/insurable rates, since the lender bears all the risk.</li>
+          <li><strong>Fewer lender options.</strong> Not all lenders offer uninsurable mortgages. Major banks, credit unions, and monoline lenders with large balance sheets are the main sources.</li>
+          <li><strong>More flexible terms.</strong> Some lenders offer extended amortizations (up to 35 years), interest-only options, or other features not available on insured products.</li>
+          <li><strong>Stress test still applies.</strong> Even though the mortgage is uninsurable, you must still qualify at the stress-tested rate.</li>
+        </ul>
+
+        <div class="article__cta-box transfer-quiz" id="tq2">
+          <h3>Is Your Transfer Insured or Uninsurable?</h3>
+          <p>Answer a few quick questions to find out how your mortgage transfer would be classified.</p>
+
+          <div class="transfer-quiz__question" id="tq2_q1">
+            <label>Are you increasing your mortgage amount?</label>
+            <div class="heloc__toggle" data-step="1">
+              <button type="button" class="heloc__toggle-btn" data-value="yes">Yes</button>
+              <button type="button" class="heloc__toggle-btn" data-value="no">No</button>
+            </div>
+          </div>
+
+          <div class="transfer-quiz__question" id="tq2_q2" style="display:none;">
+            <label>Is this property your primary residence?</label>
+            <div class="heloc__toggle" data-step="2">
+              <button type="button" class="heloc__toggle-btn" data-value="yes">Yes</button>
+              <button type="button" class="heloc__toggle-btn" data-value="no">No</button>
+            </div>
+          </div>
+
+          <div class="transfer-quiz__question" id="tq2_q3" style="display:none;">
+            <label>Is your property value under $1,000,000?</label>
+            <div class="heloc__toggle" data-step="3">
+              <button type="button" class="heloc__toggle-btn" data-value="yes">Yes</button>
+              <button type="button" class="heloc__toggle-btn" data-value="no">No</button>
+            </div>
+          </div>
+
+          <div class="transfer-quiz__question" id="tq2_q4" style="display:none;">
+            <label>Was your original mortgage insured? (Less than 20% down payment at purchase)</label>
+            <div class="heloc__toggle" data-step="4">
+              <button type="button" class="heloc__toggle-btn" data-value="yes">Yes</button>
+              <button type="button" class="heloc__toggle-btn" data-value="no">No</button>
+            </div>
+          </div>
+
+          <div class="transfer-quiz__result" id="tq2_result" style="display:none;"></div>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- ======= FOOTER ======= -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="/" class="navbar__logo">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+              <rect width="32" height="32" rx="7" fill="#2A7D5B"/>
+              <path d="M7 23V13l9-5.5 9 5.5v10H7z" fill="#1B3C2D"/>
+              <rect x="12.5" y="16.5" width="7" height="6.5" rx="1" fill="#F7F3EE"/>
+            </svg>
+            <span>MyMortgageExpert</span>
+          </a>
+          <p class="footer__tagline">Helping Canadians find the best mortgage rates since 2019.</p>
+        </div>
+        <div class="footer__links">
+          <div class="footer__col">
+            <h4>About</h4>
+            <a href="/about.html">Our Story</a>
+            <a href="/how-it-works.html">How It Works</a>
+            <a href="#" class="open-contact-modal">Contact</a>
+          </div>
+          <div class="footer__col">
+            <h4>Resources</h4>
+            <a href="/guides/first-time-home-buyer.html">First-Time Buyer Guide</a>
+            <a href="/guides/refinancing-your-mortgage.html">Refinancing Guide</a>
+            <a href="/guides/mortgage-renewal.html">Mortgage Renewal Guide</a>
+          </div>
+          <div class="footer__col">
+            <h4>Calculators</h4>
+            <a href="/calculators/heloc.html">HELOC Calculator</a>
+            <a href="/calculators/refinance.html">Refinance</a>
+            <a href="/calculators/renewal.html">Renewal</a>
+            <a href="/calculators/purchase.html">Purchase Calculator</a>
+          </div>
+          <div class="footer__col">
+            <h4>Legal</h4>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Accessibility</a>
+            <a href="#">Disclaimer</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; 2026 MyMortgageExpert. All rights reserved.</p>
+        <div class="footer__legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======= PRE-APPROVAL MODAL ======= -->
+  <div class="modal-overlay" id="preApprovalModal">
+    <div class="modal" id="preApprovalModalInner">
+      <button class="modal__close" id="modalClose" aria-label="Close">&times;</button>
+      <div class="help-progress">
+        <div class="help-progress__fill" id="preApprovalProgress" style="width:50%"></div>
+      </div>
+
+      <!-- Page 1: Mortgage Details -->
+      <div class="help-page active" id="preApprovalPage1">
+        <h2 class="modal__title">Get Pre-Approved</h2>
+        <p class="modal__subtitle">Tell us about your situation so we can match you with the right broker.</p>
+        <form class="modal__form" id="preApprovalForm1">
+          <div class="form-group">
+            <label for="paGoal">How can we help?</label>
+            <select id="paGoal" required>
+              <option value="" disabled selected>Select an option</option>
+              <option value="HELOC">HELOC</option>
+              <option value="Refinance">Refinance</option>
+              <option value="Debt Consolidation">Debt Consolidation</option>
+              <option value="Power of Sale Help">Power of Sale Help</option>
+              <option value="Home Purchase">Home Purchase</option>
+              <option value="Lower My Mortgage Rate">Lower My Mortgage Rate</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="paPropertyValue">Estimated property value</label>
+            <input type="text" id="paPropertyValue" placeholder="$500,000" inputmode="numeric" required>
+          </div>
+          <div class="form-group">
+            <label for="paBalance">Current mortgage balance</label>
+            <input type="text" id="paBalance" placeholder="$350,000" inputmode="numeric" required>
+          </div>
+          <div class="form-group">
+            <label for="paRate">Current rate (%)</label>
+            <input type="text" id="paRate" placeholder="5.49" inputmode="decimal" required>
+          </div>
+          <div class="form-group">
+            <label>Do you have a 2nd Mortgage or HELOC currently?</label>
+            <div class="heloc__toggle" id="paSecondMortgage">
+              <button type="button" class="heloc__toggle-btn" data-value="Yes">Yes</button>
+              <button type="button" class="heloc__toggle-btn active" data-value="No">No</button>
+            </div>
+          </div>
+          <div class="form-group" id="paSecondMortgageAmountGroup" style="display:none;">
+            <label for="paSecondMortgageAmount">2nd Mortgage / HELOC balance</label>
+            <input type="text" id="paSecondMortgageAmount" placeholder="$50,000" inputmode="numeric">
+          </div>
+          <div class="form-group">
+            <label>Are you behind on any payments?</label>
+            <div class="heloc__toggle" id="paBehind">
+              <button type="button" class="heloc__toggle-btn" data-value="Yes">Yes</button>
+              <button type="button" class="heloc__toggle-btn active" data-value="No">No</button>
+            </div>
+          </div>
+          <div class="form-group" id="paBehindAmountGroup" style="display:none;">
+            <label for="paBehindAmount">How much are you behind?</label>
+            <input type="text" id="paBehindAmount" placeholder="$5,000" inputmode="numeric">
+          </div>
+          <div class="form-group">
+            <label for="paBorrow">How much do you want to borrow?</label>
+            <input type="text" id="paBorrow" placeholder="$100,000" inputmode="numeric" required>
+          </div>
+          <button type="submit" class="btn btn--primary btn--large modal__submit">Next</button>
+        </form>
+      </div>
+
+      <!-- Page 2: Contact Info -->
+      <div class="help-page" id="preApprovalPage2">
+        <h2 class="modal__title">Almost There!</h2>
+        <p class="modal__subtitle">Enter your contact details so we can connect you with a specialist.</p>
+        <form class="modal__form" id="preApprovalForm2">
+          <div class="modal__row">
+            <div class="form-group">
+              <label for="firstName">First Name</label>
+              <input type="text" id="firstName" placeholder="First Name" required>
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name</label>
+              <input type="text" id="lastName" placeholder="Last Name" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" placeholder="(555) 555-5555" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="you@example.com" required>
+          </div>
+          <button type="submit" class="btn btn--primary btn--large modal__submit">Find Your Broker</button>
+        </form>
+        <p class="modal__disclosure">By providing your contact information, you authorize the broker to contact you about your inquiry. MyMortgageExpert does not provide any mortgage services and is not responsible for any services offered by the broker.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= CONTACT MODAL ======= -->
+  <div class="modal-overlay" id="contactModal">
+    <div class="modal">
+      <button class="modal__close" id="contactModalClose" aria-label="Close">&times;</button>
+      <h2 class="modal__title">Contact Us</h2>
+      <p class="modal__subtitle">Have a question? Send us a message and we'll get back to you.</p>
+      <form class="modal__form" id="contactForm">
+        <div class="form-group">
+          <label for="contactName">Name</label>
+          <input type="text" id="contactName" placeholder="Your Name" required>
+        </div>
+        <div class="form-group">
+          <label for="contactPhone">Phone Number</label>
+          <input type="tel" id="contactPhone" placeholder="(555) 555-5555" required>
+        </div>
+        <div class="form-group">
+          <label for="contactEmail">Email</label>
+          <input type="email" id="contactEmail" placeholder="you@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="contactComments">Comments</label>
+          <textarea id="contactComments" rows="4" placeholder="How can we help?" required style="width:100%; padding:12px 14px; border:1.5px solid var(--border); border-radius:var(--radius-md); font-family:inherit; font-size:0.92rem; resize:vertical;"></textarea>
+        </div>
+        <p class="modal__disclosure" style="margin-bottom:16px;">By sending this message you consent to MyMortgageExpert collecting your personal information to respond to your inquiry. We will not share your information with third parties.</p>
+        <button type="submit" class="btn btn--primary btn--large modal__submit">Send Message</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Hamburger menu
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      navLinks.classList.toggle('active');
+    });
+
+    // Navbar dropdown (mobile)
+    document.querySelectorAll('.navbar__dropdown-toggle').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        btn.parentElement.classList.toggle('active');
+      });
+    });
+
+    // Pre-approval modal
+    const modal = document.getElementById('preApprovalModal');
+    const modalClose = document.getElementById('modalClose');
+
+    document.querySelectorAll('.open-modal').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    modalClose.addEventListener('click', () => {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (modal.classList.contains('active')) { modal.classList.remove('active'); document.body.style.overflow = ''; }
+        if (contactModal.classList.contains('active')) { contactModal.classList.remove('active'); document.body.style.overflow = ''; }
+      }
+    });
+
+    // Contact modal
+    var contactModal = document.getElementById('contactModal');
+    var contactModalClose = document.getElementById('contactModalClose');
+    document.querySelectorAll('.open-contact-modal').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        contactModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+    contactModalClose.addEventListener('click', function() { contactModal.classList.remove('active'); document.body.style.overflow = ''; });
+    contactModal.addEventListener('click', function(e) { if (e.target === contactModal) { contactModal.classList.remove('active'); document.body.style.overflow = ''; } });
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var cName = document.getElementById('contactName').value;
+      var cPhone = document.getElementById('contactPhone').value;
+      var cEmail = document.getElementById('contactEmail').value;
+      var cComments = document.getElementById('contactComments').value;
+      (async function() { await submitLead({ first_name: cName, last_name: '', email: cEmail, phone: cPhone, source: 'contact', page: window.location.pathname, notes: cComments }); })();
+      e.target.closest('.modal').innerHTML = '<button class="modal__close" id="contactModalCloseSuccess" aria-label="Close">&times;</button><div style="text-align:center; padding:40px 20px;"><h2 class="modal__title">Message Sent</h2><p class="modal__subtitle">Thanks, ' + cName + '. We\'ll be in touch shortly.</p></div>';
+      document.getElementById('contactModalCloseSuccess').addEventListener('click', function() { contactModal.classList.remove('active'); document.body.style.overflow = ''; });
+    });
+
+    var broker = {
+      name: 'Lighthouse Lending',
+      phone: '905-234-3323',
+      phoneTel: '19052343323',
+      licence: 'FSRA# 13301',
+      logo: 'lighthouse-lending-logo.png'
+    };
+
+    // Pre-approval wizard: Page 1 → Page 2
+    document.getElementById('preApprovalForm1').addEventListener('submit', function(e) {
+      e.preventDefault();
+      document.getElementById('preApprovalPage1').classList.remove('active');
+      document.getElementById('preApprovalPage2').classList.add('active');
+      document.getElementById('preApprovalProgress').style.width = '100%';
+    });
+
+    // Yes/No toggles with conditional amount fields
+    var toggleAmountMap = {
+      paSecondMortgage: { group: 'paSecondMortgageAmountGroup', input: 'paSecondMortgageAmount' },
+      paBehind: { group: 'paBehindAmountGroup', input: 'paBehindAmount' }
+    };
+    ['paSecondMortgage', 'paBehind'].forEach(function(id) {
+      document.getElementById(id).addEventListener('click', function(e) {
+        var btn = e.target.closest('.heloc__toggle-btn');
+        if (!btn) return;
+        this.querySelectorAll('.heloc__toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        var map = toggleAmountMap[id];
+        if (btn.dataset.value === 'Yes') {
+          document.getElementById(map.group).style.display = '';
+        } else {
+          document.getElementById(map.group).style.display = 'none';
+          document.getElementById(map.input).value = '';
+        }
+      });
+    });
+
+    // Currency formatting on page 1 inputs
+    ['paPropertyValue', 'paBalance', 'paBorrow', 'paSecondMortgageAmount', 'paBehindAmount'].forEach(function(id) {
+      document.getElementById(id).addEventListener('input', function() {
+        var raw = this.value.replace(/[^0-9]/g, '');
+        if (raw === '') { this.value = ''; return; }
+        this.value = '$' + Number(raw).toLocaleString('en-CA');
+      });
+    });
+
+    // Pre-approval wizard: Page 2 submit
+    document.getElementById('preApprovalForm2').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var firstName = document.getElementById('firstName').value;
+      var lastName = document.getElementById('lastName').value;
+      var phone = document.getElementById('phone').value;
+      var email = document.getElementById('email').value;
+
+      // Gather page 1 data
+      var goal = document.getElementById('paGoal').value;
+      var propertyValue = document.getElementById('paPropertyValue').value;
+      var balance = document.getElementById('paBalance').value;
+      var rate = document.getElementById('paRate').value;
+      var secondMortgage = document.querySelector('#paSecondMortgage .heloc__toggle-btn.active').dataset.value;
+      var secondMortgageAmt = document.getElementById('paSecondMortgageAmount').value || 'N/A';
+      var behind = document.querySelector('#paBehind .heloc__toggle-btn.active').dataset.value;
+      var behindAmt = document.getElementById('paBehindAmount').value || 'N/A';
+      var borrow = document.getElementById('paBorrow').value;
+
+      (async function() {
+        var brokerId = await fetchActiveBrokerId();
+        await submitLead({
+          first_name: firstName, last_name: lastName, email: email, phone: phone,
+          source: 'pre-approval', page: window.location.pathname,
+          broker_id: brokerId,
+          notes: 'Goal: ' + goal + ' | Property Value: ' + propertyValue + ' | Balance: ' + balance + ' | Rate: ' + rate + '% | 2nd Mortgage/HELOC: ' + secondMortgage + (secondMortgage === 'Yes' ? ' (' + secondMortgageAmt + ')' : '') + ' | Behind on Payments: ' + behind + (behind === 'Yes' ? ' (' + behindAmt + ')' : '') + ' | Want to Borrow: ' + borrow
+        });
+      })();
+
+      var modalEl = document.getElementById('preApprovalModalInner');
+      modalEl.innerHTML = '<button class="modal__close" id="modalCloseLoading" aria-label="Close">&times;</button>' +
+        '<div class="help-loading">' +
+          '<div class="help-loading__spinner"></div>' +
+          '<h2 class="help-loading__text">Pairing you with the best Broker</h2>' +
+        '</div>';
+      document.getElementById('modalCloseLoading').addEventListener('click', function() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+      setTimeout(function() {
+        modalEl.innerHTML = '<button class="modal__close" id="modalCloseResult" aria-label="Close">&times;</button>' +
+          '<div class="broker-result">' +
+            '<h2 class="broker-result__heading">You\'ve Been Matched!</h2>' +
+            '<p class="broker-result__subtext">' + firstName + ', here is your matched broker:</p>' +
+            '<img class="broker-result__logo" src="' + broker.logo + '" alt="' + broker.name + '">' +
+            '<h3 class="broker-result__name">' + broker.name + '</h3>' +
+            '<div class="broker-result__info">' +
+              '<span>' + broker.phone + '</span>' +
+              '<span>' + broker.licence + '</span>' +
+            '</div>' +
+            '<a href="tel:' + broker.phoneTel + '" class="btn btn--primary btn--large broker-result__cta">Call Now</a>' +
+          '</div>';
+        document.getElementById('modalCloseResult').addEventListener('click', function() {
+          modal.classList.remove('active');
+          document.body.style.overflow = '';
+        });
+      }, 3000);
+    });
+
+    // Navbar scroll shadow
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.style.boxShadow = window.scrollY > 10 ? '0 2px 16px rgba(0,0,0,0.06)' : 'none';
+    });
+
+    // ===========================
+    // Mortgage Product Toggle
+    // ===========================
+    var sections = {
+      refinance: document.getElementById('mtgRefinance'),
+      renewal: document.getElementById('mtgRenewal'),
+      homeEquity: document.getElementById('mtgHomeEquity'),
+      heloc: document.getElementById('mtgHeloc'),
+      insured: document.getElementById('mtgInsured'),
+      uninsurable: document.getElementById('mtgUninsurable')
+    };
+
+    document.getElementById('mtgToggle').addEventListener('click', function(e) {
+      var btn = e.target.closest('.heloc__toggle-btn');
+      if (!btn) return;
+      this.querySelectorAll('.heloc__toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      var selected = btn.dataset.value;
+      Object.keys(sections).forEach(function(k) {
+        sections[k].style.display = k === selected ? '' : 'none';
+      });
+    });
+
+    // ===========================
+    // Transfer Qualification Quiz
+    // ===========================
+    function showQuizResult(el, type, reason) {
+      var results = {
+        insured: { label: 'Insured', color: 'var(--green-mid)', desc: 'Your original mortgage insurance carries over on a straight transfer. You\'ll get the lowest available rates.' },
+        insurable: { label: 'Insurable', color: 'var(--green-mid)', desc: 'Your transfer qualifies for lender-paid insurance. You\'ll get rates very close to insured \u2014 typically 0.05-0.10% higher.' },
+        uninsurable: { label: 'Uninsurable', color: '#c0392b', desc: '' }
+      };
+      var reasons = {
+        increase: 'Increasing your mortgage amount makes this a refinance, not a transfer. Refinances are classified as uninsurable.',
+        rental: 'Investment and rental properties cannot be insured. Your transfer will be classified as uninsurable.',
+        value: 'Properties valued over $1,000,000 exceed the insurable threshold for transfers.'
+      };
+      if (type === 'uninsurable') results.uninsurable.desc = reasons[reason];
+
+      var calcLink = '/calculators/renewal.html' + (type !== 'uninsurable' ? '?tier=' + type : '');
+
+      el.innerHTML =
+        '<h4>Your transfer would likely be classified as:</h4>' +
+        '<span class="result-type" style="color:' + results[type].color + '">' + results[type].label + '</span>' +
+        '<p>' + results[type].desc + '</p>' +
+        '<div style="margin-top:16px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">' +
+          '<a href="' + calcLink + '" class="btn btn--primary" style="padding:12px 24px;">Open Renewal Calculator</a>' +
+          '<button type="button" class="btn btn--white transfer-quiz__reset" style="padding:12px 24px; border:1px solid var(--border);">Start Over</button>' +
+        '</div>';
+
+      el.style.display = '';
+
+      el.querySelector('.transfer-quiz__reset').addEventListener('click', function() {
+        var quiz = el.closest('.transfer-quiz');
+        quiz.querySelectorAll('.transfer-quiz__question').forEach(function(q, i) {
+          q.style.display = i === 0 ? '' : 'none';
+          q.querySelectorAll('.heloc__toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+        });
+        el.style.display = 'none';
+      });
+    }
+
+    function initTransferQuiz(prefix) {
+      var quiz = document.getElementById(prefix);
+      var questions = [
+        document.getElementById(prefix + '_q1'),
+        document.getElementById(prefix + '_q2'),
+        document.getElementById(prefix + '_q3'),
+        document.getElementById(prefix + '_q4')
+      ];
+      var resultEl = document.getElementById(prefix + '_result');
+
+      quiz.addEventListener('click', function(e) {
+        var btn = e.target.closest('.heloc__toggle-btn');
+        if (!btn) return;
+        var toggle = btn.parentElement;
+        toggle.querySelectorAll('.heloc__toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        var step = parseInt(toggle.dataset.step);
+        var answer = btn.dataset.value;
+
+        // Hide subsequent questions and result when re-answering
+        for (var i = step; i < 4; i++) { questions[i].style.display = 'none'; }
+        for (var i = step; i < 4; i++) {
+          questions[i].querySelectorAll('.heloc__toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+        }
+        resultEl.style.display = 'none';
+
+        if (step === 1 && answer === 'yes') {
+          showQuizResult(resultEl, 'uninsurable', 'increase');
+        } else if (step === 1 && answer === 'no') {
+          questions[1].style.display = '';
+        } else if (step === 2 && answer === 'no') {
+          showQuizResult(resultEl, 'uninsurable', 'rental');
+        } else if (step === 2 && answer === 'yes') {
+          questions[2].style.display = '';
+        } else if (step === 3 && answer === 'no') {
+          showQuizResult(resultEl, 'uninsurable', 'value');
+        } else if (step === 3 && answer === 'yes') {
+          questions[3].style.display = '';
+        } else if (step === 4 && answer === 'yes') {
+          showQuizResult(resultEl, 'insured', 'original');
+        } else if (step === 4 && answer === 'no') {
+          showQuizResult(resultEl, 'insurable', 'conventional');
+        }
+      });
+    }
+
+    initTransferQuiz('tq1');
+    initTransferQuiz('tq2');
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script>
+    (async function() {
+      const b = await fetchBroker();
+      if (b) { broker.name = b.name; broker.phone = b.phone; broker.phoneTel = b.phoneTel; broker.licence = b.licence; broker.logo = b.logo; }
+    })();
+  </script>
+</body>
+</html>

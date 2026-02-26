@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Affordability Calculator — MyMortgageExpert</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@800&family=Playfair+Display:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ======= NAV BAR ======= -->
+  <header class="navbar" id="navbar">
+    <div class="container navbar__inner">
+      <a href="/" class="navbar__logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="7" fill="#1B3C2D"/>
+          <path d="M7 23V13l9-5.5 9 5.5v10H7z" fill="#2A7D5B"/>
+          <rect x="12.5" y="16.5" width="7" height="6.5" rx="1" fill="#F7F3EE"/>
+        </svg>
+        <span>MyMortgageExpert</span>
+      </a>
+      <nav class="navbar__links" id="navLinks">
+        <div class="navbar__dropdown">
+          <button class="navbar__dropdown-toggle">Calculators <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="navbar__dropdown-menu">
+            <a href="/calculators/heloc.html">HELOC Calculator</a>
+            <a href="/calculators/refinance.html">Refinance Calculator</a>
+            <a href="/calculators/renewal.html">Renewal Calculator</a>
+            <a href="/calculators/home-equity-loan.html">Home Equity Loan Calculator</a>
+            <a href="/calculators/self-employed.html">Self-Employed Calculator</a>
+            <a href="/calculators/land-transfer-tax.html">Land Transfer Tax Calculator</a>
+            <a href="/calculators/purchase.html">Purchase Calculator</a>
+            <a href="/calculators/affordability.html">Affordability Calculator</a>
+          </div>
+        </div>
+        <a href="/mortgages.html">Mortgages</a>
+        <a href="/how-it-works.html">How It Works</a>
+        <a href="/about.html">About</a>
+        <a href="tel:18445002535" class="navbar__mobile-phone">1-844-500-2535</a>
+        <a href="#" class="btn btn--primary navbar__mobile-cta open-modal">Get Pre-Approved</a>
+      </nav>
+      <div class="navbar__right">
+        <a href="tel:18445002535" class="navbar__phone">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M14.67 11.44l-2.18-.93a1 1 0 00-1.05.18l-1.2 1.07a10.5 10.5 0 01-4.9-4.9l1.07-1.2a1 1 0 00.18-1.05l-.93-2.18A1 1 0 004.6 1.5H2.5A1 1 0 001.5 2.6 13 13 0 0013.4 14.5a1 1 0 001.1-1h-2.1a1 1 0 00-1.06-.93z" stroke="#1B3C2D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          1-844-500-2535
+        </a>
+        <a href="#" class="btn btn--primary navbar__cta open-modal">Get Pre-Approved</a>
+      </div>
+      <button class="navbar__hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ======= AFFORDABILITY CALCULATOR ======= -->
+  <section class="heloc">
+    <div class="container">
+      <div class="heloc__nav">
+        <a href="/" class="heloc__back">&larr; Back to Home</a>
+      </div>
+
+      <div class="heloc__header">
+        <span class="heloc__tag">CALCULATOR</span>
+        <h1 class="heloc__title">Affordability Calculator</h1>
+        <p class="heloc__subtitle">Find out how much home you can afford based on your income, debts, and down payment.</p>
+      </div>
+
+      <div class="heloc__layout">
+        <!-- LEFT: Input Form -->
+        <div class="heloc__form-card">
+          <h3 class="heloc__form-title">Your Financial Details</h3>
+          <div class="heloc__form">
+            <div class="form-group">
+              <label>I'm looking to</label>
+              <div class="heloc__toggle" id="affPurposeToggle">
+                <button type="button" class="heloc__toggle-btn active" data-value="purchase">Purchase</button>
+                <button type="button" class="heloc__toggle-btn" data-value="refinance">Refinance</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="affIncome">Annual Household Income (before tax)</label>
+              <input type="text" id="affIncome" value="" placeholder="$100,000" inputmode="numeric">
+              <span class="heloc__helper">Combined gross annual income of all applicants</span>
+            </div>
+            <div class="form-group" id="affFthbGroup">
+              <label>First-Time Home Buyer?</label>
+              <div class="heloc__toggle" id="affFthbToggle">
+                <button type="button" class="heloc__toggle-btn active" data-value="no">No</button>
+                <button type="button" class="heloc__toggle-btn" data-value="yes">Yes</button>
+              </div>
+            </div>
+            <div class="form-group" id="affDownPaymentGroup">
+              <label for="affDownPayment">Down Payment</label>
+              <input type="text" id="affDownPayment" value="" placeholder="$50,000" inputmode="numeric">
+              <span class="heloc__helper" id="affDownPaymentHelper">Minimum: 5% on first $500K, 10% on $500K–$999K, 20% on $1M+</span>
+            </div>
+            <div class="form-group" id="affCurrentBalanceGroup" style="display:none;">
+              <label for="affCurrentBalance">Current Mortgage Balance</label>
+              <input type="text" id="affCurrentBalance" value="" placeholder="$350,000" inputmode="numeric">
+            </div>
+            <div class="form-group" id="affConsolidateGroup" style="display:none;">
+              <label>Do you want to consolidate debts?</label>
+              <div class="heloc__toggle" id="affConsolidateToggle">
+                <button type="button" class="heloc__toggle-btn active" data-value="no">No</button>
+                <button type="button" class="heloc__toggle-btn" data-value="yes">Yes</button>
+              </div>
+            </div>
+            <div class="form-group" id="affConsolidateAmountGroup" style="display:none;">
+              <label for="affConsolidateAmount">Debt to Consolidate</label>
+              <input type="text" id="affConsolidateAmount" value="" placeholder="$25,000" inputmode="numeric">
+              <span class="heloc__helper">Total debt amount to roll into your mortgage</span>
+            </div>
+            <div class="form-group">
+              <label for="affDebts">Total Monthly Debt Payments</label>
+              <input type="text" id="affDebts" value="" placeholder="$500" inputmode="numeric">
+              <span class="heloc__helper">Car loans, credit cards, student loans, lines of credit, etc.</span>
+            </div>
+            <div class="form-group">
+              <label for="affPropertyTax">Annual Property Tax</label>
+              <input type="text" id="affPropertyTax" value="" placeholder="$4,000" inputmode="numeric">
+              <span class="heloc__helper">Estimated annual property tax for your target area</span>
+            </div>
+            <div class="form-group">
+              <label for="affCondoFees">Monthly Condo / Maintenance Fees</label>
+              <input type="text" id="affCondoFees" value="" placeholder="$0" inputmode="numeric">
+              <span class="heloc__helper">50% of condo fees are included in your GDS calculation</span>
+            </div>
+            <div class="form-group">
+              <label for="affPaymentFreq">Payment Frequency</label>
+              <select id="affPaymentFreq">
+                <option value="monthly" selected>Monthly</option>
+                <option value="biweekly">Bi-Weekly</option>
+                <option value="biweekly-accel">Bi-Weekly (Accelerated)</option>
+                <option value="weekly">Weekly</option>
+                <option value="weekly-accel">Weekly (Accelerated)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="affAmortization">Amortization</label>
+              <select id="affAmortization">
+                <option value="25" selected>25 Years</option>
+                <option value="30">30 Years</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="affTerm">Mortgage Term</label>
+              <select id="affTerm"></select>
+            </div>
+            <div class="form-group">
+              <label>Rate Type</label>
+              <div class="heloc__toggle" id="affRateTypeToggle">
+                <button type="button" class="heloc__toggle-btn active" data-value="fixed">Fixed</button>
+                <button type="button" class="heloc__toggle-btn" data-value="variable">Variable</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="affRate">Interest Rate (%)</label>
+              <input type="text" id="affRate" value="4.04" inputmode="decimal" readonly style="background:#f0f0f0; cursor:default;">
+              <span class="heloc__helper" id="affStressTestDisplay" style="display:none;">Stress test rate: 6.04%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Results Card -->
+        <div class="heloc__results-card" id="affResults">
+          <div class="heloc__results-inner">
+            <h3 class="heloc__results-title">What You Can Afford</h3>
+
+            <!-- Hero: Max Purchase Price -->
+            <div class="renewal-savings-hero" id="affHero">
+              <span class="renewal-savings-hero__label">Maximum Purchase Price</span>
+              <span class="renewal-savings-hero__amount" id="rMaxPrice">$0</span>
+              <span class="renewal-savings-hero__term" id="rHeroSub">Based on 25-year amortization</span>
+            </div>
+            <button type="button" id="affSubprimeToggle" style="background:none; border:none; color:var(--primary); font-size:0.88rem; font-weight:600; cursor:pointer; padding:4px 0 12px; text-decoration:underline; width:100%; text-align:center;">Need to get approved for more?</button>
+
+            <div class="heloc__result-section-title">Your Mortgage</div>
+
+            <div id="affDownPaymentRow">
+              <div class="heloc__result-row">
+                <span class="heloc__result-label">Down Payment</span>
+                <span class="heloc__result-value" id="rDownPayment">$0</span>
+              </div>
+              <div class="heloc__result-divider"></div>
+            </div>
+
+            <div class="heloc__result-row">
+              <span class="heloc__result-label">Maximum Mortgage</span>
+              <span class="heloc__result-value heloc__result-value--highlight" id="rMaxMortgage">$0</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+
+            <div id="affCmhcRow" style="display:none;">
+              <div class="heloc__result-row">
+                <span class="heloc__result-label">CMHC Insurance Premium</span>
+                <span class="heloc__result-value" id="rCmhc">$0</span>
+              </div>
+              <div class="heloc__result-divider"></div>
+            </div>
+
+            <div id="affRefiSummary" style="display:none;">
+              <div class="heloc__result-row">
+                <span class="heloc__result-label">Current Balance</span>
+                <span class="heloc__result-value" id="rCurrentBalance">$0</span>
+              </div>
+              <div class="heloc__result-divider"></div>
+              <div id="affConsolidationRow" style="display:none;">
+                <div class="heloc__result-row">
+                  <span class="heloc__result-label">Debt Consolidation</span>
+                  <span class="heloc__result-value" id="rConsolidation">$0</span>
+                </div>
+                <div class="heloc__result-divider"></div>
+              </div>
+              <div class="heloc__result-row">
+                <span class="heloc__result-label">Total Refinance Needed</span>
+                <span class="heloc__result-value heloc__result-value--highlight" id="rRefiTotal">$0</span>
+              </div>
+              <div class="heloc__result-divider"></div>
+              <div id="affSavingsRow" style="display:none;">
+                <div class="heloc__result-row">
+                  <span class="heloc__result-label">Est. Monthly Savings</span>
+                  <span class="heloc__result-value" id="rSavings" style="color:#2A7D5B;">$0</span>
+                </div>
+                <div class="heloc__result-divider"></div>
+              </div>
+            </div>
+
+            <div class="heloc__result-row">
+              <span class="heloc__result-label" id="rPaymentLabel">Estimated Monthly Payment</span>
+              <span class="heloc__result-value" id="rPayment">$0</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+
+            <!-- Ratios Section -->
+            <div class="heloc__result-section-title" style="margin-top:16px;">Qualification Ratios</div>
+
+            <div class="heloc__result-row">
+              <span class="heloc__result-label" id="rGDSLabel">GDS Ratio (max 39%)</span>
+              <span class="heloc__result-value" id="rGDS" style="color:#2A7D5B;">0%</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+
+            <div class="heloc__result-row">
+              <span class="heloc__result-label" id="rTDSLabel">TDS Ratio (max 44%)</span>
+              <span class="heloc__result-value" id="rTDS" style="color:#2A7D5B;">0%</span>
+            </div>
+            <div class="heloc__result-divider"></div>
+
+            <div class="heloc__result-row" style="display:none;">
+              <span class="heloc__result-label">Stress Test Rate</span>
+              <span class="heloc__result-value" id="rStressRate">5.25%</span>
+            </div>
+
+            <a href="#" class="btn btn--white btn--large heloc__results-cta open-modal">Get Pre-Approved</a>
+            <p class="heloc__results-disclosure">These numbers represent a non-binding estimate based on Canadian mortgage qualification rules (GDS/TDS). Rates and terms subject to approval.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= EDUCATIONAL CONTENT ======= -->
+  <section class="heloc-info">
+    <div class="container heloc-info__container">
+      <div class="heloc-info__body">
+        <h2>How Much Home Can You Afford?</h2>
+        <p>In Canada, mortgage affordability is determined by two key ratios that lenders use to evaluate your ability to carry a mortgage. Understanding these ratios helps you know what to expect before you apply.</p>
+
+        <h2>GDS and TDS Ratios Explained</h2>
+        <p>The <strong>Gross Debt Service (GDS) ratio</strong> measures your housing costs as a percentage of your gross income. It includes your mortgage payment, property taxes, heating costs, and 50% of any condo fees. Most lenders require your GDS to be 39% or less.</p>
+        <p>The <strong>Total Debt Service (TDS) ratio</strong> adds your other monthly debt obligations (car payments, credit cards, student loans, etc.) to the GDS calculation. Most lenders require your TDS to be 44% or less.</p>
+
+        <h2>The Mortgage Stress Test</h2>
+        <p>All Canadian mortgage applicants must qualify at the <strong>stress test rate</strong>, which is the higher of your contract rate plus 2% or 5.25%. This ensures you can handle potential rate increases. For example, if your contract rate is 4.04%, your qualifying rate would be 6.04%.</p>
+
+        <h2>Down Payment Requirements</h2>
+        <p>Canada has tiered minimum down payment requirements:</p>
+        <ul>
+          <li><strong>Under $500,000:</strong> Minimum 5% down payment</li>
+          <li><strong>$500,000 – $999,999:</strong> 5% on the first $500K plus 10% on the remaining portion</li>
+          <li><strong>$1,000,000 and above:</strong> Minimum 20% down payment</li>
+        </ul>
+        <p>If your down payment is less than 20%, you will need <strong>CMHC mortgage insurance</strong>, which protects the lender and is added to your mortgage balance.</p>
+
+        <h2>Tips to Maximize Your Buying Power</h2>
+        <ul>
+          <li><strong>Pay down debt:</strong> Lowering your monthly obligations improves your TDS ratio and increases your maximum mortgage.</li>
+          <li><strong>Increase your down payment:</strong> A larger down payment reduces your mortgage amount and may eliminate the need for CMHC insurance.</li>
+          <li><strong>Consider a longer amortization:</strong> A 30-year amortization lowers your monthly payment, though you may need at least 20% down.</li>
+          <li><strong>Include a co-applicant:</strong> Adding a spouse or partner's income increases your total household income.</li>
+        </ul>
+
+        <div class="article__cta-box">
+          <h3>Ready to find your perfect home?</h3>
+          <p>Speak with a licensed mortgage specialist who can help you get pre-approved and understand exactly how much you qualify for. No obligation, no credit check required.</p>
+          <a href="#" class="btn btn--primary btn--large open-modal">Get Pre-Approved</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= FOOTER ======= -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="/" class="navbar__logo">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+              <rect width="32" height="32" rx="7" fill="#2A7D5B"/>
+              <path d="M7 23V13l9-5.5 9 5.5v10H7z" fill="#1B3C2D"/>
+              <rect x="12.5" y="16.5" width="7" height="6.5" rx="1" fill="#F7F3EE"/>
+            </svg>
+            <span>MyMortgageExpert</span>
+          </a>
+          <p class="footer__tagline">Helping Canadians find the best mortgage rates since 2019.</p>
+        </div>
+        <div class="footer__links">
+          <div class="footer__col">
+            <h4>About</h4>
+            <a href="/about.html">Our Story</a>
+            <a href="/how-it-works.html">How It Works</a>
+            <a href="#" class="open-contact-modal">Contact</a>
+          </div>
+          <div class="footer__col">
+            <h4>Resources</h4>
+            <a href="/guides/first-time-home-buyer.html">First-Time Buyer Guide</a>
+            <a href="/guides/refinancing-your-mortgage.html">Refinancing Guide</a>
+            <a href="/guides/mortgage-renewal.html">Mortgage Renewal Guide</a>
+          </div>
+          <div class="footer__col">
+            <h4>Calculators</h4>
+            <a href="/calculators/heloc.html">HELOC Calculator</a>
+            <a href="/calculators/refinance.html">Refinance</a>
+            <a href="/calculators/renewal.html">Renewal</a>
+            <a href="/calculators/purchase.html">Purchase Calculator</a>
+          </div>
+          <div class="footer__col">
+            <h4>Legal</h4>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Accessibility</a>
+            <a href="#">Disclaimer</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; 2026 MyMortgageExpert. All rights reserved.</p>
+        <div class="footer__legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======= SPECIALIST MODAL ======= -->
+  <div class="modal-overlay" id="preApprovalModal">
+    <div class="modal" id="preApprovalModalInner">
+      <button class="modal__close" id="modalClose" aria-label="Close">&times;</button>
+      <h2 class="modal__title">Speak to a Specialist</h2>
+      <p class="modal__subtitle">Enter your details and we'll connect you with a licensed mortgage broker.</p>
+      <form class="modal__form" id="specialistForm">
+        <div class="form-group">
+          <label for="specName">Name</label>
+          <input type="text" id="specName" placeholder="Your Name" required>
+        </div>
+        <div class="form-group">
+          <label for="specPhone">Phone Number</label>
+          <input type="tel" id="specPhone" placeholder="(555) 555-5555" required>
+        </div>
+        <div class="form-group">
+          <label for="specEmail">Email</label>
+          <input type="email" id="specEmail" placeholder="you@example.com" required>
+        </div>
+        <p class="modal__disclosure" style="margin-bottom:12px;">By clicking below you consent to being contacted by a licensed broker.</p>
+        <button type="submit" class="btn btn--primary btn--large modal__submit">Connect Me With My Broker</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======= CONTACT MODAL ======= -->
+  <div class="modal-overlay" id="contactModal">
+    <div class="modal">
+      <button class="modal__close" id="contactModalClose" aria-label="Close">&times;</button>
+      <h2 class="modal__title">Contact Us</h2>
+      <p class="modal__subtitle">Have a question? Send us a message and we'll get back to you.</p>
+      <form class="modal__form" id="contactForm">
+        <div class="form-group">
+          <label for="contactName">Name</label>
+          <input type="text" id="contactName" placeholder="Your Name" required>
+        </div>
+        <div class="form-group">
+          <label for="contactPhone">Phone Number</label>
+          <input type="tel" id="contactPhone" placeholder="(555) 555-5555" required>
+        </div>
+        <div class="form-group">
+          <label for="contactEmail">Email</label>
+          <input type="email" id="contactEmail" placeholder="you@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="contactComments">Comments</label>
+          <textarea id="contactComments" rows="4" placeholder="How can we help?" required style="width:100%; padding:12px 14px; border:1.5px solid var(--border); border-radius:var(--radius-md); font-family:inherit; font-size:0.92rem; resize:vertical;"></textarea>
+        </div>
+        <p class="modal__disclosure" style="margin-bottom:16px;">By sending this message you consent to MyMortgageExpert collecting your personal information to respond to your inquiry. We will not share your information with third parties.</p>
+        <button type="submit" class="btn btn--primary btn--large modal__submit">Send Message</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => { hamburger.classList.toggle('active'); navLinks.classList.toggle('active'); });
+    navLinks.querySelectorAll('a').forEach(link => { link.addEventListener('click', () => { hamburger.classList.remove('active'); navLinks.classList.remove('active'); }); });
+
+    const modal = document.getElementById('preApprovalModal');
+    const modalClose = document.getElementById('modalClose');
+    document.querySelectorAll('.open-modal').forEach(btn => { btn.onclick = function(e) { e.preventDefault(); e.stopPropagation(); modal.classList.add('active'); document.body.style.overflow = 'hidden'; return false; }; });
+    modalClose.addEventListener('click', () => { modal.classList.remove('active'); document.body.style.overflow = ''; });
+    modal.addEventListener('click', (e) => { if (e.target === modal) { modal.classList.remove('active'); document.body.style.overflow = ''; } });
+
+    const contactModal = document.getElementById('contactModal');
+    const contactModalClose = document.getElementById('contactModalClose');
+    document.querySelectorAll('.open-contact-modal').forEach(btn => { btn.addEventListener('click', (e) => { e.preventDefault(); contactModal.classList.add('active'); document.body.style.overflow = 'hidden'; }); });
+    contactModalClose.addEventListener('click', () => { contactModal.classList.remove('active'); document.body.style.overflow = ''; });
+    contactModal.addEventListener('click', (e) => { if (e.target === contactModal) { contactModal.classList.remove('active'); document.body.style.overflow = ''; } });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (modal.classList.contains('active')) { modal.classList.remove('active'); document.body.style.overflow = ''; }
+        if (contactModal.classList.contains('active')) { contactModal.classList.remove('active'); document.body.style.overflow = ''; }
+      }
+    });
+
+    document.getElementById('contactForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('contactName').value;
+      const phone = document.getElementById('contactPhone').value;
+      const email = document.getElementById('contactEmail').value;
+      const comments = document.getElementById('contactComments').value;
+      (async function() { await submitLead({ first_name: name, last_name: '', email: email, phone: phone, source: 'contact', page: window.location.pathname, notes: comments }); })();
+      e.target.closest('.modal').innerHTML = '<button class="modal__close" id="contactModalCloseSuccess" aria-label="Close">&times;</button><div style="text-align:center; padding:40px 20px;"><h2 class="modal__title">Message Sent</h2><p class="modal__subtitle">Thanks, ' + name + '. We\'ll be in touch shortly.</p></div>';
+      document.getElementById('contactModalCloseSuccess').addEventListener('click', () => { contactModal.classList.remove('active'); document.body.style.overflow = ''; });
+    });
+
+    var broker = { name: 'Lighthouse Lending', phone: '905-234-3323', phoneTel: '19052343323', licence: 'FSRA# 13301', logo: '../lighthouse-lending-logo.png' };
+
+    // Specialist form submit
+    document.getElementById('specialistForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var name = document.getElementById('specName').value;
+      var phone = document.getElementById('specPhone').value;
+      var email = document.getElementById('specEmail').value;
+
+      // Gather calculator data for lead notes
+      var calcData = typeof getCalculatorData === 'function' ? getCalculatorData() : {};
+      var notes = '';
+      if (calcData.inputs) {
+        notes = Object.keys(calcData.inputs).map(function(k) { return k + ': ' + calcData.inputs[k]; }).join(' | ');
+      }
+      if (calcData.results) {
+        notes += (notes ? ' || Results: ' : 'Results: ') + Object.keys(calcData.results).map(function(k) { return k + ': ' + calcData.results[k]; }).join(' | ');
+      }
+
+      (async function() {
+        var brokerId = await fetchActiveBrokerId();
+        await submitLead({
+          first_name: name, last_name: '', email: email, phone: phone,
+          source: 'calculator', page: window.location.pathname,
+          broker_id: brokerId,
+          notes: notes
+        });
+      })();
+
+      var modalEl = document.getElementById('preApprovalModalInner');
+      modalEl.innerHTML = '<button class="modal__close" id="modalCloseLoading" aria-label="Close">&times;</button>' +
+        '<div class="help-loading">' +
+          '<div class="help-loading__spinner"></div>' +
+          '<h2 class="help-loading__text">Pairing you with the best Broker</h2>' +
+        '</div>';
+      document.getElementById('modalCloseLoading').addEventListener('click', function() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+      setTimeout(function() {
+        modalEl.innerHTML = '<button class="modal__close" id="modalCloseResult" aria-label="Close">&times;</button>' +
+          '<div class="broker-result">' +
+            '<h2 class="broker-result__heading">You\'ve Been Matched!</h2>' +
+            '<p class="broker-result__subtext">' + name + ', here is your matched broker:</p>' +
+            '<img class="broker-result__logo" src="' + broker.logo + '" alt="' + broker.name + '">' +
+            '<h3 class="broker-result__name">' + broker.name + '</h3>' +
+            '<div class="broker-result__info">' +
+              '<span>' + broker.phone + '</span>' +
+              '<span>' + broker.licence + '</span>' +
+            '</div>' +
+            '<a href="tel:' + broker.phoneTel + '" class="btn btn--primary btn--large broker-result__cta">Call Now</a>' +
+          '</div>';
+        document.getElementById('modalCloseResult').addEventListener('click', function() {
+          modal.classList.remove('active');
+          document.body.style.overflow = '';
+        });
+      }, 3000);
+    });
+
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => { navbar.style.boxShadow = window.scrollY > 10 ? '0 2px 16px rgba(0,0,0,0.06)' : 'none'; });
+
+    // ===========================
+    // Affordability Calculator
+    // ===========================
+    var PRIME_GDS = 0.39;
+    var PRIME_TDS = 0.44;
+    var SUB_GDS = 0.60;
+    var SUB_TDS = 0.60;
+    var MAX_GDS = PRIME_GDS;
+    var MAX_TDS = PRIME_TDS;
+    var STRESS_FLOOR = 5.25;
+    var isSubprime = false;
+
+    var purposeToggle = document.getElementById('affPurposeToggle');
+    var fthbToggle = document.getElementById('affFthbToggle');
+    var fthbGroup = document.getElementById('affFthbGroup');
+    var incomeInput = document.getElementById('affIncome');
+    var downPaymentInput = document.getElementById('affDownPayment');
+    var downPaymentGroup = document.getElementById('affDownPaymentGroup');
+    var debtsInput = document.getElementById('affDebts');
+    var propertyTaxInput = document.getElementById('affPropertyTax');
+    var condoFeesInput = document.getElementById('affCondoFees');
+    var amortSelect = document.getElementById('affAmortization');
+    var termSelect = document.getElementById('affTerm');
+    var rateTypeToggle = document.getElementById('affRateTypeToggle');
+    var rateInput = document.getElementById('affRate');
+    var stressTestDisplay = document.getElementById('affStressTestDisplay');
+    var purpose = 'purchase';
+    var isFthb = false;
+    var wantsConsolidation = false;
+    var currentBalanceInput = document.getElementById('affCurrentBalance');
+    var currentBalanceGroup = document.getElementById('affCurrentBalanceGroup');
+    var consolidateToggle = document.getElementById('affConsolidateToggle');
+    var consolidateGroup = document.getElementById('affConsolidateGroup');
+    var consolidateAmountInput = document.getElementById('affConsolidateAmount');
+    var consolidateAmountGroup = document.getElementById('affConsolidateAmountGroup');
+
+    // Posted site rates: term (years) → { fixed, variable }
+    var SITE_RATES = {
+      1: { fixed: 5.99, variable: 4.95 },
+      2: { fixed: 4.64, variable: 4.70 },
+      3: { fixed: 4.24, variable: 4.55 },
+      5: { fixed: 4.04, variable: 4.45 }
+    };
+
+    // Populate term dropdown
+    (function() {
+      var terms = Object.keys(SITE_RATES).map(Number).sort(function(a,b){return a-b;});
+      termSelect.innerHTML = terms.map(function(t){return '<option value="'+t+'"'+(t===5?' selected':'')+'>'+t+(t===1?' Year':' Years')+'</option>';}).join('');
+    })();
+
+    var rateType = 'fixed';
+
+    function formatCurrency(value) {
+      return '$' + Math.round(value).toLocaleString('en-CA');
+    }
+
+    function parseCurrency(str) {
+      return Number(str.replace(/[^0-9]/g, '')) || 0;
+    }
+
+    function bindCurrencyFormat(input) {
+      input.addEventListener('input', function() {
+        var raw = this.value.replace(/[^0-9]/g, '');
+        if (raw === '') { this.value = ''; calculate(); return; }
+        this.value = '$' + Number(raw).toLocaleString('en-CA');
+        calculate();
+      });
+    }
+
+    var paymentFreqSelect = document.getElementById('affPaymentFreq');
+
+    [incomeInput, downPaymentInput, debtsInput, propertyTaxInput, condoFeesInput, currentBalanceInput, consolidateAmountInput].forEach(bindCurrencyFormat);
+    amortSelect.addEventListener('change', calculate);
+    paymentFreqSelect.addEventListener('change', calculate);
+
+    // Purchase / Refinance toggle
+    purposeToggle.addEventListener('click', function(e) {
+      var btn = e.target.closest('.heloc__toggle-btn');
+      if (!btn) return;
+      purposeToggle.querySelectorAll('.heloc__toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      purpose = btn.dataset.value;
+      if (purpose === 'purchase') {
+        fthbGroup.style.display = '';
+        downPaymentGroup.style.display = '';
+        currentBalanceGroup.style.display = 'none';
+        consolidateGroup.style.display = 'none';
+        consolidateAmountGroup.style.display = 'none';
+      } else {
+        fthbGroup.style.display = 'none';
+        downPaymentGroup.style.display = 'none';
+        downPaymentInput.value = '';
+        isFthb = false;
+        currentBalanceGroup.style.display = '';
+        consolidateGroup.style.display = '';
+        consolidateAmountGroup.style.display = wantsConsolidation ? '' : 'none';
+      }
+      calculate();
+    });
+
+    // First-Time Home Buyer toggle
+    fthbToggle.addEventListener('click', function(e) {
+      var btn = e.target.closest('.heloc__toggle-btn');
+      if (!btn) return;
+      fthbToggle.querySelectorAll('.heloc__toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      isFthb = btn.dataset.value === 'yes';
+      // Update down payment helper text based on FTHB status
+      var dpHelper = document.getElementById('affDownPaymentHelper');
+      if (dpHelper) {
+        dpHelper.textContent = isFthb
+          ? 'Minimum: 5% on first $500K, 10% on $500K\u2013$1.5M, 20% on $1.5M+'
+          : 'Minimum: 5% on first $500K, 10% on $500K\u2013$999K, 20% on $1M+';
+      }
+      calculate();
+    });
+
+    // Consolidate debts toggle
+    consolidateToggle.addEventListener('click', function(e) {
+      var btn = e.target.closest('.heloc__toggle-btn');
+      if (!btn) return;
+      consolidateToggle.querySelectorAll('.heloc__toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      wantsConsolidation = btn.dataset.value === 'yes';
+      consolidateAmountGroup.style.display = wantsConsolidation ? '' : 'none';
+      if (!wantsConsolidation) consolidateAmountInput.value = '';
+      calculate();
+    });
+
+    // "Need to get approved for more?" / "Show prime estimate" toggle
+    var subprimeBtn = document.getElementById('affSubprimeToggle');
+    function applySubprimeRestrictions() {
+      var variableBtn = rateTypeToggle.querySelector('[data-value="variable"]');
+      if (isSubprime) {
+        // Force fixed rate
+        rateType = 'fixed';
+        rateTypeToggle.querySelectorAll('.heloc__toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+        rateTypeToggle.querySelector('[data-value="fixed"]').classList.add('active');
+        variableBtn.style.opacity = '0.4';
+        variableBtn.style.pointerEvents = 'none';
+        // Limit terms to 3 years max
+        var terms = Object.keys(SITE_RATES).map(Number).sort(function(a,b){return a-b;});
+        var filtered = terms.filter(function(t) { return t <= 3; });
+        var currentTerm = parseInt(termSelect.value);
+        termSelect.innerHTML = filtered.map(function(t){return '<option value="'+t+'"'+(t===3?' selected':'')+'>'+t+(t===1?' Year':' Years')+'</option>';}).join('');
+        if (currentTerm > 3) termSelect.value = '3';
+      } else {
+        // Restore variable option
+        variableBtn.style.opacity = '';
+        variableBtn.style.pointerEvents = '';
+        // Restore all terms
+        var terms = Object.keys(SITE_RATES).map(Number).sort(function(a,b){return a-b;});
+        var currentTerm = parseInt(termSelect.value);
+        termSelect.innerHTML = terms.map(function(t){return '<option value="'+t+'"'+(t===currentTerm?' selected':(t===5&&currentTerm>5?' selected':''))+'>'+t+(t===1?' Year':' Years')+'</option>';}).join('');
+      }
+      updateRate();
+    }
+    subprimeBtn.addEventListener('click', function() {
+      isSubprime = !isSubprime;
+      if (isSubprime) {
+        MAX_GDS = SUB_GDS;
+        MAX_TDS = SUB_TDS;
+        subprimeBtn.textContent = 'Show prime estimate';
+      } else {
+        MAX_GDS = PRIME_GDS;
+        MAX_TDS = PRIME_TDS;
+        subprimeBtn.textContent = 'Need to get approved for more?';
+      }
+      applySubprimeRestrictions();
+    });
+
+    function updateRate() {
+      var term = parseInt(termSelect.value);
+      var rates = SITE_RATES[term];
+      if (rates) {
+        rateInput.value = rates[rateType];
+      }
+      calculate();
+    }
+
+    // Fixed / Variable toggle
+    rateTypeToggle.addEventListener('click', function(e) {
+      var btn = e.target.closest('.heloc__toggle-btn');
+      if (!btn) return;
+      // Block variable rate in subprime mode
+      if (isSubprime && btn.dataset.value === 'variable') return;
+      rateTypeToggle.querySelectorAll('.heloc__toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      rateType = btn.dataset.value;
+      updateRate();
+    });
+
+    termSelect.addEventListener('change', updateRate);
+
+    // Canadian semi-annual compounding → monthly effective rate
+    function monthlyEffectiveRate(annualRate) {
+      // Canadian mortgages compound semi-annually
+      var semiAnnual = annualRate / 2;
+      return Math.pow(1 + semiAnnual, 1/6) - 1;
+    }
+
+    // Monthly payment using Canadian semi-annual compounding
+    function calcMonthlyPayment(principal, annualRate, years) {
+      if (principal <= 0) return 0;
+      var r = monthlyEffectiveRate(annualRate);
+      var n = years * 12;
+      if (r === 0) return principal / n;
+      return principal * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+    }
+
+    // Max mortgage from GDS constraint
+    function maxMortgageFromGDS(monthlyIncome, propTaxMonthly, heatingMonthly, condoMonthly, qualifyingRate, amortYears) {
+      var maxHousingCost = monthlyIncome * MAX_GDS;
+      var availableForMortgage = maxHousingCost - propTaxMonthly - heatingMonthly - (condoMonthly * 0.5);
+      if (availableForMortgage <= 0) return 0;
+      var r = monthlyEffectiveRate(qualifyingRate);
+      var n = amortYears * 12;
+      if (r === 0) return availableForMortgage * n;
+      return availableForMortgage * (Math.pow(1 + r, n) - 1) / (r * Math.pow(1 + r, n));
+    }
+
+    // Max mortgage from TDS constraint
+    function maxMortgageFromTDS(monthlyIncome, propTaxMonthly, heatingMonthly, condoMonthly, monthlyDebts, qualifyingRate, amortYears) {
+      var maxTotalDebt = monthlyIncome * MAX_TDS;
+      var availableForMortgage = maxTotalDebt - propTaxMonthly - heatingMonthly - (condoMonthly * 0.5) - monthlyDebts;
+      if (availableForMortgage <= 0) return 0;
+      var r = monthlyEffectiveRate(qualifyingRate);
+      var n = amortYears * 12;
+      if (r === 0) return availableForMortgage * n;
+      return availableForMortgage * (Math.pow(1 + r, n) - 1) / (r * Math.pow(1 + r, n));
+    }
+
+    // CMHC insurance premium rate based on LTV
+    function cmhcPremiumRate(ltv) {
+      if (ltv <= 0.65) return 0.006;
+      if (ltv <= 0.75) return 0.017;
+      if (ltv <= 0.80) return 0.024;
+      if (ltv <= 0.85) return 0.028;
+      if (ltv <= 0.90) return 0.031;
+      if (ltv <= 0.95) return 0.04;
+      return 0;
+    }
+
+    // Minimum down payment for a given purchase price
+    function minDownPayment(price) {
+      // FTHB can purchase insured up to $1.5M; non-FTHB up to $999,999
+      var cap = isFthb ? 1500001 : 1000000;
+      if (price >= cap) return price * 0.20;
+      if (price <= 500000) return price * 0.05;
+      return 500000 * 0.05 + (price - 500000) * 0.10;
+    }
+
+    function calculate() {
+      var income = parseCurrency(incomeInput.value);
+      var downPayment = purpose === 'purchase' ? parseCurrency(downPaymentInput.value) : 0;
+      var monthlyDebts = parseCurrency(debtsInput.value);
+      var annualPropertyTax = parseCurrency(propertyTaxInput.value);
+      var monthlyHeating = 100;
+      var monthlyCondoFees = parseCurrency(condoFeesInput.value);
+      var amortYears = parseInt(amortSelect.value);
+      var contractRate = parseFloat(rateInput.value) / 100 || 0;
+
+      // Stress test: higher of contract + 2% or 5.25%
+      var stressRate = Math.max(contractRate + 0.02, STRESS_FLOOR / 100);
+      stressTestDisplay.textContent = 'Stress test rate: ' + (stressRate * 100).toFixed(2) + '%';
+      document.getElementById('rStressRate').textContent = (stressRate * 100).toFixed(2) + '%';
+
+      var monthlyIncome = income / 12;
+      var propTaxMonthly = annualPropertyTax / 12;
+
+      // FTHB: insured up to $1.5M; non-FTHB: insured under $1M
+      var insuredCap = isFthb ? 1500001 : 1000000;
+
+      // Prime max mortgage: the ceiling where CMHC insurance is available (GDS 39% / TDS 44%)
+      var primeGDSBudget = monthlyIncome * 0.39 - propTaxMonthly - monthlyHeating - (monthlyCondoFees * 0.5);
+      var primeTDSBudget = monthlyIncome * 0.44 - propTaxMonthly - monthlyHeating - (monthlyCondoFees * 0.5) - monthlyDebts;
+      var primeBudget = Math.min(primeGDSBudget, primeTDSBudget);
+      var primeMaxMortgage = 0;
+      if (primeBudget > 0) {
+        var rPrime = monthlyEffectiveRate(stressRate);
+        var nPrime = amortYears * 12;
+        primeMaxMortgage = rPrime > 0
+          ? Math.floor(primeBudget * (Math.pow(1 + rPrime, nPrime) - 1) / (rPrime * Math.pow(1 + rPrime, nPrime)))
+          : Math.floor(primeBudget * nPrime);
+      }
+
+      // Max mortgage from GDS and TDS (using stress test rate and current GDS/TDS limits)
+      var maxFromGDS = maxMortgageFromGDS(monthlyIncome, propTaxMonthly, monthlyHeating, monthlyCondoFees, stressRate, amortYears);
+      var maxFromTDS = maxMortgageFromTDS(monthlyIncome, propTaxMonthly, monthlyHeating, monthlyCondoFees, monthlyDebts, stressRate, amortYears);
+      var maxMortgageBeforeInsurance = Math.max(0, Math.floor(Math.min(maxFromGDS, maxFromTDS)));
+
+      // Iteratively solve for max purchase price including CMHC
+      var maxPurchasePrice = 0;
+      var finalMortgage = 0;
+      var cmhcPremium = 0;
+
+      if (purpose === 'purchase' && downPayment > 0 && maxMortgageBeforeInsurance > 0) {
+        var purchaseGuess = maxMortgageBeforeInsurance + downPayment;
+
+        for (var i = 0; i < 20; i++) {
+          var baseMortgage = purchaseGuess - downPayment;
+          if (baseMortgage <= 0) break;
+          var ltv = baseMortgage / purchaseGuess;
+          var cmhc = 0;
+
+          // CMHC only applies if: < 20% down, within insured price cap,
+          // AND total mortgage fits within prime limits (39/44% GDS/TDS)
+          if (ltv > 0.80 && purchaseGuess < insuredCap) {
+            var possibleCmhc = Math.ceil(baseMortgage * cmhcPremiumRate(ltv));
+            if ((baseMortgage + possibleCmhc) <= primeMaxMortgage) {
+              cmhc = possibleCmhc;
+            }
+          }
+
+          var totalMortgage = baseMortgage + cmhc;
+
+          if (totalMortgage > maxMortgageBeforeInsurance) {
+            purchaseGuess = maxMortgageBeforeInsurance - cmhc + downPayment;
+            if (purchaseGuess < downPayment) { purchaseGuess = 0; break; }
+          } else {
+            var minDown = minDownPayment(purchaseGuess);
+            if (downPayment < minDown) {
+              if (downPayment / 0.05 <= 500000) {
+                purchaseGuess = Math.floor(downPayment / 0.05);
+              } else if (downPayment >= 25000) {
+                var maxTiered = isFthb ? 1500000 : 999999;
+                purchaseGuess = Math.min(maxTiered, Math.floor((downPayment - 25000) / 0.10 + 500000));
+              } else {
+                purchaseGuess = Math.floor(downPayment / 0.05);
+              }
+              continue;
+            }
+            maxPurchasePrice = Math.floor(purchaseGuess);
+            finalMortgage = baseMortgage;
+            cmhcPremium = cmhc;
+            break;
+          }
+        }
+      } else if (purpose === 'purchase' && downPayment > 0) {
+        maxPurchasePrice = 0;
+        finalMortgage = 0;
+      }
+
+      // For refinance: no down payment, no CMHC — just show max mortgage
+      if (purpose === 'refinance') {
+        finalMortgage = maxMortgageBeforeInsurance;
+        maxPurchasePrice = 0;
+        cmhcPremium = 0;
+      }
+
+      // Actual monthly payment at contract rate (not stress test)
+      var totalMortgageForPayment = finalMortgage + cmhcPremium;
+      var actualMonthlyPayment = calcMonthlyPayment(totalMortgageForPayment, contractRate, amortYears);
+
+      // Convert monthly payment to selected frequency
+      var freq = paymentFreqSelect.value;
+      var displayPayment = actualMonthlyPayment;
+      var paymentLabel = 'Estimated Monthly Payment';
+      if (freq === 'biweekly') {
+        // Non-accelerated: monthly * 12 / 26
+        displayPayment = actualMonthlyPayment * 12 / 26;
+        paymentLabel = 'Estimated Bi-Weekly Payment';
+      } else if (freq === 'biweekly-accel') {
+        // Accelerated: monthly / 2
+        displayPayment = actualMonthlyPayment / 2;
+        paymentLabel = 'Estimated Bi-Weekly Payment (Accel.)';
+      } else if (freq === 'weekly') {
+        // Non-accelerated: monthly * 12 / 52
+        displayPayment = actualMonthlyPayment * 12 / 52;
+        paymentLabel = 'Estimated Weekly Payment';
+      } else if (freq === 'weekly-accel') {
+        // Accelerated: monthly / 4
+        displayPayment = actualMonthlyPayment / 4;
+        paymentLabel = 'Estimated Weekly Payment (Accel.)';
+      }
+
+      // Compute actual GDS and TDS at stress test rate for display
+      var stressMonthlyPayment = calcMonthlyPayment(totalMortgageForPayment, stressRate, amortYears);
+      var gdsNumerator = stressMonthlyPayment + propTaxMonthly + monthlyHeating + (monthlyCondoFees * 0.5);
+      var tdsNumerator = gdsNumerator + monthlyDebts;
+      var gdsRatio = monthlyIncome > 0 ? (gdsNumerator / monthlyIncome * 100) : 0;
+      var tdsRatio = monthlyIncome > 0 ? (tdsNumerator / monthlyIncome * 100) : 0;
+
+      // Display results
+      var heroLabel = document.querySelector('#affHero .renewal-savings-hero__label');
+      if (purpose === 'purchase') {
+        heroLabel.textContent = 'Maximum Purchase Price';
+        document.getElementById('rMaxPrice').textContent = formatCurrency(maxPurchasePrice);
+      } else {
+        heroLabel.textContent = 'Maximum Mortgage';
+        document.getElementById('rMaxPrice').textContent = formatCurrency(finalMortgage);
+      }
+      document.getElementById('rHeroSub').textContent = 'Based on ' + amortYears + '-year amortization at ' + (contractRate * 100).toFixed(2) + '%';
+
+      // Down payment row — only for purchase
+      document.getElementById('affDownPaymentRow').style.display = purpose === 'purchase' ? '' : 'none';
+      document.getElementById('rDownPayment').textContent = formatCurrency(downPayment);
+      document.getElementById('rMaxMortgage').textContent = formatCurrency(finalMortgage);
+
+      // Payment row — label and value based on frequency
+      document.getElementById('rPaymentLabel').textContent = paymentLabel;
+      document.getElementById('rPayment').textContent = formatCurrency(displayPayment);
+
+      // CMHC row — only for purchase
+      var cmhcRow = document.getElementById('affCmhcRow');
+      if (cmhcPremium > 0 && purpose === 'purchase') {
+        cmhcRow.style.display = '';
+        document.getElementById('rCmhc').textContent = formatCurrency(cmhcPremium);
+      } else {
+        cmhcRow.style.display = 'none';
+      }
+
+      // Refinance summary
+      var refiSummary = document.getElementById('affRefiSummary');
+      if (purpose === 'refinance') {
+        var currentBalance = parseCurrency(currentBalanceInput.value);
+        var consolidationAmt = wantsConsolidation ? parseCurrency(consolidateAmountInput.value) : 0;
+        var refiTotal = currentBalance + consolidationAmt;
+
+        refiSummary.style.display = '';
+        document.getElementById('rCurrentBalance').textContent = formatCurrency(currentBalance);
+        document.getElementById('rRefiTotal').textContent = formatCurrency(refiTotal);
+
+        // Consolidation row
+        var consolRow = document.getElementById('affConsolidationRow');
+        if (consolidationAmt > 0) {
+          consolRow.style.display = '';
+          document.getElementById('rConsolidation').textContent = formatCurrency(consolidationAmt);
+        } else {
+          consolRow.style.display = 'none';
+        }
+
+        // Estimated monthly savings from consolidation
+        // Compare: old debt payment (~20% APR over 5yr) vs added mortgage cost
+        var savingsRow = document.getElementById('affSavingsRow');
+        if (consolidationAmt > 0) {
+          var oldDebtRate = 0.20 / 12; // ~20% APR credit card / LOC
+          var oldDebtN = 60; // 5-year payoff
+          var oldDebtPayment = consolidationAmt * (oldDebtRate * Math.pow(1 + oldDebtRate, oldDebtN)) / (Math.pow(1 + oldDebtRate, oldDebtN) - 1);
+          var addedMortgagePayment = calcMonthlyPayment(consolidationAmt, contractRate, amortYears);
+          var monthlySavings = oldDebtPayment - addedMortgagePayment;
+          savingsRow.style.display = '';
+          document.getElementById('rSavings').textContent = formatCurrency(Math.max(0, monthlySavings)) + '/mo';
+        } else {
+          savingsRow.style.display = 'none';
+        }
+
+        // Color the refi total — green if within max, orange if over
+        var refiTotalEl = document.getElementById('rRefiTotal');
+        refiTotalEl.style.color = refiTotal > finalMortgage ? '#e67e22' : '#2A7D5B';
+      } else {
+        refiSummary.style.display = 'none';
+      }
+
+      // Ratios — update labels based on prime/subprime mode
+      document.getElementById('rGDSLabel').textContent = isSubprime ? 'GDS Ratio (max 60%)' : 'GDS Ratio (max 39%)';
+      document.getElementById('rTDSLabel').textContent = isSubprime ? 'TDS Ratio (max 60%)' : 'TDS Ratio (max 44%)';
+      document.getElementById('rGDS').textContent = gdsRatio > 0 ? gdsRatio.toFixed(1) + '%' : '0%';
+      document.getElementById('rTDS').textContent = tdsRatio > 0 ? tdsRatio.toFixed(1) + '%' : '0%';
+
+      // Color code ratios: green if within prime limits (39/44%), orange if over
+      var gdsEl = document.getElementById('rGDS');
+      var tdsEl = document.getElementById('rTDS');
+      gdsEl.style.color = gdsRatio > 39 ? '#e67e22' : '#2A7D5B';
+      tdsEl.style.color = tdsRatio > 44 ? '#e67e22' : '#2A7D5B';
+    }
+
+    function getCalculatorData() {
+      return {
+        type: 'affordability',
+        inputs: {
+          purpose: purpose,
+          firstTimeHomeBuyer: purpose === 'purchase' ? (isFthb ? 'Yes' : 'No') : 'N/A',
+          annualIncome: incomeInput.value,
+          downPayment: purpose === 'purchase' ? downPaymentInput.value : 'N/A',
+          currentBalance: purpose === 'refinance' ? currentBalanceInput.value : 'N/A',
+          debtConsolidation: purpose === 'refinance' && wantsConsolidation ? consolidateAmountInput.value : 'N/A',
+          monthlyDebts: debtsInput.value,
+          annualPropertyTax: propertyTaxInput.value,
+          monthlyCondoFees: condoFeesInput.value,
+          paymentFrequency: paymentFreqSelect.options[paymentFreqSelect.selectedIndex].text,
+          amortization: amortSelect.value + ' years',
+          term: termSelect.value + ' years',
+          rateType: rateType,
+          interestRate: rateInput.value + '%',
+          lendingType: isSubprime ? 'Alternative' : 'Prime'
+        },
+        results: {
+          maxPurchasePrice: document.getElementById('rMaxPrice').textContent,
+          maxMortgage: document.getElementById('rMaxMortgage').textContent,
+          payment: document.getElementById('rPayment').textContent + ' (' + paymentFreqSelect.options[paymentFreqSelect.selectedIndex].text + ')',
+          gdsRatio: document.getElementById('rGDS').textContent,
+          tdsRatio: document.getElementById('rTDS').textContent,
+          stressTestRate: document.getElementById('rStressRate').textContent
+        }
+      };
+    }
+
+    calculate();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../supabase-config.js"></script>
+  <script>
+    (async function() {
+      var b = await fetchBroker();
+      if (b) { broker.name = b.name; broker.phone = b.phone; broker.phoneTel = b.phoneTel; broker.licence = b.licence; broker.logo = '../' + b.logo; }
+      var rates = await fetchRates('affordability');
+      if (!rates) rates = await fetchRates('purchase');
+      if (rates) {
+        SITE_RATES = rates;
+        var terms = Object.keys(SITE_RATES).map(Number).sort(function(a,b){return a-b;});
+        termSelect.innerHTML = terms.map(function(t){return '<option value="'+t+'"'+(t===5?' selected':'')+'>'+t+(t===1?' Year':' Years')+'</option>';}).join('');
+        updateRate();
+      }
+    })();
+  </script>
+</body>
+</html>

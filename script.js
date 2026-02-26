@@ -365,7 +365,11 @@ helpModal.addEventListener('click', (e) => {
 });
 
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && helpModal.classList.contains('active')) closeHelpModal();
+  if (e.key === 'Escape') {
+    if (helpModal.classList.contains('active')) closeHelpModal();
+    var cm = document.getElementById('contactModal');
+    if (cm && cm.classList.contains('active')) { cm.classList.remove('active'); document.body.style.overflow = ''; }
+  }
 });
 
 // ===========================
@@ -403,9 +407,10 @@ modal.addEventListener('click', (e) => {
 
 // Close on Escape key
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && modal.classList.contains('active')) {
-    modal.classList.remove('active');
-    document.body.style.overflow = '';
+  if (e.key === 'Escape') {
+    if (modal.classList.contains('active')) { modal.classList.remove('active'); document.body.style.overflow = ''; }
+    var cm = document.getElementById('contactModal');
+    if (cm && cm.classList.contains('active')) { cm.classList.remove('active'); document.body.style.overflow = ''; }
   }
 });
 
@@ -473,6 +478,33 @@ preApprovalForm.addEventListener('submit', (e) => {
     });
   }, 3000);
 });
+
+// ===========================
+// Contact Modal
+// ===========================
+var contactModal = document.getElementById('contactModal');
+if (contactModal) {
+  var contactModalClose = document.getElementById('contactModalClose');
+  document.querySelectorAll('.open-contact-modal').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      contactModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+  contactModalClose.addEventListener('click', function() { contactModal.classList.remove('active'); document.body.style.overflow = ''; });
+  contactModal.addEventListener('click', function(e) { if (e.target === contactModal) { contactModal.classList.remove('active'); document.body.style.overflow = ''; } });
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var cName = document.getElementById('contactName').value;
+    var cPhone = document.getElementById('contactPhone').value;
+    var cEmail = document.getElementById('contactEmail').value;
+    var cComments = document.getElementById('contactComments').value;
+    (async function() { await submitLead({ first_name: cName, last_name: '', email: cEmail, phone: cPhone, source: 'contact', page: window.location.pathname, notes: cComments }); })();
+    e.target.closest('.modal').innerHTML = '<button class="modal__close" id="contactModalCloseSuccess" aria-label="Close">&times;</button><div style="text-align:center; padding:40px 20px;"><h2 class="modal__title">Message Sent</h2><p class="modal__subtitle">Thanks, ' + cName + '. We\'ll be in touch shortly.</p></div>';
+    document.getElementById('contactModalCloseSuccess').addEventListener('click', function() { contactModal.classList.remove('active'); document.body.style.overflow = ''; });
+  });
+}
 
 // ===========================
 // Navbar background on scroll
