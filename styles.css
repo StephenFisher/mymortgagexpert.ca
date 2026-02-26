@@ -367,6 +367,18 @@ button, input, select {
   flex-shrink: 0;
 }
 
+.navbar__admin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.4;
+  transition: opacity 0.2s;
+  margin-left: 4px;
+}
+.navbar__admin:hover {
+  opacity: 0.8;
+}
+
 .navbar__mobile-phone,
 .navbar__mobile-cta {
   display: none;

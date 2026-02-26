@@ -522,9 +522,72 @@
       logo: '../lighthouse-lending-logo.png'
     };
 
+    function getCalculatorData() {
+      var activeMode = document.querySelector('#seMode .heloc__toggle-btn.active');
+      var mode = activeMode ? activeMode.textContent.trim().toLowerCase() : 'refinance';
+      var data = {
+        type: 'self-employed (' + mode + ')',
+        inputs: {
+          grossIncome: document.getElementById('seGrossIncome').value,
+          monthlyExpenses: document.getElementById('seMonthlyExpenses').value,
+          qualifyingIncome: document.getElementById('seQualifyingIncome').textContent,
+          homeValue: document.getElementById('seHomeValue').value,
+          currentBalance: document.getElementById('seBalance').value
+        },
+        results: {}
+      };
+      if (mode === 'refinance') {
+        data.inputs.currentRate = document.getElementById('seCurrentRate').value + '%';
+        data.inputs.currentAmortization = document.getElementById('seCurrentAmort').value + ' years';
+        data.inputs.newAmortization = document.getElementById('seRefiNewAmort').value + ' years';
+        data.inputs.newTerm = document.getElementById('seRefiTerm').value + ' years';
+        data.inputs.newRate = document.getElementById('seRefiNewRate').value + '%';
+        data.results.maxMortgage = document.getElementById('seRefiMaxMortgage').textContent;
+        data.results.availableEquity = document.getElementById('seRefiAvailEquity').textContent;
+        data.results.currentPayment = document.getElementById('seRefiCurrentPayment').textContent;
+        data.results.newPayment = document.getElementById('seRefiNewPayment').textContent;
+        data.results.monthlySavings = document.getElementById('seRefiMonthlySavings').textContent;
+        data.results.annualSavings = document.getElementById('seRefiAnnualSavings').textContent;
+      } else if (mode === 'heloc') {
+        data.inputs.borrowAmount = document.getElementById('seHelocBorrow').value;
+        data.results.maxLimit = document.getElementById('seHelocMaxLimit').textContent;
+        data.results.helocAmount = document.getElementById('seHelocAmount').textContent;
+        data.results.monthlyPayment = document.getElementById('seHelocMonthly').textContent;
+      } else {
+        data.inputs.debtAmount = document.getElementById('seDebtAmount').value;
+        data.inputs.debtRate = document.getElementById('seDebtRate').value + '%';
+        data.inputs.newAmortization = document.getElementById('seDebtNewAmort').value + ' years';
+        data.inputs.newTerm = document.getElementById('seDebtTerm').value + ' years';
+        data.inputs.newRate = document.getElementById('seDebtNewRate').value + '%';
+        data.results.maxMortgage = document.getElementById('seDebtMaxMortgage').textContent;
+        data.results.newMortgageAmount = document.getElementById('seDebtNewMortgage').textContent;
+        data.results.currentMortgagePayment = document.getElementById('seDebtCurrentMortgagePayment').textContent;
+        data.results.currentDebtPayment = document.getElementById('seDebtCurrentDebtPayment').textContent;
+        data.results.newPayment = document.getElementById('seDebtNewPayment').textContent;
+        data.results.monthlySavings = document.getElementById('seDebtMonthlySavings').textContent;
+        data.results.annualSavings = document.getElementById('seDebtAnnualSavings').textContent;
+      }
+      return data;
+    }
+
     preApprovalForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const firstName = document.getElementById('firstName').value;
+      const lastName = document.getElementById('lastName').value;
+      const phone = document.getElementById('phone').value;
+      const email = document.getElementById('email').value;
+
+      (async function() {
+        const brokerId = await fetchActiveBrokerId();
+        const calcData = getCalculatorData();
+        await submitLead({
+          first_name: firstName, last_name: lastName, email: email, phone: phone,
+          source: 'calculator', page: window.location.pathname,
+          calculator_type: calcData.type, calculator_inputs: calcData.inputs, calculator_results: calcData.results,
+          broker_id: brokerId
+        });
+      })();
+
       const modalEl = modal.querySelector('.modal') || modal.lastElementChild;
       modalEl.innerHTML = '<button class="modal__close" id="modalCloseLoading" aria-label="Close">&times;</button>' +
         '<div class="help-loading">' +

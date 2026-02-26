@@ -250,6 +250,30 @@ function rebindHelpModal() {
   form2.addEventListener('submit', (e) => {
     e.preventDefault();
     const firstName = document.getElementById('helpFirstName').value;
+    const lastName = document.getElementById('helpLastName').value;
+    const helpEmail = document.getElementById('helpEmail').value;
+    const helpPhone = document.getElementById('helpPhone').value;
+    const goal = document.getElementById('helpGoal').value;
+    const address = document.getElementById('helpAddress').value;
+    const borrowAmt = document.getElementById('helpBorrow').value;
+
+    // Submit lead to Supabase
+    (async function() {
+      const brokerId = await fetchActiveBrokerId();
+      await submitLead({
+        first_name: firstName,
+        last_name: lastName,
+        email: helpEmail,
+        phone: helpPhone,
+        source: 'help-wizard',
+        page: window.location.pathname,
+        goal: goal,
+        property_address: address,
+        borrow_amount: borrowAmt,
+        broker_id: brokerId
+      });
+    })();
+
     helpModalInner.innerHTML =
       '<button class="modal__close" id="helpModalCloseLoading" aria-label="Close">&times;</button>' +
       '<div class="help-loading">' +
@@ -299,6 +323,30 @@ function showHelpBrokerResult(firstName) {
 helpForm2.addEventListener('submit', (e) => {
   e.preventDefault();
   const firstName = document.getElementById('helpFirstName').value;
+  const lastName = document.getElementById('helpLastName').value;
+  const helpEmail = document.getElementById('helpEmail').value;
+  const helpPhone = document.getElementById('helpPhone').value;
+  const goal = document.getElementById('helpGoal').value;
+  const address = document.getElementById('helpAddress').value;
+  const borrowAmt = document.getElementById('helpBorrow').value;
+
+  // Submit lead to Supabase
+  (async function() {
+    const brokerId = await fetchActiveBrokerId();
+    await submitLead({
+      first_name: firstName,
+      last_name: lastName,
+      email: helpEmail,
+      phone: helpPhone,
+      source: 'help-wizard',
+      page: window.location.pathname,
+      goal: goal,
+      property_address: address,
+      borrow_amount: borrowAmt,
+      broker_id: brokerId
+    });
+  })();
+
   helpModalInner.innerHTML =
     '<button class="modal__close" id="helpModalCloseLoading" aria-label="Close">&times;</button>' +
     '<div class="help-loading">' +
@@ -374,6 +422,28 @@ var broker = {
 preApprovalForm.addEventListener('submit', (e) => {
   e.preventDefault();
   const firstName = document.getElementById('firstName').value;
+  const lastName = document.getElementById('lastName').value;
+  const phone = document.getElementById('phone').value;
+  const email = document.getElementById('email').value;
+
+  // Submit lead to Supabase (fire and forget — don't block the UI)
+  (async function() {
+    const brokerId = await fetchActiveBrokerId();
+    const calcData = typeof getCalculatorData === 'function' ? getCalculatorData() : null;
+    await submitLead({
+      first_name: firstName,
+      last_name: lastName,
+      email: email,
+      phone: phone,
+      source: calcData ? 'calculator' : 'pre-approval',
+      page: window.location.pathname,
+      calculator_type: calcData ? calcData.type : null,
+      calculator_inputs: calcData ? calcData.inputs : null,
+      calculator_results: calcData ? calcData.results : null,
+      broker_id: brokerId
+    });
+  })();
+
   const modalEl = modal.querySelector('.modal') || modal.lastElementChild;
   modalEl.innerHTML = '<button class="modal__close" id="modalCloseLoading" aria-label="Close">&times;</button>' +
     '<div class="help-loading">' +

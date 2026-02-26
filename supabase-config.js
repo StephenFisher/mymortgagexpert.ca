@@ -76,3 +76,27 @@ async function fetchLenders() {
     return null;
   }
 }
+
+// Fetch active broker ID → returns uuid string or null
+async function fetchActiveBrokerId() {
+  try {
+    const { data, error } = await _supabase.from('broker').select('id').eq('is_active', true).limit(1).single();
+    if (error) throw error;
+    return data.id;
+  } catch (e) {
+    console.warn('Failed to fetch broker ID:', e.message);
+    return null;
+  }
+}
+
+// Submit a lead to Supabase → returns { data, error }
+async function submitLead(leadData) {
+  try {
+    const { data, error } = await _supabase.from('leads').insert([leadData]);
+    if (error) throw error;
+    return { data, error: null };
+  } catch (e) {
+    console.warn('Failed to submit lead:', e.message);
+    return { data: null, error: e };
+  }
+}

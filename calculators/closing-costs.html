@@ -77,6 +77,13 @@
           <h3 class="heloc__form-title">Your Purchase Details</h3>
           <div class="heloc__form">
             <div class="form-group">
+              <label>First-Time Home Buyer?</label>
+              <div class="heloc__toggle" id="ccFthbToggle">
+                <button type="button" class="heloc__toggle-btn active" data-value="no">No</button>
+                <button type="button" class="heloc__toggle-btn" data-value="yes">Yes</button>
+              </div>
+            </div>
+            <div class="form-group">
               <label for="ccPrice">Purchase Price</label>
               <input type="text" id="ccPrice" value="" placeholder="$500,000" inputmode="numeric">
             </div>
@@ -96,13 +103,6 @@
               <div class="heloc__toggle" id="ccLocationToggle">
                 <button type="button" class="heloc__toggle-btn active" data-value="ontario">Ontario</button>
                 <button type="button" class="heloc__toggle-btn" data-value="toronto">Toronto</button>
-              </div>
-            </div>
-            <div class="form-group">
-              <label>First-Time Home Buyer?</label>
-              <div class="heloc__toggle" id="ccFthbToggle">
-                <button type="button" class="heloc__toggle-btn active" data-value="no">No</button>
-                <button type="button" class="heloc__toggle-btn" data-value="yes">Yes</button>
               </div>
             </div>
           </div>
@@ -370,9 +370,49 @@
       logo: '../lighthouse-lending-logo.png'
     };
 
+    function getCalculatorData() {
+      return {
+        type: 'closing-costs',
+        inputs: {
+          purchasePrice: document.getElementById('ccPrice').value,
+          downPayment: document.getElementById('ccDownPayment').value,
+          downPaymentPct: document.getElementById('ccDownPct').value + '%',
+          location: document.querySelector('#ccLocationToggle .heloc__toggle-btn.active') ? document.querySelector('#ccLocationToggle .heloc__toggle-btn.active').textContent : '',
+          firstTimeBuyer: document.querySelector('#ccFthbToggle .heloc__toggle-btn.active') ? document.querySelector('#ccFthbToggle .heloc__toggle-btn.active').textContent : ''
+        },
+        results: {
+          provincialLTT: document.getElementById('rProvLTT').textContent,
+          municipalLTT: document.getElementById('rMuniLTT').textContent,
+          rebates: document.getElementById('rRebate').textContent,
+          cmhcInsurance: document.getElementById('rCmhc').textContent,
+          pstOnCmhc: document.getElementById('rPstCmhc').textContent,
+          legalFees: document.getElementById('rLegal').textContent,
+          titleInsurance: document.getElementById('rTitle').textContent,
+          homeInspection: document.getElementById('rInspection').textContent,
+          totalClosingCosts: document.getElementById('rTotalClosing').textContent,
+          totalCashNeeded: document.getElementById('rTotalCash').textContent
+        }
+      };
+    }
+
     preApprovalForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const firstName = document.getElementById('firstName').value;
+      const lastName = document.getElementById('lastName').value;
+      const phone = document.getElementById('phone').value;
+      const email = document.getElementById('email').value;
+
+      (async function() {
+        const brokerId = await fetchActiveBrokerId();
+        const calcData = getCalculatorData();
+        await submitLead({
+          first_name: firstName, last_name: lastName, email: email, phone: phone,
+          source: 'calculator', page: window.location.pathname,
+          calculator_type: calcData.type, calculator_inputs: calcData.inputs, calculator_results: calcData.results,
+          broker_id: brokerId
+        });
+      })();
+
       const modalEl = document.querySelector('.modal');
       modalEl.innerHTML = '<button class="modal__close" id="modalCloseLoading" aria-label="Close">&times;</button>' +
         '<div class="help-loading">' +
@@ -450,9 +490,23 @@
     // Canadian minimum down payment rules
     function calcMinDown(price) {
       if (price <= 0) return 0;
-      if (price >= 1000000) return price * 0.20;
-      if (price <= 500000) return price * 0.05;
-      return 500000 * 0.05 + (price - 500000) * 0.10;
+      if (isFthb) {
+        // FTHB: 5% up to $500K, 10% on $500K–$1.5M, 20% on $1.5M+
+        if (price >= 1500000) return price * 0.20;
+        if (price <= 500000) return price * 0.05;
+        return 500000 * 0.05 + (price - 500000) * 0.10;
+      } else {
+        // Non-FTHB: 5% up to $500K, 10% on $500K–$1M, 20% on $1M+
+        if (price >= 1000000) return price * 0.20;
+        if (price <= 500000) return price * 0.05;
+        return 500000 * 0.05 + (price - 500000) * 0.10;
+      }
+    }
+
+    function updateDownHelper() {
+      downHelper.textContent = isFthb
+        ? 'Minimum: 5% on first $500K, 10% on $500K–$1.5M, 20% on $1.5M+'
+        : 'Minimum: 5% on first $500K, 10% on portion above $500K, 20% on $1M+';
     }
 
     // Price input — auto-fill down payment to minimum on change
@@ -517,6 +571,17 @@
       btn.classList.add('active');
       isFthb = btn.dataset.value === 'yes';
       ccRebateRow.style.display = isFthb ? '' : 'none';
+      updateDownHelper();
+      // Recalculate minimum down payment based on new FTHB status
+      const price = parse(priceInput.value);
+      if (price > 0) {
+        const minDown = Math.round(calcMinDown(price));
+        const pct = (minDown / price) * 100;
+        updatingDown = true;
+        downPaymentInput.value = '$' + minDown.toLocaleString('en-CA');
+        downPctInput.value = pct % 1 === 0 ? pct.toFixed(0) : pct.toFixed(2);
+        updatingDown = false;
+      }
       calculate();
     });
 
@@ -561,8 +626,9 @@
       const muniRebate = (isFthb && isToronto) ? Math.min(muniLTT, 4475) : 0;
       const totalRebate = provRebate + muniRebate;
 
-      // CMHC (only if down payment < 20% and price < $1M)
-      const needsCmhc = downPct < 20 && price > 0 && price < 1000000;
+      // CMHC (only if down payment < 20% and price within insurable limit)
+      const cmhcLimit = isFthb ? 1500000 : 1000000;
+      const needsCmhc = downPct < 20 && price > 0 && price < cmhcLimit;
       const cmhcRate = needsCmhc ? getCmhcRate(downPct) : 0;
       const cmhcPremium = mortgage * cmhcRate;
       const pstOnCmhc = cmhcPremium * 0.08;

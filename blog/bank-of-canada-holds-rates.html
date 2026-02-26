@@ -257,6 +257,19 @@
     preApprovalForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const firstName = document.getElementById('firstName').value;
+      const lastName = document.getElementById('lastName').value;
+      const phone = document.getElementById('phone').value;
+      const email = document.getElementById('email').value;
+
+      (async function() {
+        const brokerId = await fetchActiveBrokerId();
+        await submitLead({
+          first_name: firstName, last_name: lastName, email: email, phone: phone,
+          source: 'pre-approval', page: window.location.pathname,
+          broker_id: brokerId
+        });
+      })();
+
       const modalEl = document.querySelector('.modal');
       modalEl.innerHTML = '<button class="modal__close" id="modalCloseLoading" aria-label="Close">&times;</button>' +
         '<div class="help-loading">' +

@@ -378,6 +378,24 @@
               <label>Logo Filename</label>
               <input type="text" id="newBrokerLogo" placeholder="e.g. broker-logo.png">
             </div>
+            <div class="dash-form__row">
+              <div>
+                <label>Lead Notification Email</label>
+                <input type="email" id="newBrokerEmail" placeholder="leads@brokerage.com">
+              </div>
+              <div>
+                <label>CRM Webhook URL (optional)</label>
+                <input type="url" id="newBrokerWebhook" placeholder="https://crm.example.com/webhook">
+              </div>
+            </div>
+            <div>
+              <label>Notification Method</label>
+              <select id="newBrokerNotifyType" style="width:100%; padding:10px 14px; border:1.5px solid #d9ddd8; border-radius:8px; font-size:0.95rem; font-family:inherit;">
+                <option value="email">Email Only</option>
+                <option value="webhook">CRM Webhook Only</option>
+                <option value="both">Both Email & Webhook</option>
+              </select>
+            </div>
           </div>
           <div class="dash-actions">
             <button class="dash-btn dash-btn--primary" id="addBrokerBtn">Add Broker</button>
@@ -842,6 +860,9 @@
           <div class="broker-card__detail">Phone: ${b.phone_display}</div>
           <div class="broker-card__detail">Licence: ${b.licence}</div>
           <div class="broker-card__detail">Logo: ${b.logo_url || '—'}</div>
+          <div class="broker-card__detail">Lead Email: ${b.email || '—'}</div>
+          <div class="broker-card__detail">CRM Webhook: ${b.crm_webhook_url || '—'}</div>
+          <div class="broker-card__detail">Notifications: ${b.notification_type || 'email'}</div>
           <div class="broker-card__actions">
             <button class="dash-btn dash-btn--outline dash-btn--sm" onclick="editBroker('${b.id}')">Edit</button>
             ${b.is_active
@@ -900,6 +921,17 @@
             <div><label>Phone Tel</label><input type="text" id="editBrokerPhoneTel" value="${b.phone_tel}"></div>
           </div>
           <div><label>Logo Filename</label><input type="text" id="editBrokerLogo" value="${b.logo_url || ''}"></div>
+          <div class="dash-form__row">
+            <div><label>Lead Notification Email</label><input type="email" id="editBrokerEmail" value="${b.email || ''}" placeholder="leads@brokerage.com"></div>
+            <div><label>CRM Webhook URL</label><input type="url" id="editBrokerWebhook" value="${b.crm_webhook_url || ''}" placeholder="https://crm.example.com/webhook"></div>
+          </div>
+          <div><label>Notification Method</label>
+            <select id="editBrokerNotifyType" style="width:100%; padding:10px 14px; border:1.5px solid #d9ddd8; border-radius:8px; font-size:0.95rem; font-family:inherit;">
+              <option value="email" ${(b.notification_type || 'email') === 'email' ? 'selected' : ''}>Email Only</option>
+              <option value="webhook" ${b.notification_type === 'webhook' ? 'selected' : ''}>CRM Webhook Only</option>
+              <option value="both" ${b.notification_type === 'both' ? 'selected' : ''}>Both Email & Webhook</option>
+            </select>
+          </div>
           <div class="dash-actions" style="margin-top:12px;">
             <button class="dash-btn dash-btn--primary dash-btn--sm" onclick="saveBrokerEdit('${b.id}')">Save</button>
             <button class="dash-btn dash-btn--outline dash-btn--sm" onclick="loadBroker()">Cancel</button>
@@ -915,6 +947,9 @@
         phone_display: document.getElementById('editBrokerPhone').value,
         phone_tel: document.getElementById('editBrokerPhoneTel').value,
         logo_url: document.getElementById('editBrokerLogo').value,
+        email: document.getElementById('editBrokerEmail').value || null,
+        crm_webhook_url: document.getElementById('editBrokerWebhook').value || null,
+        notification_type: document.getElementById('editBrokerNotifyType').value,
         updated_at: new Date().toISOString()
       }).eq('id', id);
       if (error) { alert('Error: ' + error.message); return; }
@@ -935,8 +970,13 @@
         return;
       }
 
+      const email = document.getElementById('newBrokerEmail').value.trim();
+      const webhook = document.getElementById('newBrokerWebhook').value.trim();
+      const notifyType = document.getElementById('newBrokerNotifyType').value;
+
       const { error } = await sb.from('broker').insert({
-        name, licence, phone_display: phone, phone_tel: phoneTel, logo_url: logo, is_active: false
+        name, licence, phone_display: phone, phone_tel: phoneTel, logo_url: logo, is_active: false,
+        email: email || null, crm_webhook_url: webhook || null, notification_type: notifyType
       });
       if (error) { alert('Error: ' + error.message); return; }
 
@@ -946,6 +986,9 @@
       document.getElementById('newBrokerPhone').value = '';
       document.getElementById('newBrokerPhoneTel').value = '';
       document.getElementById('newBrokerLogo').value = '';
+      document.getElementById('newBrokerEmail').value = '';
+      document.getElementById('newBrokerWebhook').value = '';
+      document.getElementById('newBrokerNotifyType').value = 'email';
 
       await loadBroker();
       flashStatus(document.getElementById('brokerStatus'), 'Added!');

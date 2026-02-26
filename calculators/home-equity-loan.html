@@ -350,9 +350,46 @@
       logo: '../lighthouse-lending-logo.png'
     };
 
+    function getCalculatorData() {
+      return {
+        type: 'home-equity-loan',
+        inputs: {
+          homeValue: document.getElementById('helHomeValue').value,
+          mortgageBalance: document.getElementById('helMortgageBalance').value,
+          loanAmount: document.getElementById('helLoanAmount').value,
+          purpose: document.querySelector('#helPurposeToggle .heloc__toggle-btn.active') ? document.querySelector('#helPurposeToggle .heloc__toggle-btn.active').textContent : '',
+          debtAmount: document.getElementById('helDebtAmount').value || 'N/A',
+          interestRate: document.getElementById('helRate').value + '%'
+        },
+        results: {
+          maxLoan: document.getElementById('resultMaxLoan').textContent,
+          loanAmount: document.getElementById('resultLoanAmount').textContent,
+          monthlyPayment: document.getElementById('resultMonthly').textContent,
+          currentDebtPayment: document.getElementById('resultCurrentDebt').textContent,
+          monthlySavings: document.getElementById('resultMonthlySavings').textContent,
+          annualSavings: document.getElementById('resultAnnualSavings').textContent
+        }
+      };
+    }
+
     preApprovalForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const firstName = document.getElementById('firstName').value;
+      const lastName = document.getElementById('lastName').value;
+      const phone = document.getElementById('phone').value;
+      const email = document.getElementById('email').value;
+
+      (async function() {
+        const brokerId = await fetchActiveBrokerId();
+        const calcData = getCalculatorData();
+        await submitLead({
+          first_name: firstName, last_name: lastName, email: email, phone: phone,
+          source: 'calculator', page: window.location.pathname,
+          calculator_type: calcData.type, calculator_inputs: calcData.inputs, calculator_results: calcData.results,
+          broker_id: brokerId
+        });
+      })();
+
       const modalEl = document.querySelector('.modal');
       modalEl.innerHTML = '<button class="modal__close" id="modalCloseLoading" aria-label="Close">&times;</button>' +
         '<div class="help-loading">' +
