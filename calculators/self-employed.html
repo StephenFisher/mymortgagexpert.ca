@@ -754,9 +754,14 @@
       });
     }
 
+    // Canadian semi-annual compounding → monthly effective rate
+    function monthlyEffectiveRate(annualRate) {
+      return Math.pow(1 + annualRate / 2, 1/6) - 1;
+    }
+
     function calcMonthlyPayment(principal, annualRate, years) {
       if (principal <= 0) return 0;
-      const r = annualRate / 12;
+      const r = monthlyEffectiveRate(annualRate);
       const n = years * 12;
       if (r === 0) return principal / n;
       return principal * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
@@ -898,7 +903,7 @@
       const maxLimit = Math.max(0, maxMortgage - balance);
       const exceeds = borrowAmount > maxLimit && borrowAmount > 0 && homeValue > 0;
       const helocAmount = (borrowAmount > 0 && !exceeds) ? borrowAmount : 0;
-      const monthlyPayment = helocAmount * (HELOC_RATE / 12);
+      const monthlyPayment = helocAmount * monthlyEffectiveRate(HELOC_RATE);
 
       helocWarning.style.display = exceeds ? '' : 'none';
       document.getElementById('seHelocMaxLimit').textContent = formatCurrency(maxLimit);

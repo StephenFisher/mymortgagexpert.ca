@@ -547,10 +547,14 @@
     termSelect.removeEventListener('change', calculate);
     termSelect.addEventListener('change', updateRate);
 
-    // Standard amortization formula
+    // Canadian semi-annual compounding → monthly effective rate
+    function monthlyEffectiveRate(annualRate) {
+      return Math.pow(1 + annualRate / 2, 1/6) - 1;
+    }
+
     function calcMonthlyPayment(principal, annualRate, years) {
       if (principal <= 0) return 0;
-      const r = annualRate / 12;
+      const r = monthlyEffectiveRate(annualRate);
       const n = years * 12;
       if (r === 0) return principal / n;
       return principal * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);

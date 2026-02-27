@@ -101,6 +101,16 @@
               </div>
             </div>
             <div class="form-group">
+              <label for="ccPaymentFreq">Payment Frequency</label>
+              <select id="ccPaymentFreq">
+                <option value="monthly" selected>Monthly</option>
+                <option value="biweekly">Bi-Weekly</option>
+                <option value="biweekly-accel">Bi-Weekly (Accelerated)</option>
+                <option value="weekly">Weekly</option>
+                <option value="weekly-accel">Weekly (Accelerated)</option>
+              </select>
+            </div>
+            <div class="form-group">
               <label for="ccAmortization">Amortization</label>
               <select id="ccAmortization">
                 <option value="25" selected>25 Years</option>
@@ -133,7 +143,7 @@
 
             <!-- Hero: Monthly Payment -->
             <div class="renewal-savings-hero" id="ccPaymentHero">
-              <span class="renewal-savings-hero__label">Estimated Monthly Payment</span>
+              <span class="renewal-savings-hero__label" id="rPaymentLabel">Estimated Monthly Payment</span>
               <span class="renewal-savings-hero__amount" id="rMonthlyPayment">$0</span>
               <span class="renewal-savings-hero__term" id="rPaymentTermLabel">5-year fixed at 4.04%</span>
             </div>
@@ -487,6 +497,7 @@
           amortization: document.getElementById('ccAmortization').value + ' years',
           term: document.getElementById('ccTerm').value + ' years',
           rateType: (document.querySelector('#ccRateTypeToggle .heloc__toggle-btn.active') || {}).textContent || 'Fixed',
+          paymentFrequency: document.getElementById('ccPaymentFreq').options[document.getElementById('ccPaymentFreq').selectedIndex].text,
           interestRate: document.getElementById('ccRate').value + '%'
         },
         results: {
@@ -597,6 +608,7 @@
     const downHelper = document.getElementById('ccDownHelper');
     const locationToggle = document.getElementById('ccLocationToggle');
     const fthbToggle = document.getElementById('ccFthbToggle');
+    const paymentFreqSelect = document.getElementById('ccPaymentFreq');
     const amortSelect = document.getElementById('ccAmortization');
     const amortHelper = document.getElementById('ccAmortHelper');
     const termSelect = document.getElementById('ccTerm');
@@ -641,6 +653,7 @@
     });
 
     termSelect.addEventListener('change', updateRate);
+    paymentFreqSelect.addEventListener('change', calculate);
     amortSelect.addEventListener('change', function() {
       enforceAmortRules();
       calculate();
@@ -663,10 +676,14 @@
       }
     }
 
-    // ---- Monthly payment formula ----
+    // ---- Canadian semi-annual compounding → monthly effective rate ----
+    function monthlyEffectiveRate(annualRate) {
+      return Math.pow(1 + annualRate / 2, 1/6) - 1;
+    }
+
     function calcMonthlyPayment(principal, annualRate, years) {
       if (principal <= 0) return 0;
-      var r = annualRate / 12;
+      var r = monthlyEffectiveRate(annualRate);
       var n = years * 12;
       if (r === 0) return principal / n;
       return principal * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
@@ -831,8 +848,27 @@
       var totalMortgage = mortgage + cmhcPremium;
       var monthlyPayment = calcMonthlyPayment(totalMortgage, annualRate, amortYears);
 
+      // Convert monthly payment to selected frequency
+      var freq = paymentFreqSelect.value;
+      var displayPayment = monthlyPayment;
+      var paymentLabel = 'Estimated Monthly Payment';
+      if (freq === 'biweekly') {
+        displayPayment = monthlyPayment * 12 / 26;
+        paymentLabel = 'Estimated Bi-Weekly Payment';
+      } else if (freq === 'biweekly-accel') {
+        displayPayment = monthlyPayment / 2;
+        paymentLabel = 'Estimated Bi-Weekly Payment (Accel.)';
+      } else if (freq === 'weekly') {
+        displayPayment = monthlyPayment * 12 / 52;
+        paymentLabel = 'Estimated Weekly Payment';
+      } else if (freq === 'weekly-accel') {
+        displayPayment = monthlyPayment / 4;
+        paymentLabel = 'Estimated Weekly Payment (Accel.)';
+      }
+
       // Update hero
-      document.getElementById('rMonthlyPayment').textContent = fmt(monthlyPayment);
+      document.getElementById('rPaymentLabel').textContent = paymentLabel;
+      document.getElementById('rMonthlyPayment').textContent = fmt(displayPayment);
       document.getElementById('rPaymentTermLabel').textContent = term + '-year ' + rateType + ' at ' + parseFloat(rateInput.value).toFixed(2) + '%';
 
       // Update mortgage section

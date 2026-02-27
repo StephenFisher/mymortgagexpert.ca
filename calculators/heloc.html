@@ -533,7 +533,8 @@
       const maxLimit = Math.max(0, Math.round((homeValue * HELOC_LTV) - mortgageBalance));
       const exceeds = borrowAmount > maxLimit;
       const helocAmount = (borrowAmount > 0 && !exceeds) ? borrowAmount : 0;
-      const monthlyPayment = helocAmount * (HELOC_RATE / 12);
+      const helocEffectiveMonthly = Math.pow(1 + HELOC_RATE / 2, 1/6) - 1;
+      const monthlyPayment = helocAmount * helocEffectiveMonthly;
 
       warningEl.style.display = (exceeds && borrowAmount > 0 && homeValue > 0) ? '' : 'none';
 
@@ -543,7 +544,7 @@
 
       if (consolidateDebt) {
         const currentMonthlyDebt = debtAmount * (UNSECURED_RATE / 12);
-        const newMonthlyDebt = debtAmount * (HELOC_RATE / 12);
+        const newMonthlyDebt = debtAmount * helocEffectiveMonthly;
         const monthlySavings = Math.max(0, currentMonthlyDebt - newMonthlyDebt);
         const annualSavings = monthlySavings * 12;
 
