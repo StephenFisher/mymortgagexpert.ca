@@ -7,6 +7,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY")!;
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+const CONTACT_EMAIL = "hello@mymortgagexpert.ai";
 
 interface Lead {
   id: string;
@@ -44,7 +45,9 @@ function formatLabel(key: string): string {
 
 function buildEmailHtml(lead: Lead, broker: Broker): string {
   const sourceLabel =
-    lead.source === "help-wizard"
+    lead.source === "contact"
+      ? "Contact Form"
+      : lead.source === "help-wizard"
       ? "Help Wizard"
       : lead.source === "calculator"
       ? `Calculator — ${lead.calculator_type || "Unknown"}`
@@ -74,6 +77,13 @@ function buildEmailHtml(lead: Lead, broker: Broker): string {
           <tr><td style="padding: 8px 0; color: #6b7c74;">Property Address</td><td style="padding: 8px 0;">${lead.property_address || "—"}</td></tr>
           <tr><td style="padding: 8px 0; color: #6b7c74;">Borrow Amount</td><td style="padding: 8px 0;">${lead.borrow_amount || "—"}</td></tr>
         </table>`;
+  }
+
+  // Contact form message
+  if (lead.source === "contact" && lead.calculator_inputs?.notes) {
+    html += `
+        <h2 style="font-size: 16px; color: #2A7D5B; margin: 0 0 16px; padding-top: 16px; border-top: 1px solid #e8ebe6;">Message</h2>
+        <p style="margin: 0; line-height: 1.6; white-space: pre-wrap;">${lead.calculator_inputs.notes}</p>`;
   }
 
   // Calculator data
@@ -118,8 +128,52 @@ Deno.serve(async (req) => {
     // The webhook payload contains the new record
     const lead: Lead = payload.record;
 
-    if (!lead || !lead.broker_id) {
-      return new Response(JSON.stringify({ error: "No lead or broker_id" }), {
+    if (!lead) {
+      return new Response(JSON.stringify({ error: "No lead data" }), {
+        status: 400,
+      });
+    }
+
+    const results: Record<string, unknown> = {};
+
+    // ── Contact form → send directly to site owner ──
+    if (lead.source === "contact") {
+      const contactBroker: Broker = {
+        id: "",
+        name: "MyMortgageExpert",
+        email: CONTACT_EMAIL,
+        crm_webhook_url: null,
+        notification_type: "email",
+      };
+      const emailHtml = buildEmailHtml(lead, contactBroker);
+      const emailRes = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${RESEND_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: "MyMortgageExpert <leads@mymortgagexpert.ca>",
+          to: [CONTACT_EMAIL],
+          reply_to: lead.email,
+          subject: `Contact Form — ${lead.first_name} ${lead.last_name}`,
+          html: emailHtml,
+        }),
+      });
+      results.email = {
+        status: emailRes.status,
+        body: await emailRes.json(),
+      };
+
+      return new Response(JSON.stringify({ success: true, results }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    // ── All other leads → send to broker ──
+    if (!lead.broker_id) {
+      return new Response(JSON.stringify({ error: "No broker_id" }), {
         status: 400,
       });
     }
@@ -138,8 +192,6 @@ Deno.serve(async (req) => {
         { status: 404 }
       );
     }
-
-    const results: Record<string, unknown> = {};
 
     // Send email via Resend
     if (
