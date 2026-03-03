@@ -1468,17 +1468,18 @@ button, input, select {
   background: var(--cream);
   border-radius: var(--radius-sm);
   padding: 4px;
+  border: 1.5px solid var(--border);
 }
 
 .heloc__toggle-btn {
   flex: 1;
   padding: 10px 16px;
   border: none;
-  background: none;
+  background: #ede8e1;
   border-radius: 6px;
   cursor: pointer;
   font-weight: 600;
-  color: var(--text-mid);
+  color: var(--text-dark);
   transition: all 0.2s;
   font-size: 0.9rem;
 }

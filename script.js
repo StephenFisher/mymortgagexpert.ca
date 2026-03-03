@@ -18,17 +18,15 @@ navLinks.querySelectorAll('a').forEach(link => {
 });
 
 // ===========================
-// Hero Affordability Calculator
+// Hero — What Can You Afford?
 // ===========================
 const heroForm = document.getElementById('heroForm');
-const heroIncomeInput = document.getElementById('heroIncome');
-const heroDebtsInput = document.getElementById('heroDebts');
-const heroSubmit = document.getElementById('heroSubmit');
-const heroResult = document.getElementById('heroResult');
-const heroResultMessage = document.getElementById('heroResultMessage');
-const heroMaxPrice = document.getElementById('heroMaxPrice');
-const heroMonthly = document.getElementById('heroMonthly');
-const heroDown = document.getElementById('heroDown');
+const heroOwnerToggle = document.getElementById('heroOwnerToggle');
+const heroAdditionalToggle = document.getElementById('heroAdditionalToggle');
+const heroAdditionalGroup = document.getElementById('heroAdditionalGroup');
+const heroNotOwner = document.getElementById('heroNotOwner');
+const heroResults = document.getElementById('heroResults');
+const heroStartOver = document.getElementById('heroStartOver');
 
 function heroFormatCurrency(value) {
   return '$' + Math.round(value).toLocaleString('en-CA');
@@ -45,111 +43,352 @@ function heroBindCurrency(input) {
     this.value = '$' + Number(raw).toLocaleString('en-CA');
   });
 }
-heroBindCurrency(heroIncomeInput);
-heroBindCurrency(heroDebtsInput);
+
+// Currency formatting on all money inputs
+['heroHomeValue', 'heroMortgageBalance', 'heroAdditionalAmount'].forEach(function(id) {
+  var el = document.getElementById(id);
+  if (el) heroBindCurrency(el);
+});
+
+// Homeowner toggle — Yes/No
+heroOwnerToggle.addEventListener('click', function(e) {
+  var btn = e.target.closest('.heloc__toggle-btn');
+  if (!btn) return;
+  heroOwnerToggle.querySelectorAll('.heloc__toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+
+  if (btn.dataset.value === 'yes') {
+    heroForm.style.display = '';
+    heroNotOwner.style.display = 'none';
+    heroResults.style.display = 'none';
+  } else {
+    heroForm.style.display = 'none';
+    heroNotOwner.style.display = '';
+    heroResults.style.display = 'none';
+  }
+});
+
+// Additional mortgages toggle
+heroAdditionalToggle.addEventListener('click', function(e) {
+  var btn = e.target.closest('.heloc__toggle-btn');
+  if (!btn) return;
+  heroAdditionalToggle.querySelectorAll('.heloc__toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+
+  if (btn.dataset.value === 'yes') {
+    heroAdditionalGroup.style.display = '';
+  } else {
+    heroAdditionalGroup.style.display = 'none';
+    document.getElementById('heroAdditionalAmount').value = '';
+  }
+});
+
+// Form submit — calculate 80% LTV borrowing power
+heroForm.addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  var homeValue = heroParseCurrency(document.getElementById('heroHomeValue').value);
+  var mortgageBalance = heroParseCurrency(document.getElementById('heroMortgageBalance').value);
+  var additionalBtn = heroAdditionalToggle.querySelector('.heloc__toggle-btn.active');
+  var additionalAmount = (additionalBtn && additionalBtn.dataset.value === 'yes')
+    ? heroParseCurrency(document.getElementById('heroAdditionalAmount').value) : 0;
+
+  var goal = document.getElementById('heroGoal').value;
+  var maxLTV = homeValue * 0.80;
+  var borrowingPower = Math.max(0, Math.round(maxLTV - mortgageBalance - additionalAmount));
+
+  // Hide form, show page 2
+  document.getElementById('heroOwnerStep').style.display = 'none';
+  heroForm.style.display = 'none';
+  heroResults.style.display = '';
+
+  // Build page 2 dynamically based on goal
+  buildHeroPage2(goal, borrowingPower, mortgageBalance);
+});
+
+// Semi-annual compounding monthly effective rate (Canadian standard)
+function heroMonthlyRate(annualRate) {
+  return Math.pow(1 + annualRate / 2, 1/6) - 1;
+}
 
 function heroCalcPayment(principal, annualRate, years) {
   if (principal <= 0) return 0;
-  const r = annualRate / 12;
-  const n = years * 12;
+  var r = heroMonthlyRate(annualRate);
+  var n = years * 12;
   if (r === 0) return principal / n;
   return principal * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
 }
 
-function heroCalcMaxMortgage(payment, annualRate, years) {
-  if (payment <= 0) return 0;
-  const r = annualRate / 12;
-  const n = years * 12;
-  if (r === 0) return payment * n;
-  return payment * (Math.pow(1 + r, n) - 1) / (r * Math.pow(1 + r, n));
+var HERO_BEST_RATE = 4.04; // 5-year fixed
+
+// Build page 2 content based on goal
+function buildHeroPage2(goal, borrowingPower, mortgageBalance) {
+  var container = document.getElementById('heroPage2Content');
+  var html = '';
+
+  if (goal === 'Refinance') {
+    html =
+      '<p style="font-size:0.85rem; color:var(--text-mid); margin-bottom:14px;">Let\'s see how much you could save by refinancing.</p>' +
+      '<div class="form-group" style="margin-bottom:12px; text-align:left;">' +
+        '<label for="heroCurrentRate">What rate are you currently paying?</label>' +
+        '<input type="text" id="heroCurrentRate" placeholder="5.49" inputmode="decimal">' +
+      '</div>' +
+      '<div class="form-group" style="margin-bottom:14px; text-align:left;">' +
+        '<label for="heroAmort">Remaining amortization</label>' +
+        '<select id="heroAmort">' +
+          '<option value="10">10 Years</option>' +
+          '<option value="15">15 Years</option>' +
+          '<option value="20" selected>20 Years</option>' +
+          '<option value="25">25 Years</option>' +
+          '<option value="30">30 Years</option>' +
+        '</select>' +
+      '</div>' +
+      '<button type="button" class="btn btn--primary btn--large" id="heroCalcBtn" style="width:100%;">See What You Could Save</button>' +
+      '<div id="heroCalcResult" style="display:none;"></div>';
+
+  } else if (goal === 'Consolidate Debt') {
+    html =
+      '<p style="font-size:0.85rem; color:var(--text-mid); margin-bottom:14px;">See how much you could save by rolling your debt into your mortgage.</p>' +
+      '<div class="form-group" style="margin-bottom:12px; text-align:left;">' +
+        '<label for="heroDebtTotal">How much unsecured debt do you have?</label>' +
+        '<input type="text" id="heroDebtTotal" placeholder="$30,000" inputmode="numeric">' +
+      '</div>' +
+      '<div class="form-group" style="margin-bottom:14px; text-align:left;">' +
+        '<label for="heroDebtPayment">What are you paying monthly on that debt?</label>' +
+        '<input type="text" id="heroDebtPayment" placeholder="$800" inputmode="numeric">' +
+      '</div>' +
+      '<button type="button" class="btn btn--primary btn--large" id="heroCalcBtn" style="width:100%;">See What You Could Save</button>' +
+      '<div id="heroCalcResult" style="display:none;"></div>';
+
+  } else if (goal === 'Home Equity Line of Credit') {
+    html =
+      '<p style="font-size:0.85rem; color:var(--text-mid); margin-bottom:14px;">See how much you could access through a HELOC.</p>' +
+      '<div class="form-group" style="margin-bottom:14px; text-align:left;">' +
+        '<label for="heroHelocAmount">How much would you like to access?</label>' +
+        '<input type="text" id="heroHelocAmount" placeholder="$75,000" inputmode="numeric">' +
+      '</div>' +
+      '<button type="button" class="btn btn--primary btn--large" id="heroCalcBtn" style="width:100%;">Check Your Eligibility</button>' +
+      '<div id="heroCalcResult" style="display:none;"></div>';
+
+  } else if (goal === 'Switch/Transfer') {
+    html =
+      '<p style="font-size:0.85rem; color:var(--text-mid); margin-bottom:14px;">See how much you could save by switching lenders at renewal.</p>' +
+      '<div class="form-group" style="margin-bottom:12px; text-align:left;">' +
+        '<label for="heroCurrentRate">What rate are you currently paying?</label>' +
+        '<input type="text" id="heroCurrentRate" placeholder="5.49" inputmode="decimal">' +
+      '</div>' +
+      '<div class="form-group" style="margin-bottom:14px; text-align:left;">' +
+        '<label for="heroAmort">Remaining amortization</label>' +
+        '<select id="heroAmort">' +
+          '<option value="10">10 Years</option>' +
+          '<option value="15">15 Years</option>' +
+          '<option value="20" selected>20 Years</option>' +
+          '<option value="25">25 Years</option>' +
+          '<option value="30">30 Years</option>' +
+        '</select>' +
+      '</div>' +
+      '<button type="button" class="btn btn--primary btn--large" id="heroCalcBtn" style="width:100%;">See What You Could Save</button>' +
+      '<div id="heroCalcResult" style="display:none;"></div>';
+
+  } else if (goal === 'Home Purchase') {
+    html =
+      '<p style="font-size:0.85rem; color:var(--text-mid); margin-bottom:14px;">See how your equity can help fund your next purchase.</p>' +
+      '<div class="form-group" style="margin-bottom:14px; text-align:left;">' +
+        '<label for="heroDownNeeded">How much do you need for a down payment?</label>' +
+        '<input type="text" id="heroDownNeeded" placeholder="$100,000" inputmode="numeric">' +
+      '</div>' +
+      '<button type="button" class="btn btn--primary btn--large" id="heroCalcBtn" style="width:100%;">Check Your Equity</button>' +
+      '<div id="heroCalcResult" style="display:none;"></div>';
+  }
+
+  container.innerHTML = html;
+
+  // Bind currency formatting on dynamic inputs
+  ['heroDebtTotal', 'heroDebtPayment', 'heroHelocAmount', 'heroDownNeeded'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) heroBindCurrency(el);
+  });
+
+  // Bind calc button
+  var calcBtn = document.getElementById('heroCalcBtn');
+  if (calcBtn) {
+    calcBtn.addEventListener('click', function() {
+      var resultDiv = document.getElementById('heroCalcResult');
+      var resultHtml = '';
+
+      if (goal === 'Refinance' || goal === 'Switch/Transfer') {
+        var currentRate = parseFloat(document.getElementById('heroCurrentRate').value) / 100 || 0;
+        var amort = parseInt(document.getElementById('heroAmort').value);
+        var currentPayment = heroCalcPayment(mortgageBalance, currentRate, amort);
+        var newPayment = heroCalcPayment(mortgageBalance, HERO_BEST_RATE / 100, amort);
+        var monthlySavings = Math.max(0, currentPayment - newPayment);
+        var annualSavings = monthlySavings * 12;
+
+        resultHtml =
+          '<div style="border-top:1.5px solid var(--border); margin-top:16px; padding-top:16px;">' +
+            '<div class="hero__result-row">' +
+              '<span class="hero__result-label">Current monthly payment</span>' +
+              '<span class="hero__result-value" style="color:#c0392b;">' + heroFormatCurrency(currentPayment) + '</span>' +
+            '</div>' +
+            '<div class="hero__result-row">' +
+              '<span class="hero__result-label">New estimated payment</span>' +
+              '<span class="hero__result-value" style="color:#2A7D5B;">' + heroFormatCurrency(newPayment) + '</span>' +
+            '</div>' +
+            '<div class="hero__result-row">' +
+              '<span class="hero__result-label">Monthly savings</span>' +
+              '<span class="hero__result-value hero__result-value--hero">' + heroFormatCurrency(monthlySavings) + '</span>' +
+            '</div>' +
+            '<div class="hero__result-row">' +
+              '<span class="hero__result-label">Annual savings</span>' +
+              '<span class="hero__result-value">' + heroFormatCurrency(annualSavings) + '</span>' +
+            '</div>';
+
+        if (monthlySavings > 0) {
+          resultHtml +=
+            '<div style="text-align:center; margin:12px 0; font-weight:600; color:#2A7D5B;">&#10003; You could save ' + heroFormatCurrency(annualSavings) + ' per year</div>';
+        }
+
+        resultHtml +=
+            '<a href="#" class="btn btn--primary btn--large hero__result-cta open-modal" id="heroResultCta">Speak to a Specialist &rarr;</a>' +
+            '<a href="/calculators/' + (goal === 'Refinance' ? 'refinance' : 'renewal') + '.html" style="display:block; text-align:center; margin-top:8px; font-size:0.85rem; color:var(--green-mid);">See full calculator &rarr;</a>' +
+          '</div>';
+
+      } else if (goal === 'Consolidate Debt') {
+        var debtTotal = heroParseCurrency(document.getElementById('heroDebtTotal').value);
+        var debtPayment = heroParseCurrency(document.getElementById('heroDebtPayment').value);
+        var withinLTV = debtTotal <= borrowingPower;
+        var newDebtPayment = heroCalcPayment(debtTotal, HERO_BEST_RATE / 100, 25);
+        var monthlySavings = Math.max(0, debtPayment - newDebtPayment);
+
+        resultHtml =
+          '<div style="border-top:1.5px solid var(--border); margin-top:16px; padding-top:16px;">' +
+            '<div class="hero__result-row">' +
+              '<span class="hero__result-label">Current debt payments</span>' +
+              '<span class="hero__result-value" style="color:#c0392b;">' + heroFormatCurrency(debtPayment) + '/mo</span>' +
+            '</div>' +
+            '<div class="hero__result-row">' +
+              '<span class="hero__result-label">New estimated payment</span>' +
+              '<span class="hero__result-value" style="color:#2A7D5B;">' + heroFormatCurrency(newDebtPayment) + '/mo</span>' +
+            '</div>' +
+            '<div class="hero__result-row">' +
+              '<span class="hero__result-label">Monthly savings</span>' +
+              '<span class="hero__result-value hero__result-value--hero">' + heroFormatCurrency(monthlySavings) + '</span>' +
+            '</div>' +
+            '<div class="hero__result-row">' +
+              '<span class="hero__result-label">Available equity (80% LTV)</span>' +
+              '<span class="hero__result-value">' + heroFormatCurrency(borrowingPower) + '</span>' +
+            '</div>';
+
+        if (withinLTV) {
+          resultHtml +=
+            '<div style="text-align:center; margin:12px 0; font-weight:600; color:#2A7D5B;">&#10003; Your debt fits within your available equity</div>';
+        } else {
+          resultHtml +=
+            '<div style="text-align:center; margin:12px 0; font-weight:600; color:#c0392b;">&#10007; Your debt exceeds available equity — a specialist can explore options</div>';
+        }
+
+        resultHtml +=
+            '<a href="#" class="btn btn--primary btn--large hero__result-cta open-modal" id="heroResultCta">Speak to a Specialist &rarr;</a>' +
+            '<a href="/calculators/refinance.html" style="display:block; text-align:center; margin-top:8px; font-size:0.85rem; color:var(--green-mid);">See full calculator &rarr;</a>' +
+          '</div>';
+
+      } else if (goal === 'Home Equity Line of Credit') {
+        var helocAmount = heroParseCurrency(document.getElementById('heroHelocAmount').value);
+        var withinLTV = helocAmount <= borrowingPower && helocAmount > 0;
+        var helocRate = 5.95;
+        var monthlyInterest = helocAmount * heroMonthlyRate(helocRate / 100);
+
+        resultHtml =
+          '<div style="border-top:1.5px solid var(--border); margin-top:16px; padding-top:16px;">' +
+            '<div class="hero__result-row">' +
+              '<span class="hero__result-label">HELOC amount requested</span>' +
+              '<span class="hero__result-value">' + heroFormatCurrency(helocAmount) + '</span>' +
+            '</div>' +
+            '<div class="hero__result-row">' +
+              '<span class="hero__result-label">Available equity (80% LTV)</span>' +
+              '<span class="hero__result-value">' + heroFormatCurrency(borrowingPower) + '</span>' +
+            '</div>' +
+            '<div class="hero__result-row">' +
+              '<span class="hero__result-label">Est. monthly interest payment</span>' +
+              '<span class="hero__result-value">' + heroFormatCurrency(monthlyInterest) + '/mo</span>' +
+            '</div>';
+
+        if (withinLTV) {
+          resultHtml +=
+            '<div style="text-align:center; margin:12px 0; font-weight:600; color:#2A7D5B;">&#10003; You have enough equity for this HELOC</div>';
+        } else {
+          resultHtml +=
+            '<div style="text-align:center; margin:12px 0; font-weight:600; color:#c0392b;">&#10007; Requested amount exceeds your equity — a specialist can help</div>';
+        }
+
+        resultHtml +=
+            '<a href="#" class="btn btn--primary btn--large hero__result-cta open-modal" id="heroResultCta">Speak to a Specialist &rarr;</a>' +
+            '<a href="/calculators/heloc.html" style="display:block; text-align:center; margin-top:8px; font-size:0.85rem; color:var(--green-mid);">See full calculator &rarr;</a>' +
+          '</div>';
+
+      } else if (goal === 'Home Purchase') {
+        var downNeeded = heroParseCurrency(document.getElementById('heroDownNeeded').value);
+        var withinEquity = downNeeded <= borrowingPower && downNeeded > 0;
+
+        resultHtml =
+          '<div style="border-top:1.5px solid var(--border); margin-top:16px; padding-top:16px;">' +
+            '<div class="hero__result-row">' +
+              '<span class="hero__result-label">Down payment needed</span>' +
+              '<span class="hero__result-value">' + heroFormatCurrency(downNeeded) + '</span>' +
+            '</div>' +
+            '<div class="hero__result-row">' +
+              '<span class="hero__result-label">Available equity (80% LTV)</span>' +
+              '<span class="hero__result-value">' + heroFormatCurrency(borrowingPower) + '</span>' +
+            '</div>';
+
+        if (withinEquity) {
+          var remaining = borrowingPower - downNeeded;
+          resultHtml +=
+            '<div class="hero__result-row">' +
+              '<span class="hero__result-label">Equity remaining after purchase</span>' +
+              '<span class="hero__result-value">' + heroFormatCurrency(remaining) + '</span>' +
+            '</div>' +
+            '<div style="text-align:center; margin:12px 0; font-weight:600; color:#2A7D5B;">&#10003; You have enough equity for your down payment</div>';
+        } else {
+          resultHtml +=
+            '<div style="text-align:center; margin:12px 0; font-weight:600; color:#c0392b;">&#10007; Your equity may not cover the full down payment — a specialist can help</div>';
+        }
+
+        resultHtml +=
+            '<a href="#" class="btn btn--primary btn--large hero__result-cta open-modal" id="heroResultCta">Speak to a Specialist &rarr;</a>' +
+            '<a href="/calculators/purchase.html" style="display:block; text-align:center; margin-top:8px; font-size:0.85rem; color:var(--green-mid);">See full calculator &rarr;</a>' +
+          '</div>';
+      }
+
+      resultDiv.innerHTML = resultHtml;
+      resultDiv.style.display = '';
+      calcBtn.style.display = 'none';
+
+      // Bind CTA
+      var cta = document.getElementById('heroResultCta');
+      if (cta) {
+        cta.onclick = function(ev) {
+          ev.preventDefault();
+          ev.stopPropagation();
+          document.getElementById('preApprovalModal').classList.add('active');
+          document.body.style.overflow = 'hidden';
+          return false;
+        };
+      }
+    });
+  }
 }
 
-function heroCalcMinDown(price) {
-  if (price <= 0) return 0;
-  if (price >= 1000000) return price * 0.20;
-  if (price <= 500000) return price * 0.05;
-  return 500000 * 0.05 + (price - 500000) * 0.10;
-}
-
-heroForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const annualIncome = heroParseCurrency(heroIncomeInput.value);
-  const monthlyDebts = heroParseCurrency(heroDebtsInput.value);
-
-  if (annualIncome <= 0) return;
-
-  const monthlyIncome = annualIncome / 12;
-  const maxGDS = monthlyIncome * 0.39;
-  const maxTDS = monthlyIncome * 0.44 - monthlyDebts;
-  const maxHousing = Math.min(maxGDS, maxTDS);
-
-  if (maxHousing <= 0) {
-    heroResult.classList.remove('active');
-    heroResultMessage.classList.add('active');
-    heroResultMessage.textContent = 'Your monthly debts are too high relative to your income. Try paying down some debt to increase your buying power.';
-    heroSubmit.textContent = 'Recalculate';
-    return;
-  }
-
-  const bestRate = 4.04;
-  const stressRate = Math.max(bestRate + 2, 5.25) / 100;
-  const actualRate = bestRate / 100;
-  const amortYears = 25;
-  const heating = 150;
-
-  // Given a mortgage, solve for purchase price: price = mortgage + minDown(price)
-  function mortgageToPrice(m) {
-    let p = m / 0.95; // try ≤500K: down=5%, mortgage=0.95*price
-    if (p <= 500000) return p;
-    p = (m - 25000) / 0.90; // 500K–999K: mortgage=0.90*price+25K
-    if (p < 1000000) return p;
-    return m / 0.80; // ≥1M: down=20%, mortgage=0.80*price
-  }
-
-  // Iterative solve: property tax depends on price
-  let price = 500000;
-  for (let i = 0; i < 10; i++) {
-    const propTax = price * 0.01 / 12;
-    const avail = maxHousing - propTax - heating;
-    if (avail <= 0) { price = 0; break; }
-    const mortgage = heroCalcMaxMortgage(avail, stressRate, amortYears);
-    price = mortgageToPrice(mortgage);
-  }
-
-  // Final pass with converged price
-  const propTax = price * 0.01 / 12;
-  const avail = maxHousing - propTax - heating;
-  const finalMortgage = avail > 0 ? heroCalcMaxMortgage(avail, stressRate, amortYears) : 0;
-  const finalPrice = Math.round(mortgageToPrice(finalMortgage));
-  const finalMinDown = Math.round(heroCalcMinDown(finalPrice));
-  const actualMonthly = heroCalcPayment(finalMortgage, actualRate, amortYears);
-
-  if (finalPrice <= 0) {
-    heroResult.classList.remove('active');
-    heroResultMessage.classList.add('active');
-    heroResultMessage.textContent = 'Based on your income and debts, affordability is limited. Consider paying down debt or increasing your income.';
-    heroSubmit.textContent = 'Recalculate';
-    return;
-  }
-
-  heroResultMessage.classList.remove('active');
-  heroResult.classList.add('active');
-  heroMaxPrice.textContent = heroFormatCurrency(finalPrice);
-  heroMonthly.textContent = heroFormatCurrency(actualMonthly);
-  heroDown.textContent = heroFormatCurrency(finalMinDown);
-  heroSubmit.textContent = 'Recalculate';
-
-  // Rebind the new CTA button to open the modal
-  const ctaBtn = heroResult.querySelector('.open-modal');
-  if (ctaBtn) {
-    ctaBtn.onclick = function(ev) {
-      ev.preventDefault();
-      ev.stopPropagation();
-      document.getElementById('preApprovalModal').classList.add('active');
-      document.body.style.overflow = 'hidden';
-      return false;
-    };
-  }
+// Start over button
+heroStartOver.addEventListener('click', function() {
+  heroResults.style.display = 'none';
+  document.getElementById('heroPage2Content').innerHTML = '';
+  document.getElementById('heroOwnerStep').style.display = '';
+  heroForm.style.display = '';
+  heroForm.reset();
+  heroAdditionalGroup.style.display = 'none';
+  heroAdditionalToggle.querySelectorAll('.heloc__toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+  heroAdditionalToggle.querySelector('[data-value="no"]').classList.add('active');
 });
 
 // ===========================

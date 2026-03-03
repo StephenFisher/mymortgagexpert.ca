@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@800&family=Playfair+Display:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Jost:wght@700&family=Manrope:wght@800&family=Playfair+Display:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -62,7 +62,7 @@
     <div class="container hero__inner">
       <div class="hero__content">
         <span class="hero__badge">Canada's lowest rates updated daily</span>
-        <h1 class="hero__title">Find Canada's<br>Best Mortgage<br>Products.</h1>
+        <h1 class="hero__title" style="font-family:'Jost',sans-serif; font-weight:700;">Find Canada's<br>Best Mortgage<br>Products.</h1>
         <p class="hero__subtitle">Compare rates from 30+ lenders in minutes. Expert guidance, personalized service. You deserve options, we'll help you find them.</p>
         <div class="hero__buttons">
           <a href="#" class="btn btn--primary btn--large hero__cta-wide open-help-modal">How Can We Help?</a>
@@ -83,35 +83,65 @@
         </div>
       </div>
       <div class="hero__form-card">
-        <h3 class="hero__form-title">What Can You Afford?</h3>
+        <h3 class="hero__form-title">How Can We Help?</h3>
+
+        <!-- Q1: Homeowner? -->
+        <div id="heroOwnerStep">
+          <div class="form-group" style="text-align:left;">
+            <label>Are you a home owner?</label>
+            <div class="heloc__toggle" id="heroOwnerToggle" style="margin-top:8px;">
+              <button type="button" class="heloc__toggle-btn active" data-value="yes">Yes</button>
+              <button type="button" class="heloc__toggle-btn" data-value="no">No</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Owner form (shown when Yes) -->
         <form class="hero__form" id="heroForm">
           <div class="form-group form-group--full">
-            <label for="heroIncome">Annual Household Income</label>
-            <input type="text" id="heroIncome" placeholder="$100,000">
+            <label for="heroGoal">What is your goal?</label>
+            <select id="heroGoal" required>
+              <option value="" disabled selected>Select an option</option>
+              <option value="Refinance">Refinance</option>
+              <option value="Consolidate Debt">Consolidate Debt</option>
+              <option value="Home Equity Line of Credit">Home Equity Line of Credit</option>
+              <option value="Switch/Transfer">Switch/Transfer</option>
+              <option value="Home Purchase">Home Purchase</option>
+            </select>
           </div>
           <div class="form-group form-group--full">
-            <label for="heroDebts">Monthly Debt Payments</label>
-            <input type="text" id="heroDebts" placeholder="$500">
-            <span class="hero__helper">Car loans, credit cards, student loans, etc.</span>
+            <label for="heroHomeValue">What is the value of your home?</label>
+            <input type="text" id="heroHomeValue" placeholder="$500,000" inputmode="numeric" required>
           </div>
-          <button type="submit" class="btn btn--primary btn--large hero__submit" id="heroSubmit">See What You Can Afford</button>
+          <div class="form-group form-group--full">
+            <label for="heroMortgageBalance">What is your current mortgage balance?</label>
+            <input type="text" id="heroMortgageBalance" placeholder="$350,000" inputmode="numeric" required>
+          </div>
+          <div class="form-group form-group--full">
+            <label>Are there any additional mortgages?</label>
+            <div class="heloc__toggle" id="heroAdditionalToggle">
+              <button type="button" class="heloc__toggle-btn" data-value="yes">Yes</button>
+              <button type="button" class="heloc__toggle-btn active" data-value="no">No</button>
+            </div>
+          </div>
+          <div class="form-group form-group--full" id="heroAdditionalGroup" style="display:none;">
+            <label for="heroAdditionalAmount">How much is the other mortgage?</label>
+            <input type="text" id="heroAdditionalAmount" placeholder="$50,000" inputmode="numeric">
+          </div>
+          <button type="submit" class="btn btn--primary btn--large hero__submit">Next &rarr;</button>
         </form>
-        <div class="hero__result" id="heroResult">
-          <div class="hero__result-row">
-            <span class="hero__result-label">You could afford up to</span>
-            <span class="hero__result-value hero__result-value--hero" id="heroMaxPrice">$0</span>
-          </div>
-          <div class="hero__result-row">
-            <span class="hero__result-label">Estimated monthly payment</span>
-            <span class="hero__result-value" id="heroMonthly">$0</span>
-          </div>
-          <div class="hero__result-row">
-            <span class="hero__result-label">Minimum down payment</span>
-            <span class="hero__result-value" id="heroDown">$0</span>
-          </div>
-          <a href="#" class="btn btn--primary btn--large hero__result-cta open-modal">Get Pre-Approved &rarr;</a>
+
+        <!-- Not a homeowner (shown when No) -->
+        <div id="heroNotOwner" style="display:none;">
+          <p style="text-align:center; margin:16px 0; color:var(--text-mid);">Looking to buy your first home?</p>
+          <a href="/calculators/purchase.html" class="btn btn--primary btn--large" style="width:100%; text-align:center;">Try Our Purchase Calculator</a>
         </div>
-        <div class="hero__result-message" id="heroResultMessage"></div>
+
+        <!-- Page 2: Dynamic questions based on goal (shown after Next) -->
+        <div id="heroResults" style="display:none;">
+          <div id="heroPage2Content"></div>
+          <button type="button" class="btn btn--outline" id="heroStartOver" style="width:100%; margin-top:8px;">Start Over</button>
+        </div>
       </div>
     </div>
   </section>
