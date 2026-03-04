@@ -133,6 +133,17 @@ function buildHeroPage2(goal, borrowingPower, mortgageBalance) {
         '<label for="heroCurrentPayment">Current mortgage payment (excl. property tax)</label>' +
         '<input type="text" id="heroCurrentPayment" placeholder="$2,500" inputmode="numeric">' +
       '</div>' +
+      '<div class="form-group" style="margin-bottom:12px; text-align:left;">' +
+        '<label>Do you want to consolidate any debt?</label>' +
+        '<div class="heloc__toggle" id="heroDebtToggle" style="margin-top:8px;">' +
+          '<button type="button" class="heloc__toggle-btn" data-value="yes">Yes</button>' +
+          '<button type="button" class="heloc__toggle-btn active" data-value="no">No</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="form-group" id="heroDebtGroup" style="display:none; margin-bottom:12px; text-align:left;">' +
+        '<label for="heroDebtAmount">How much debt would you like to consolidate?</label>' +
+        '<input type="text" id="heroDebtAmount" placeholder="$30,000" inputmode="numeric">' +
+      '</div>' +
       '<button type="button" class="btn btn--primary btn--large" id="heroCalcBtn" style="width:100%;">See What You Could Save</button>' +
       '<div id="heroCalcResult" style="display:none;"></div>';
 
@@ -156,6 +167,17 @@ function buildHeroPage2(goal, borrowingPower, mortgageBalance) {
       '<div class="form-group" style="margin-bottom:14px; text-align:left;">' +
         '<label for="heroHelocAmount">How much would you like to access?</label>' +
         '<input type="text" id="heroHelocAmount" placeholder="$75,000" inputmode="numeric">' +
+      '</div>' +
+      '<div class="form-group" style="margin-bottom:12px; text-align:left;">' +
+        '<label>Do you want to consolidate any debt?</label>' +
+        '<div class="heloc__toggle" id="heroDebtToggle" style="margin-top:8px;">' +
+          '<button type="button" class="heloc__toggle-btn" data-value="yes">Yes</button>' +
+          '<button type="button" class="heloc__toggle-btn active" data-value="no">No</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="form-group" id="heroDebtGroup" style="display:none; margin-bottom:12px; text-align:left;">' +
+        '<label for="heroDebtAmount">How much debt would you like to consolidate?</label>' +
+        '<input type="text" id="heroDebtAmount" placeholder="$30,000" inputmode="numeric">' +
       '</div>' +
       '<button type="button" class="btn btn--primary btn--large" id="heroCalcBtn" style="width:100%;">Check Your Eligibility</button>' +
       '<div id="heroCalcResult" style="display:none;"></div>';
@@ -184,10 +206,28 @@ function buildHeroPage2(goal, borrowingPower, mortgageBalance) {
   container.innerHTML = html;
 
   // Bind currency formatting on dynamic inputs
-  ['heroCurrentPayment', 'heroDebtTotal', 'heroDebtPayment', 'heroHelocAmount', 'heroDownNeeded'].forEach(function(id) {
+  ['heroCurrentPayment', 'heroDebtTotal', 'heroDebtPayment', 'heroHelocAmount', 'heroDownNeeded', 'heroDebtAmount'].forEach(function(id) {
     var el = document.getElementById(id);
     if (el) heroBindCurrency(el);
   });
+
+  // Debt consolidation toggle (Refinance & HELOC goals)
+  var debtToggle = document.getElementById('heroDebtToggle');
+  if (debtToggle) {
+    debtToggle.addEventListener('click', function(e) {
+      var btn = e.target.closest('.heloc__toggle-btn');
+      if (!btn) return;
+      debtToggle.querySelectorAll('.heloc__toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      var debtGroup = document.getElementById('heroDebtGroup');
+      if (btn.dataset.value === 'yes') {
+        debtGroup.style.display = '';
+      } else {
+        debtGroup.style.display = 'none';
+        document.getElementById('heroDebtAmount').value = '';
+      }
+    });
+  }
 
   // Bind calc button
   var calcBtn = document.getElementById('heroCalcBtn');
@@ -198,16 +238,40 @@ function buildHeroPage2(goal, borrowingPower, mortgageBalance) {
 
       if (goal === 'Refinance' || goal === 'Switch/Transfer') {
         var currentPayment = heroParseCurrency(document.getElementById('heroCurrentPayment').value);
-        var newPayment = heroCalcPayment(mortgageBalance, HERO_BEST_RATE / 100, 25);
-        var monthlySavings = Math.max(0, currentPayment - newPayment);
+
+        // Check for debt consolidation (Refinance only)
+        var debtAmountEl = document.getElementById('heroDebtAmount');
+        var debtToggleEl = document.getElementById('heroDebtToggle');
+        var wantsDebt = debtToggleEl && debtToggleEl.querySelector('.heloc__toggle-btn.active') && debtToggleEl.querySelector('.heloc__toggle-btn.active').dataset.value === 'yes';
+        var debtAmount = (wantsDebt && debtAmountEl) ? heroParseCurrency(debtAmountEl.value) : 0;
+        var debtPayment = debtAmount * 0.03; // 3% minimum monthly payment
+
+        var newMortgageTotal = mortgageBalance + debtAmount;
+        var newPayment = heroCalcPayment(newMortgageTotal, HERO_BEST_RATE / 100, 25);
+        var currentTotal = currentPayment + debtPayment;
+        var monthlySavings = Math.max(0, currentTotal - newPayment);
         var annualSavings = monthlySavings * 12;
 
         resultHtml =
           '<div style="border-top:1.5px solid var(--border); margin-top:16px; padding-top:16px;">' +
             '<div class="hero__result-row">' +
-              '<span class="hero__result-label">Current monthly payment</span>' +
+              '<span class="hero__result-label">Current mortgage payment</span>' +
               '<span class="hero__result-value" style="color:#c0392b;">' + heroFormatCurrency(currentPayment) + '</span>' +
+            '</div>';
+
+        if (debtAmount > 0) {
+          resultHtml +=
+            '<div class="hero__result-row">' +
+              '<span class="hero__result-label">Current debt payments</span>' +
+              '<span class="hero__result-value" style="color:#c0392b;">' + heroFormatCurrency(debtPayment) + '</span>' +
             '</div>' +
+            '<div class="hero__result-row">' +
+              '<span class="hero__result-label">Total current payments</span>' +
+              '<span class="hero__result-value" style="color:#c0392b; font-weight:700;">' + heroFormatCurrency(currentTotal) + '</span>' +
+            '</div>';
+        }
+
+        resultHtml +=
             '<div class="hero__result-row">' +
               '<span class="hero__result-label">New estimated payment</span>' +
               '<span class="hero__result-value" style="color:#2A7D5B;">' + heroFormatCurrency(newPayment) + '</span>' +
@@ -276,6 +340,13 @@ function buildHeroPage2(goal, borrowingPower, mortgageBalance) {
         var helocRate = 5.95;
         var monthlyInterest = helocAmount * heroMonthlyRate(helocRate / 100);
 
+        // Check for debt consolidation
+        var debtAmountEl = document.getElementById('heroDebtAmount');
+        var debtToggleEl = document.getElementById('heroDebtToggle');
+        var wantsDebt = debtToggleEl && debtToggleEl.querySelector('.heloc__toggle-btn.active') && debtToggleEl.querySelector('.heloc__toggle-btn.active').dataset.value === 'yes';
+        var debtAmount = (wantsDebt && debtAmountEl) ? heroParseCurrency(debtAmountEl.value) : 0;
+        var debtPayment = debtAmount * 0.03; // 3% minimum monthly payment
+
         resultHtml =
           '<div style="border-top:1.5px solid var(--border); margin-top:16px; padding-top:16px;">' +
             '<div class="hero__result-row">' +
@@ -290,6 +361,19 @@ function buildHeroPage2(goal, borrowingPower, mortgageBalance) {
               '<span class="hero__result-label">Est. monthly interest payment</span>' +
               '<span class="hero__result-value">' + heroFormatCurrency(monthlyInterest) + '/mo</span>' +
             '</div>';
+
+        if (debtAmount > 0) {
+          var monthlySavings = Math.max(0, debtPayment - monthlyInterest);
+          resultHtml +=
+            '<div class="hero__result-row">' +
+              '<span class="hero__result-label">Current debt payments</span>' +
+              '<span class="hero__result-value" style="color:#c0392b;">' + heroFormatCurrency(debtPayment) + '/mo</span>' +
+            '</div>' +
+            '<div class="hero__result-row">' +
+              '<span class="hero__result-label">Monthly savings</span>' +
+              '<span class="hero__result-value hero__result-value--hero">' + heroFormatCurrency(monthlySavings) + '/mo</span>' +
+            '</div>';
+        }
 
         if (withinLTV) {
           resultHtml +=
