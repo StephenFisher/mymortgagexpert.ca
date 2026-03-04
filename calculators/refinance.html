@@ -87,17 +87,9 @@
               <span class="heloc__helper">The rate you are currently paying</span>
             </div>
             <div class="form-group">
-              <label for="refiCurrentAmort">Current Remaining Amortization</label>
-              <select id="refiCurrentAmort">
-                <option value="5">5 Years</option>
-                <option value="10">10 Years</option>
-                <option value="15">15 Years</option>
-                <option value="20" selected>20 Years</option>
-                <option value="25">25 Years</option>
-                <option value="30">30 Years</option>
-              </select>
-              <span class="heloc__helper">Years left on your current mortgage</span>
-              <span class="heloc__helper heloc__helper--result" id="refiCurrentPaymentDisplay">Estimated current monthly payment: --</span>
+              <label for="refiCurrentPayment">Current Mortgage Payment (excl. property tax)</label>
+              <input type="text" id="refiCurrentPayment" value="" placeholder="$2,500" inputmode="numeric">
+              <span class="heloc__helper">Your current monthly mortgage payment, not including property tax</span>
             </div>
             <div class="form-group" style="margin-top:8px;">
               <label>Would You Like to Access Equity?</label>
@@ -135,12 +127,13 @@
               <div class="heloc__toggle" id="refiRateTypeToggle">
                 <button type="button" class="heloc__toggle-btn active" data-value="fixed">Fixed</button>
                 <button type="button" class="heloc__toggle-btn" data-value="variable">Variable</button>
+                <button type="button" class="heloc__toggle-btn" data-value="custom">Custom</button>
               </div>
             </div>
             <div class="form-group">
               <label for="refiNewRate">New Refinance Rate (%)</label>
               <input type="text" id="refiNewRate" value="4.04" inputmode="decimal" readonly style="background:#f0f0f0; cursor:default;">
-              <span class="heloc__helper">Rate based on selected term and type from our posted rates</span>
+              <span class="heloc__helper" id="refiRateHelper">Rate based on selected term and type from our posted rates</span>
             </div>
           </div>
         </div>
@@ -178,7 +171,7 @@
           </div>
 
           <div class="heloc__result-row">
-            <span class="heloc__result-label">Current Monthly Payment*</span>
+            <span class="heloc__result-label">Current Monthly Payment</span>
             <span class="heloc__result-value heloc__result-value--warning" id="resultCurrentPayment">$0</span>
           </div>
           <div class="heloc__result-divider"></div>
@@ -206,7 +199,7 @@
           </div>
 
           <a href="#" class="btn btn--white btn--large heloc__results-cta open-modal">Speak to a Specialist</a>
-          <p class="heloc__results-disclosure">* Current monthly payment is an estimate based on the information provided.<br>These numbers represent a non-binding estimate. Rates and terms subject to approval.</p>
+          <p class="heloc__results-disclosure">These numbers represent a non-binding estimate. Rates and terms subject to approval.</p>
           </div>
         </div>
       </div>
@@ -447,7 +440,7 @@
           homeValue: document.getElementById('refiHomeValue').value,
           currentBalance: document.getElementById('refiBalance').value,
           currentRate: document.getElementById('refiCurrentRate').value + '%',
-          currentAmortization: document.getElementById('refiCurrentAmort').value + ' years',
+          currentPayment: document.getElementById('refiCurrentPayment').value,
           accessEquity: document.querySelector('#refiEquityToggle .heloc__toggle-btn.active') ? document.querySelector('#refiEquityToggle .heloc__toggle-btn.active').textContent : 'No',
           equityAmount: document.getElementById('refiEquityAmount').value || 'N/A',
           newAmortization: document.getElementById('refiNewAmort').value + ' years',
@@ -539,7 +532,7 @@
     const homeValueInput = document.getElementById('refiHomeValue');
     const balanceInput = document.getElementById('refiBalance');
     const currentRateInput = document.getElementById('refiCurrentRate');
-    const currentAmortSelect = document.getElementById('refiCurrentAmort');
+    const currentPaymentInput = document.getElementById('refiCurrentPayment');
     const equityToggle = document.getElementById('refiEquityToggle');
     const equityField = document.getElementById('refiEquityField');
     const equityAmountInput = document.getElementById('refiEquityAmount');
@@ -548,7 +541,6 @@
     const rateTypeToggle = document.getElementById('refiRateTypeToggle');
     const newRateInput = document.getElementById('refiNewRate');
 
-    const currentPaymentDisplay = document.getElementById('refiCurrentPaymentDisplay');
     const newMortgageRow = document.getElementById('refiNewMortgageRow');
     const warningEl = document.getElementById('refiWarning');
     const resultMaxMortgage = document.getElementById('resultMaxMortgage');
@@ -594,14 +586,14 @@
       });
     }
 
-    [homeValueInput, balanceInput, equityAmountInput].forEach(bindCurrencyFormat);
+    [homeValueInput, balanceInput, equityAmountInput, currentPaymentInput].forEach(bindCurrencyFormat);
     currentRateInput.addEventListener('input', calculate);
     newRateInput.addEventListener('input', calculate);
-    currentAmortSelect.addEventListener('change', calculate);
     newAmortSelect.addEventListener('change', calculate);
     termSelect.addEventListener('change', calculate);
 
     function updateRate() {
+      if (rateType === 'custom') { calculate(); return; }
       const term = parseInt(termSelect.value);
       const rates = SITE_RATES[term];
       if (rates) {
@@ -610,14 +602,29 @@
       calculate();
     }
 
-    // Fixed / Variable toggle
+    // Fixed / Variable / Custom toggle
     rateTypeToggle.addEventListener('click', function(e) {
       const btn = e.target.closest('.heloc__toggle-btn');
       if (!btn) return;
       rateTypeToggle.querySelectorAll('.heloc__toggle-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       rateType = btn.dataset.value;
-      updateRate();
+      if (rateType === 'custom') {
+        newRateInput.removeAttribute('readonly');
+        newRateInput.style.background = '';
+        newRateInput.style.cursor = '';
+        newRateInput.value = '';
+        newRateInput.focus();
+        document.getElementById('refiRateHelper').textContent = 'Enter your own rate';
+      } else {
+        newRateInput.setAttribute('readonly', '');
+        newRateInput.style.background = '#f0f0f0';
+        newRateInput.style.cursor = 'default';
+        document.getElementById('refiRateHelper').textContent = 'Rate based on selected term and type from our posted rates';
+        updateRate();
+        return;
+      }
+      calculate();
     });
 
     // Term change also updates rate
@@ -653,8 +660,6 @@
     function calculate() {
       const homeValue = parseCurrency(homeValueInput.value);
       const balance = parseCurrency(balanceInput.value);
-      const currentRate = parseFloat(currentRateInput.value) / 100 || 0;
-      const currentAmort = parseInt(currentAmortSelect.value);
       const equityAmount = wantsEquity ? parseCurrency(equityAmountInput.value) : 0;
       const newAmort = parseInt(newAmortSelect.value);
       const newRate = parseFloat(newRateInput.value) / 100 || 0;
@@ -668,8 +673,8 @@
       // New mortgage = current balance + equity accessed
       const newBalance = balance + equityAmount;
 
-      // Current payment: current balance, current rate, current amortization
-      const currentPayment = calcMonthlyPayment(balance, currentRate, currentAmort);
+      // Current payment entered directly by user
+      const currentPayment = parseCurrency(currentPaymentInput.value);
       // New payment: new balance, new rate, new amortization
       const newPayment = overLimit ? 0 : calcMonthlyPayment(newBalance, newRate, newAmort);
       const monthlySavings = overLimit ? 0 : Math.max(0, currentPayment - newPayment);
@@ -678,10 +683,6 @@
 
       // Display
       warningEl.style.display = overLimit ? '' : 'none';
-
-      currentPaymentDisplay.textContent = (balance > 0 && currentRate > 0)
-        ? 'Estimated current monthly payment: ' + formatCurrency(currentPayment)
-        : 'Estimated current monthly payment: --';
 
       resultMaxMortgage.textContent = formatCurrency(maxMortgage);
       resultEquity.textContent = formatCurrency(availableEquity);

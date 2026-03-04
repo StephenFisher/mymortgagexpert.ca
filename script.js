@@ -130,18 +130,8 @@ function buildHeroPage2(goal, borrowingPower, mortgageBalance) {
     html =
       '<p style="font-size:0.85rem; color:var(--text-mid); margin-bottom:14px;">Let\'s see how much you could save by refinancing.</p>' +
       '<div class="form-group" style="margin-bottom:12px; text-align:left;">' +
-        '<label for="heroCurrentRate">What rate are you currently paying?</label>' +
-        '<input type="text" id="heroCurrentRate" placeholder="5.49" inputmode="decimal">' +
-      '</div>' +
-      '<div class="form-group" style="margin-bottom:14px; text-align:left;">' +
-        '<label for="heroAmort">Remaining amortization</label>' +
-        '<select id="heroAmort">' +
-          '<option value="10">10 Years</option>' +
-          '<option value="15">15 Years</option>' +
-          '<option value="20" selected>20 Years</option>' +
-          '<option value="25">25 Years</option>' +
-          '<option value="30">30 Years</option>' +
-        '</select>' +
+        '<label for="heroCurrentPayment">Current mortgage payment (excl. property tax)</label>' +
+        '<input type="text" id="heroCurrentPayment" placeholder="$2,500" inputmode="numeric">' +
       '</div>' +
       '<button type="button" class="btn btn--primary btn--large" id="heroCalcBtn" style="width:100%;">See What You Could Save</button>' +
       '<div id="heroCalcResult" style="display:none;"></div>';
@@ -174,18 +164,8 @@ function buildHeroPage2(goal, borrowingPower, mortgageBalance) {
     html =
       '<p style="font-size:0.85rem; color:var(--text-mid); margin-bottom:14px;">See how much you could save by switching lenders at renewal.</p>' +
       '<div class="form-group" style="margin-bottom:12px; text-align:left;">' +
-        '<label for="heroCurrentRate">What rate are you currently paying?</label>' +
-        '<input type="text" id="heroCurrentRate" placeholder="5.49" inputmode="decimal">' +
-      '</div>' +
-      '<div class="form-group" style="margin-bottom:14px; text-align:left;">' +
-        '<label for="heroAmort">Remaining amortization</label>' +
-        '<select id="heroAmort">' +
-          '<option value="10">10 Years</option>' +
-          '<option value="15">15 Years</option>' +
-          '<option value="20" selected>20 Years</option>' +
-          '<option value="25">25 Years</option>' +
-          '<option value="30">30 Years</option>' +
-        '</select>' +
+        '<label for="heroCurrentPayment">Current mortgage payment (excl. property tax)</label>' +
+        '<input type="text" id="heroCurrentPayment" placeholder="$2,500" inputmode="numeric">' +
       '</div>' +
       '<button type="button" class="btn btn--primary btn--large" id="heroCalcBtn" style="width:100%;">See What You Could Save</button>' +
       '<div id="heroCalcResult" style="display:none;"></div>';
@@ -204,7 +184,7 @@ function buildHeroPage2(goal, borrowingPower, mortgageBalance) {
   container.innerHTML = html;
 
   // Bind currency formatting on dynamic inputs
-  ['heroDebtTotal', 'heroDebtPayment', 'heroHelocAmount', 'heroDownNeeded'].forEach(function(id) {
+  ['heroCurrentPayment', 'heroDebtTotal', 'heroDebtPayment', 'heroHelocAmount', 'heroDownNeeded'].forEach(function(id) {
     var el = document.getElementById(id);
     if (el) heroBindCurrency(el);
   });
@@ -217,10 +197,8 @@ function buildHeroPage2(goal, borrowingPower, mortgageBalance) {
       var resultHtml = '';
 
       if (goal === 'Refinance' || goal === 'Switch/Transfer') {
-        var currentRate = parseFloat(document.getElementById('heroCurrentRate').value) / 100 || 0;
-        var amort = parseInt(document.getElementById('heroAmort').value);
-        var currentPayment = heroCalcPayment(mortgageBalance, currentRate, amort);
-        var newPayment = heroCalcPayment(mortgageBalance, HERO_BEST_RATE / 100, amort);
+        var currentPayment = heroParseCurrency(document.getElementById('heroCurrentPayment').value);
+        var newPayment = heroCalcPayment(mortgageBalance, HERO_BEST_RATE / 100, 25);
         var monthlySavings = Math.max(0, currentPayment - newPayment);
         var annualSavings = monthlySavings * 12;
 

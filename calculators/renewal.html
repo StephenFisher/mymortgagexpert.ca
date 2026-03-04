@@ -82,17 +82,9 @@
               <span class="heloc__helper">The rate you are currently paying</span>
             </div>
             <div class="form-group">
-              <label for="renewAmortization">Remaining Amortization</label>
-              <select id="renewAmortization">
-                <option value="5">5 Years</option>
-                <option value="10">10 Years</option>
-                <option value="15">15 Years</option>
-                <option value="20" selected>20 Years</option>
-                <option value="25">25 Years</option>
-                <option value="30">30 Years</option>
-              </select>
-              <span class="heloc__helper">Years left on your mortgage amortization</span>
-              <span class="heloc__helper heloc__helper--result" id="renewCurrentPaymentDisplay">Estimated current monthly payment: --</span>
+              <label for="renewCurrentPayment">Current Mortgage Payment (excl. property tax)</label>
+              <input type="text" id="renewCurrentPayment" value="" placeholder="$2,500" inputmode="numeric">
+              <span class="heloc__helper">Your current monthly mortgage payment, not including property tax</span>
             </div>
             <div class="form-group" style="margin-top:8px;">
               <label for="renewTerm">New Term Length</label>
@@ -106,12 +98,13 @@
               <div class="heloc__toggle" id="renewRateTypeToggle">
                 <button type="button" class="heloc__toggle-btn active" data-value="fixed">Fixed</button>
                 <button type="button" class="heloc__toggle-btn" data-value="variable">Variable</button>
+                <button type="button" class="heloc__toggle-btn" data-value="custom">Custom</button>
               </div>
             </div>
             <div class="form-group">
               <label for="renewNewRate">New Renewal Rate (%)</label>
               <input type="text" id="renewNewRate" value="4.04" inputmode="decimal" readonly style="background:#f0f0f0; cursor:default;">
-              <span class="heloc__helper">Rate based on selected term and type from our posted rates</span>
+              <span class="heloc__helper" id="renewRateHelper">Rate based on selected term and type from our posted rates</span>
             </div>
           </div>
         </div>
@@ -128,7 +121,7 @@
           </div>
 
           <div class="heloc__result-row">
-            <span class="heloc__result-label">Current Monthly Payment*</span>
+            <span class="heloc__result-label">Current Monthly Payment</span>
             <span class="heloc__result-value heloc__result-value--warning" id="resultCurrentPayment">$0</span>
           </div>
           <div class="heloc__result-divider"></div>
@@ -151,7 +144,7 @@
           </div>
 
           <a href="#" class="btn btn--white btn--large heloc__results-cta open-modal">Speak to a Specialist</a>
-          <p class="heloc__results-disclosure">* Current monthly payment is an estimate based on the information provided.<br>These numbers represent a non-binding estimate. Rates and terms subject to approval.</p>
+          <p class="heloc__results-disclosure">These numbers represent a non-binding estimate. Rates and terms subject to approval.</p>
           </div>
         </div>
       </div>
@@ -390,7 +383,7 @@
         inputs: {
           currentBalance: document.getElementById('renewBalance').value,
           currentRate: document.getElementById('renewCurrentRate').value + '%',
-          amortization: document.getElementById('renewAmortization').value + ' years',
+          currentPayment: document.getElementById('renewCurrentPayment').value,
           newTerm: document.getElementById('renewTerm').value + ' years',
           rateType: document.querySelector('#renewRateTypeToggle .heloc__toggle-btn.active') ? document.querySelector('#renewRateTypeToggle .heloc__toggle-btn.active').textContent : 'Fixed',
           newRate: document.getElementById('renewNewRate').value + '%'
@@ -473,12 +466,10 @@
     // ===========================
     const balanceInput = document.getElementById('renewBalance');
     const currentRateInput = document.getElementById('renewCurrentRate');
+    const currentPaymentInput = document.getElementById('renewCurrentPayment');
     const newRateInput = document.getElementById('renewNewRate');
-    const amortizationSelect = document.getElementById('renewAmortization');
     const termSelect = document.getElementById('renewTerm');
     const rateTypeToggle = document.getElementById('renewRateTypeToggle');
-
-    const currentPaymentDisplay = document.getElementById('renewCurrentPaymentDisplay');
     const resultCurrentPayment = document.getElementById('resultCurrentPayment');
     const resultNewPayment = document.getElementById('resultNewPayment');
     const resultMonthlySavings = document.getElementById('resultMonthlySavings');
@@ -518,13 +509,13 @@
       });
     }
 
-    bindCurrencyFormat(balanceInput);
+    [balanceInput, currentPaymentInput].forEach(bindCurrencyFormat);
     currentRateInput.addEventListener('input', calculate);
     newRateInput.addEventListener('input', calculate);
-    amortizationSelect.addEventListener('change', calculate);
     termSelect.addEventListener('change', calculate);
 
     function updateRate() {
+      if (rateType === 'custom') { calculate(); return; }
       const term = parseInt(termSelect.value);
       const rates = SITE_RATES[term];
       if (rates) {
@@ -533,14 +524,29 @@
       calculate();
     }
 
-    // Fixed / Variable toggle
+    // Fixed / Variable / Custom toggle
     rateTypeToggle.addEventListener('click', function(e) {
       const btn = e.target.closest('.heloc__toggle-btn');
       if (!btn) return;
       rateTypeToggle.querySelectorAll('.heloc__toggle-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       rateType = btn.dataset.value;
-      updateRate();
+      if (rateType === 'custom') {
+        newRateInput.removeAttribute('readonly');
+        newRateInput.style.background = '';
+        newRateInput.style.cursor = '';
+        newRateInput.value = '';
+        newRateInput.focus();
+        document.getElementById('renewRateHelper').textContent = 'Enter your own rate';
+      } else {
+        newRateInput.setAttribute('readonly', '');
+        newRateInput.style.background = '#f0f0f0';
+        newRateInput.style.cursor = 'default';
+        document.getElementById('renewRateHelper').textContent = 'Rate based on selected term and type from our posted rates';
+        updateRate();
+        return;
+      }
+      calculate();
     });
 
     // Term change also updates rate
@@ -562,20 +568,17 @@
 
     function calculate() {
       const balance = parseCurrency(balanceInput.value);
-      const currentRate = parseFloat(currentRateInput.value) / 100 || 0;
       const newRate = parseFloat(newRateInput.value) / 100 || 0;
-      const amortization = parseInt(amortizationSelect.value);
       const term = parseInt(termSelect.value);
 
-      const currentPayment = calcMonthlyPayment(balance, currentRate, amortization);
-      const newPayment = calcMonthlyPayment(balance, newRate, amortization);
+      // Current payment entered directly by user
+      const currentPayment = parseCurrency(currentPaymentInput.value);
+      // New payment: same balance, new rate, 25-year amortization (standard renewal)
+      const newPayment = calcMonthlyPayment(balance, newRate, 25);
       const monthlySavings = Math.max(0, currentPayment - newPayment);
       const annualSavings = monthlySavings * 12;
       const termSavings = monthlySavings * term * 12;
 
-      currentPaymentDisplay.textContent = (balance > 0 && currentRate > 0)
-        ? 'Estimated current monthly payment: ' + formatCurrency(currentPayment)
-        : 'Estimated current monthly payment: --';
       resultTermSavings.textContent = formatCurrency(termSavings);
       resultTermLabel.textContent = 'over your ' + term + '-year term';
       resultCurrentPayment.textContent = formatCurrency(currentPayment);
