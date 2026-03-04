@@ -1735,9 +1735,10 @@ button, input, select {
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
   z-index: 2000;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   padding: 24px;
+  overflow-y: auto;
 }
 
 .modal-overlay.active {
@@ -1750,6 +1751,7 @@ button, input, select {
   padding: 40px;
   max-width: 480px;
   width: 100%;
+  margin: auto 0;
   position: relative;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
 }
@@ -1758,6 +1760,7 @@ button, input, select {
   position: absolute;
   top: 16px;
   right: 20px;
+  z-index: 1;
   background: none;
   border: none;
   font-size: 1.8rem;
@@ -2259,6 +2262,11 @@ button, input, select {
   .heloc-info__container { padding: 0 20px; }
   .heloc-info__body { font-size: 0.98rem; }
   .heloc-info__body h2 { font-size: 1.3rem; margin-top: 36px; }
+
+  /* Stack split-row on mobile */
+  .heloc__split-row {
+    flex-direction: column;
+  }
 }
 
 @media (max-width: 480px) {
@@ -2343,6 +2351,25 @@ button, input, select {
   .heloc-info__body h2 { font-size: 1.15rem; }
 
   .transfer-quiz__question .heloc__toggle { max-width: 100%; }
+
+  /* 3-button toggles on small screens */
+  .heloc__toggle--three .heloc__toggle-btn {
+    font-size: 0.75rem;
+    padding: 10px 6px;
+  }
+
+  /* Modal on small screens */
+  .modal-overlay {
+    padding: 16px;
+  }
+
+  .modal__title {
+    font-size: 1.5rem;
+  }
+
+  .modal__form {
+    gap: 12px;
+  }
 }
 
 /* ===== Transfer Quiz ===== */
