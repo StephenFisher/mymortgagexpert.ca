@@ -99,11 +99,6 @@
               <input type="text" id="helDebtAmount" value="" placeholder="$0" inputmode="numeric">
               <span class="heloc__helper">Total credit cards, unsecured debt, and outstanding balances to pay off</span>
             </div>
-            <div class="form-group">
-              <label for="helRate">Interest Rate (%)</label>
-              <input type="text" id="helRate" value="" placeholder="6.49" inputmode="decimal">
-              <span class="heloc__helper">Enter the annual interest rate for your loan</span>
-            </div>
           </div>
         </div>
 
@@ -121,6 +116,12 @@
           <div class="heloc__result-row">
             <span class="heloc__result-label">Your New Loan Amount</span>
             <span class="heloc__result-value heloc__result-value--highlight" id="resultLoanAmount">$0</span>
+          </div>
+          <div class="heloc__result-divider"></div>
+
+          <div class="heloc__result-row">
+            <span class="heloc__result-label">Your LTV</span>
+            <span class="heloc__result-value" id="resultLTV">0%</span>
           </div>
           <div class="heloc__result-divider"></div>
 
@@ -396,7 +397,7 @@
           loanAmount: document.getElementById('helLoanAmount').value,
           purpose: document.querySelector('#helPurposeToggle .heloc__toggle-btn.active') ? document.querySelector('#helPurposeToggle .heloc__toggle-btn.active').textContent : '',
           debtAmount: document.getElementById('helDebtAmount').value || 'N/A',
-          interestRate: document.getElementById('helRate').value + '%'
+          ltv: (homeValueInput.value && mortgageBalanceInput.value) ? Math.round(((parseCurrency(mortgageBalanceInput.value) + parseCurrency(loanAmountInput.value)) / parseCurrency(homeValueInput.value)) * 100) + '%' : 'N/A'
         },
         results: {
           maxLoan: document.getElementById('resultMaxLoan').textContent,
@@ -481,7 +482,6 @@
     const mortgageBalanceInput = document.getElementById('helMortgageBalance');
     const loanAmountInput = document.getElementById('helLoanAmount');
     const debtAmountInput = document.getElementById('helDebtAmount');
-    const rateInput = document.getElementById('helRate');
     const purposeToggle = document.getElementById('helPurposeToggle');
     const debtField = document.getElementById('helDebtField');
     const consolidationResults = document.getElementById('helConsolidationResults');
@@ -516,8 +516,6 @@
 
     [homeValueInput, mortgageBalanceInput, loanAmountInput, debtAmountInput].forEach(bindCurrencyFormat);
 
-    rateInput.addEventListener('input', calculate);
-
     // Purpose toggle
     purposeToggle.addEventListener('click', function(e) {
       const btn = e.target.closest('.heloc__toggle-btn');
@@ -532,22 +530,36 @@
       calculate();
     });
 
+    // LTV-tiered rate: ≤65% → 8.25%, 66–75% → 9.25%, 76–80% → 9.99%
+    function getTieredRate(ltv) {
+      if (ltv <= 65) return 8.25;
+      if (ltv <= 75) return 9.25;
+      return 9.99;
+    }
+
     // Interest-only calculation
     function calculate() {
       const homeValue = parseCurrency(homeValueInput.value);
       const mortgageBalance = parseCurrency(mortgageBalanceInput.value);
       const loanAmount = parseCurrency(loanAmountInput.value);
       const debtAmount = purpose === 'consolidation' ? parseCurrency(debtAmountInput.value) : 0;
-      const rate = parseFloat(rateInput.value) / 100 || 0;
 
       const maxLoan = Math.max(0, Math.round((homeValue * MAX_LTV) - mortgageBalance));
       const overLimit = loanAmount > maxLoan && loanAmount > 0;
+
+      // Calculate LTV based on total borrowing
+      const totalBorrowing = mortgageBalance + loanAmount;
+      const ltv = homeValue > 0 ? (totalBorrowing / homeValue) * 100 : 0;
+      const tieredRate = getTieredRate(ltv);
+      const rate = tieredRate / 100;
+
       const monthlyInterest = overLimit ? 0 : loanAmount * (rate / 12);
 
       warningEl.style.display = (overLimit && homeValue > 0) ? '' : 'none';
 
       resultMaxLoan.textContent = formatCurrency(maxLoan);
       resultLoanAmount.textContent = overLimit ? '$0' : formatCurrency(loanAmount);
+      document.getElementById('resultLTV').textContent = homeValue > 0 ? Math.round(ltv) + '%' : '0%';
       resultMonthly.textContent = overLimit ? '$0' : formatCurrency(monthlyInterest);
 
       // Debt consolidation savings
@@ -568,8 +580,6 @@
   <script src="../supabase-config.js"></script>
   <script>
     (async function() {
-      const rate = await fetchSingleRate('home-equity-loan');
-      if (rate) { document.getElementById('helRate').value = rate; calculate(); }
       const b = await fetchBroker();
       if (b) { broker.name = b.name; broker.phone = b.phone; broker.phoneTel = b.phoneTel; broker.licence = b.licence; broker.logo = '../' + b.logo; }
     })();

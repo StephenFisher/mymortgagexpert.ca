@@ -127,11 +127,13 @@
               <div class="heloc__toggle" id="ccRateTypeToggle">
                 <button type="button" class="heloc__toggle-btn active" data-value="fixed">Fixed</button>
                 <button type="button" class="heloc__toggle-btn" data-value="variable">Variable</button>
+                <button type="button" class="heloc__toggle-btn" data-value="custom">Custom</button>
               </div>
             </div>
             <div class="form-group">
               <label for="ccRate">Interest Rate (%)</label>
               <input type="text" id="ccRate" value="4.04" inputmode="decimal" readonly style="background:#f0f0f0; cursor:default;">
+              <span class="heloc__helper" id="ccRateHelper">Rate based on selected term and type from our posted rates</span>
             </div>
           </div>
         </div>
@@ -635,6 +637,7 @@
 
     // ---- Rate management ----
     function updateRate() {
+      if (rateType === 'custom') { calculate(); return; }
       var term = parseInt(termSelect.value);
       var rates = SITE_RATES[term];
       if (rates) {
@@ -649,10 +652,26 @@
       rateTypeToggle.querySelectorAll('.heloc__toggle-btn').forEach(function(b) { b.classList.remove('active'); });
       btn.classList.add('active');
       rateType = btn.dataset.value;
-      updateRate();
+      if (rateType === 'custom') {
+        rateInput.removeAttribute('readonly');
+        rateInput.style.background = '';
+        rateInput.style.cursor = '';
+        rateInput.value = '';
+        rateInput.focus();
+        document.getElementById('ccRateHelper').textContent = 'Enter your own rate';
+      } else {
+        rateInput.setAttribute('readonly', '');
+        rateInput.style.background = '#f0f0f0';
+        rateInput.style.cursor = 'default';
+        document.getElementById('ccRateHelper').textContent = 'Rate based on selected term and type from our posted rates';
+        updateRate();
+        return;
+      }
+      calculate();
     });
 
     termSelect.addEventListener('change', updateRate);
+    rateInput.addEventListener('input', calculate);
     paymentFreqSelect.addEventListener('change', calculate);
     amortSelect.addEventListener('change', function() {
       enforceAmortRules();
