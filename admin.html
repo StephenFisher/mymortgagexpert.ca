@@ -171,12 +171,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <h1 class="login__title">Admin Dashboard</h1>
       <p class="login__subtitle">Sign in to manage rates, broker info, and lenders.</p>
       <div class="login__error" id="loginError"></div>
-      <form id="loginForm">
-        <input type="email" class="login__input" id="loginEmail" placeholder="Email address" required>
-        <div style="position:relative;">
-          <input type="password" class="login__input" id="loginPassword" placeholder="Password" required style="padding-right:44px;">
-          <button type="button" id="togglePassword" style="position:absolute; right:12px; top:12px; background:none; border:none; cursor:pointer; padding:0; color:#6b7c74;" aria-label="Show password">
-            <svg id="eyeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <form id="loginForm" novalidate>
+        <input type="email" class="login__input" id="loginEmail" placeholder="Email address" required
+               autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false"
+               inputmode="email" enterkeyhint="next">
+        <div style="position:relative; margin-bottom:16px;">
+          <input type="password" class="login__input" id="loginPassword" placeholder="Password" required
+                 autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false"
+                 enterkeyhint="go"
+                 style="padding-right:48px; margin-bottom:0;">
+          <button type="button" id="togglePassword" aria-label="Show password"
+                  style="position:absolute; right:4px; top:50%; transform:translateY(-50%); width:44px; height:44px; display:flex; align-items:center; justify-content:center; background:none; border:none; cursor:pointer; padding:0; color:#6b7c74; -webkit-tap-highlight-color:transparent; z-index:2;">
+            <svg id="eyeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events:none;">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
               <circle cx="12" cy="12" r="3"></circle>
             </svg>
@@ -587,21 +593,45 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
     });
 
-    loginForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
+    let loginInFlight = false;
+    async function doLogin() {
+      if (loginInFlight) return;
+      loginInFlight = true;
       loginError.classList.remove('active');
-      const email = document.getElementById('loginEmail').value;
+      const email = document.getElementById('loginEmail').value.trim();
       const password = document.getElementById('loginPassword').value;
-      document.getElementById('loginBtn').textContent = 'Signing in...';
+      const btn = document.getElementById('loginBtn');
 
-      const { data, error } = await sb.auth.signInWithPassword({ email, password });
-      if (error) {
-        loginError.textContent = error.message;
+      if (!email || !password) {
+        loginError.textContent = 'Please enter your email and password.';
         loginError.classList.add('active');
-        document.getElementById('loginBtn').textContent = 'Sign In';
+        loginInFlight = false;
         return;
       }
-      showDashboard(data.user);
+
+      btn.textContent = 'Signing in...';
+      btn.disabled = true;
+      try {
+        const { data, error } = await sb.auth.signInWithPassword({ email, password });
+        if (error) {
+          loginError.textContent = error.message;
+          loginError.classList.add('active');
+          return;
+        }
+        showDashboard(data.user);
+      } catch (err) {
+        loginError.textContent = 'Sign in failed: ' + (err && err.message ? err.message : 'unknown error');
+        loginError.classList.add('active');
+      } finally {
+        btn.textContent = 'Sign In';
+        btn.disabled = false;
+        loginInFlight = false;
+      }
+    }
+
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      doLogin();
     });
 
     document.getElementById('logoutBtn').addEventListener('click', async () => {
